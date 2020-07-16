@@ -1,31 +1,19 @@
 import React from 'react'
-import Header from './components/header'
-import Footer from './components/footer'
+import Header from './components/Header'
+import Footer from './components/Footer'
+import data from './data'
+import Products from './components/Products'
 
 export default function App() {
   return (                    
     <div className="gridContainer">
         <Header/>
-        <Main/>
+        <main className='main'>
+          <Products/>    
+
+        </main>          
         <Footer/>
     </div>
   )
 }
 
-function Main(){
-
-  return(
-    <main className='main'>
-      <div className="products">
-        <li>
-          <div className='product'>
-            <img className='productImage' src='/images/d1.jpg'/>
-            <div className='productName'>Slim Shirt</div>
-            <div className='productBrand'>Nike</div>
-            <div className='productPrice'>$50</div>            
-          </div>
-        </li>
-      </div>
-    </main>    
-  )
-}
