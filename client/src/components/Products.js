@@ -1,11 +1,11 @@
-import React from 'react'
-import data from '../data'
+import React,{useEffect, useState} from 'react'
 import { Link } from 'react-router-dom'
 
-export default function Products() {
+export default function Products({products}) {
+
     return (
       <>
-          {data.products.map(product => 
+          {products.map(product => 
             <Product key={product._id} data={product}/>
           )}
       </> 
