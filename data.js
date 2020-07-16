@@ -1,5 +1,4 @@
-module.exports ={
-    products:[
+module.exports =[
         {
             _id: 2,
             name: 'Casual shoe',
@@ -41,4 +40,3 @@ module.exports ={
             countInStock:9,
         },
     ]
-}
