@@ -1,0 +1,114 @@
+html{
+  font-size: 62.5%;
+  box-sizing: border-box;
+}
+
+:root{
+  --main-color:rgb(227, 230, 233);
+  --main-text-color:rgb(31, 31, 31);
+}
+
+body{
+  font: 1.6rem;
+  height: 100vh;
+  margin: 0px;
+  font-family: 'Nunito', Helvetica;
+}
+
+#root{
+  height: 100%;
+}
+
+.gridContainer{
+  display: grid;
+  grid-template-areas:
+  "header"
+  "main"
+  "footer";
+  grid-template-columns: 1fr;
+  grid-template-rows: 5rem 1fr 5rem;
+  height: 100%;
+}
+
+/* Header */
+.header{
+  background-color: var(--main-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0rem 10rem;
+}
+
+.header a{
+  color: var(--main-text-color);
+  text-decoration-line: none;
+}
+
+.brand{
+  font-size: 2rem;
+}
+
+.navbar{
+  font-size: 1.5rem;
+}
+.navbar a{
+  padding: 1rem;
+}
+
+/* Main */
+.main{
+  grid-area: main;
+  height: 100%;
+}
+
+.products{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.products li{
+  list-style-type: none;
+  padding: 0px;
+  flex: 0 1 30rem;
+  margin: 1rem;
+  height: 35rem;
+  border-bottom: 0.1rem #c0c0c0 solid;
+}
+
+.product{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.productName{
+  font-size: 1.2rem;
+}
+
+.productBrand{
+  font-size: 1.2rem;
+}
+
+.productPrice{
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.productImage{
+  max-width: 30rem;
+  max-height: 30rem;
+}
+
+/* Footer */
+.footer{
+  grid-area: footer;
+  background-color: var(--main-color);
+  color: var(--main-text-color);
+  display: flex;
+  font-size: 1.5rem;
+  justify-content: center;
+  align-items: center;
+}
