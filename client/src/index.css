@@ -151,7 +151,7 @@ body{
 
 .actions{
   position: absolute;
-  right: 0px;
+  right: 1rem;
   top: 10rem;
   width: 40rem;
 }
@@ -161,10 +161,9 @@ body{
   width: 40rem;
   background-color: #e4e4e481;
   position: absolute;
-  border-radius: 1rem 0 0 1rem;
+  border-radius: 0.5rem;
   color: rgb(44, 44, 44);
   font-size: 1.6rem;
-  /* align-items: flex-end; */
   padding: 1rem 0;
 }
 
@@ -188,14 +187,117 @@ body{
 
 .button{
   height: 4rem;
-  width: 100%;
   border:0.1rem ;
   border-radius: 0.5rem;
-  background-color: #c3e475;
+  /* background-color: #c3e475; */
+  background-color: #add889;
+}
+
+.secondary{
+  background-color: rgb(136, 136, 136);
+  color: rgb(240, 240, 240);
+  height: 3rem;
+}
+
+.fullWidth{
+  width: 100%;
 }
 
 .button:hover{
  cursor: pointer; 
+}
+
+/* Cart */
+.cart{
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.cartList{
+  flex: 3 1 60rem;
+}
+
+.cartListContainer{
+  padding: 0;
+  list-style-type: none;
+}
+
+.cartListContainer li:first-child{
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  font-size: 1.6rem;
+  border-bottom: 0.1rem solid gray;
+  height: 8rem;
+  margin: 0 5rem;
+}
+
+.cartListContainer li:first-child h3{
+  margin: 0px;
+}
+
+.cartItem{
+  display: flex;
+  height: 15em;
+  margin: 0 5rem;
+  border-bottom: 0.1rem solid gray;
+}
+
+.cartItemInfo{
+  width: 10rem;
+  /* height: 15rem; */
+  display:flex;
+  font-size: 1.6rem;
+  flex-direction: column;
+  padding: 1rem 0 1rem 3rem;
+  justify-content: space-between;
+}
+
+.cartItemName{
+  font-size: 2rem;
+  width: 15rem;
+}
+.cartItemName a{
+  color: black;
+  text-decoration: none;
+}
+
+.cartItemPrice{
+  font-size: 2rem;
+  font-weight: bold;
+  width: 100%;
+  align-self: flex-end;
+  text-align: right;
+  padding: 0.5rem;
+}
+
+.cartItemImage{
+  max-height: 15rem;
+  max-width: 15rem;
+  margin-left: 2rem;
+}
+
+.cartAction{
+  flex: 1 1 20rem;
+  background-color: #f8f8f8;
+  border-radius: .5rem;
+  margin: 6rem 5rem;
+  height: 12rem;
+  font-size: 1.6rem;
+  display:flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.cartAction h2{
+  margin: 0rem 1rem;
+  margin-top: -0.1rem;
+  padding: 0;
+  border-bottom: 0.1rem solid gray;
+}
+.cartAction h3{
+  font-size: 1.6rem;
+  margin: 1rem;
 }
 
 /* Footer */
