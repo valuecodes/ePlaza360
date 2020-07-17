@@ -1,14 +1,23 @@
 import React,{ useEffect, useState} from 'react'
 import data from '../data'
 import { Link } from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux'
+import { detailsProduct } from '../actions/productActions'
 
 export default function ProductScreen(props) {
-    data.products.forEach(element => {
-        console.log(element._id===props.match.params.id)
-    });
-    const product = data.products.find(product => Number(product._id) ===Number(props.match.params.id))
 
+    const productDetails = useSelector(state => state.productDetails)
+    const { product, loading, error } = productDetails
+
+    const dispatch = useDispatch()
+    
+    useEffect(()=>{
+        const productId = props.match.params.id
+        dispatch(detailsProduct(productId))
+    },[])
+    
     return (
+        loading?<div>Loading...</div>:error?<div>{error}</div>:
         <div className='productScreen'>
             <Details product={product}/>
             <Actions product={product}/>

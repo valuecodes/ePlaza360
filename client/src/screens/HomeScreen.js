@@ -12,7 +12,7 @@ export default function HomeScreen() {
         dispatch(listProducts())
     }, [])
 
-    return loading? <div>Loading...</div>:
+    return loading? <div>Loading...</div>:error?<div>{error.message}</div>:
         <div>
             <div className="products">
               <Products products={products}/> 

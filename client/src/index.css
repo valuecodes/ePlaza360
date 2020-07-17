@@ -194,6 +194,10 @@ body{
   background-color: #c3e475;
 }
 
+.button:hover{
+ cursor: pointer; 
+}
+
 /* Footer */
 .footer{
   grid-area: footer;

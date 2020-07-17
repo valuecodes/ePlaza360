@@ -2,7 +2,6 @@ import React,{useEffect, useState} from 'react'
 import { Link } from 'react-router-dom'
 
 export default function Products({products}) {
-  console.log(products)
     return (
       <>
           {products.map(product => 
@@ -23,7 +22,7 @@ function Product({data}){
           <Link to={`/product/${data._id}`}>{data.name}</Link>
         </div>
         <div className='productBrand'>{data.brand}</div>
-        <div className='productPrice'>{data.price}</div>            
+        <div className='productPrice'>${data.price}</div>            
       </div>
     </li>
   )
