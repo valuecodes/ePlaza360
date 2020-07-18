@@ -13,7 +13,6 @@ router.get('/:id', (req, res) => {
 })
 
 router.get('/', (req, res) =>{
-    console.log('test')
     res.send(data)
 })
 

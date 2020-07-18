@@ -16,10 +16,6 @@ export default function CartScreen(props) {
         }
     },[])
 
-    const removeFromCartHandler=(productId)=>{
-        dispatch(removeFromCart(productId))
-    }
-
     const checkoutHandler=()=>{
         props.history.push('/signin?redirect=shipping')
     }
@@ -28,8 +24,6 @@ export default function CartScreen(props) {
         <div className='cart'>
             <CartList 
                 cartItems={cartItems} 
-                removeFromCartHandler={removeFromCartHandler}
-                dispatch={dispatch}
             />
             <CartAction 
                 cartItems={cartItems}
@@ -39,7 +33,7 @@ export default function CartScreen(props) {
     )
 }
 
-function CartList({cartItems, removeFromCartHandler, dispatch}){
+function CartList({cartItems}){
     return(
         <div className='cartList'>
             <ul className='cartListContainer'>
@@ -50,33 +44,45 @@ function CartList({cartItems, removeFromCartHandler, dispatch}){
                 {
                     cartItems.length === 0 ?
                     <div>Cart is empty</div>:
-
                     cartItems.map(item =>
-                        <div key={item.product} className='cartItem'> 
-                            <img className='cartItemImage' src={item.image} alt='product'/>
-                            <div className='cartItemInfo'>
-                                <div className='cartItemName'>
-                                    <Link to={`/product/${item.product}`}>
-                                        {item.name}
-                                    </Link>
-                                </div>
-                                <div>{item.description}</div>
-                                <div>
-                                    Qty:{' '}
-                                    <select onChange={e => dispatch(addToCart(item.product, e.target.value))} value={item.qty}>
-                                        {[...Array(item.countInStock).keys()].map((value) =>
-                                            <option key={value+1} value={value+1}>{value+1}</option>
-                                        )}
-                                    </select>
-                                </div>
-                                <button className='button secondary' type='button' onClick={e => removeFromCartHandler(item.product)}>Remove</button>
-                            </div>                                
-                            <div className='cartItemPrice'>${item.price}</div>
-                        </div>  
+                        <CartItem key={item.product} item={item}/>
                     )
                 }
             </ul>
         </div>        
+    )
+}
+
+function CartItem({item}){
+
+    const dispatch = useDispatch()
+
+    const removeFromCartHandler=(productId)=>{
+        dispatch(removeFromCart(productId))
+    }
+
+    return(
+        <div key={item.product} className='cartItem'> 
+            <img className='cartItemImage' src={item.image} alt='product'/>
+            <div className='cartItemInfo'>
+                <div className='cartItemName'>
+                    <Link to={`/product/${item.product}`}>
+                        {item.name}
+                    </Link>
+                </div>
+                <div>{item.description}</div>
+                <div>
+                    Qty:{' '}
+                    <select onChange={e => dispatch(addToCart(item.product, e.target.value))} value={item.qty}>
+                        {[...Array(item.countInStock).keys()].map((value) =>
+                            <option key={value+1} value={value+1}>{value+1}</option>
+                        )}
+                    </select>
+                </div>
+                <button className='button secondary' type='button' onClick={e => removeFromCartHandler(item.product)}>Remove</button>
+            </div>                                
+            <div className='cartItemPrice'>${item.price}</div>
+        </div>  
     )
 }
 
