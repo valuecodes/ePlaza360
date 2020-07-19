@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const User = require('../models/userModel')
-const getToken = require('../util')
+const {getToken} = require('../util')
 
 router.post('/signin', async (req, res) =>{
 
@@ -24,7 +24,6 @@ router.post('/signin', async (req, res) =>{
 })
 
 router.post('/register', async (req, res)=> {
-    console.log(req.body)
     try{
         const user= new User({
             name: req.body.name,

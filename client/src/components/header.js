@@ -16,6 +16,10 @@ export default function Header() {
                     <Link to='/signin'>Signin</Link>
                 }
                 <a href='sigin'>Cart</a>
+                {
+                    userInfo?
+                    userInfo.isAdmin&&
+                    <Link to='products'>Admin</Link>:''}
             </div>
         </header>
     )

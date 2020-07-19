@@ -95,7 +95,7 @@ function CartAction({cartItems, checkoutHandler}){
                 :
                 $ {cartItems.reduce((a, c) => a + (c.price*c.qty),0)}
             </h3>
-            <button onClick={checkoutHandler} className='button fullWidth' disabled={cartItems.length===0}>
+            <button onClick={checkoutHandler} className='button fullWidth primary' disabled={cartItems.length===0}>
                 Proceed to checkout
             </button>
         </div>        

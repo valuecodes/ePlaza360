@@ -82,7 +82,7 @@ function Actions({product, handleAddToCart, qty, setQty}){
                     </li>                         
                 </ul>
                 {product.countInStock && 
-                <button onClick={handleAddToCart} className='button fullWidth'>Add to cart</button>}
+                <button onClick={handleAddToCart} className='button fullWidth primary'>Add to cart</button>}
                  
             </div>  
         </div>
