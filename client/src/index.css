@@ -117,10 +117,11 @@ body{
 
 .details{
   display: flex;
-  height: 20rem;
+  /* height: 20rem; */
   justify-content:center;
   align-content: center;
   flex-wrap: wrap-reverse;
+  margin-top: 12rem;
 }
 
 .detailsImage{
@@ -186,11 +187,16 @@ body{
 }
 
 .button{
+  display: flex;
+  align-items: center;
+  justify-content: center;
   height: 4rem;
   border:0.1rem ;
   border-radius: 0.5rem;
-  /* background-color: #c3e475; */
   background-color: #add889;
+  font-size: 1.4rem;
+  text-decoration: none;
+  color: black;
 }
 
 .secondary{
@@ -309,4 +315,51 @@ body{
   font-size: 1.5rem;
   justify-content: center;
   align-items: center;
+}
+
+/* Signin */
+
+.form{
+  display: flex;
+  justify-content: center;
+  margin-top: 5rem;
+}
+
+.formContainer{
+  list-style-type: none;
+  padding: 2rem;
+  width: 30rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  background-color: #e4e4e481;
+  border-radius: 0.5rem;
+}
+
+.formContainer li{
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 0;
+}
+
+.formContainer li h3{
+  font-size: 2rem;
+  margin: 0;
+}
+
+.formContainer li label{
+  font-size: 1.6rem;
+}
+
+.formContainer li input{
+  height: 3rem;
+  border-radius: 0.5rem;
+  border: 0.1rem solid black;
+  font-size: 1.6rem;
+}
+
+.toRegister{
+  font-size: 1.6rem;
+  height: 0.5rem;
+  margin: 1rem 0;
 }
