@@ -1,7 +1,5 @@
 const express = require('express')
 const router = express.Router()
-const User = require('../models/userModel')
-const {getToken} = require('../util')
 const {userSignin, userRegister, createAdmin} = require('../controllers/user')
 
 router

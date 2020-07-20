@@ -15,9 +15,6 @@ export default function SigninScreen(props) {
       if (userInfo) {
         props.history.push(redirect);
       }
-      return () => {
-        //
-      };
     }, [userInfo]);
     
     const submitHandler=(e)=>{

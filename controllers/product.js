@@ -1,5 +1,4 @@
 const Product = require('../models/productModel')
-const {isAuth, isAdmin} = require('../util')
 
 // @desc      Get products
 // @route     GET /
@@ -25,7 +24,7 @@ exports.productDetails = async(req, res) =>{
 // @desc      Save product
 // @route     POST /
 // @ access   Admin auth
-exports.saveProduct = (isAuth, isAdmin, async(req, res) =>{
+exports.saveProduct = async(req, res) =>{
     const product = new Product({
         name: req.body.name,
         image: req.body.image,
@@ -40,12 +39,12 @@ exports.saveProduct = (isAuth, isAdmin, async(req, res) =>{
         return res.status(201).send({message: 'New product created', data: newProduct})
     }
     return res.status(500).send({message: 'Error in creating product'})
-})
+}
 
 // @desc      Update product
 // @route     PUT /:id
 // @ access   Admin Auth
-exports.updateProduct = (isAuth, isAdmin, async (req, res) =>{
+exports.updateProduct = async (req, res) =>{
     const productId = req.params.id
     const product = await Product.findById(productId)
     if(product){
@@ -59,12 +58,12 @@ exports.updateProduct = (isAuth, isAdmin, async (req, res) =>{
         return res.status(200).send({message: 'Product updated', data: updatedProduct})
     }     
     return res.status(500).send({message: 'Error in updating product'})
-})
+}
 
 // @desc      Delete product
 // @route     DELETE /:id
 // @ access   Admin Auth
-exports.deleteProduct = (isAuth, isAdmin, async (req, res) =>{
+exports.deleteProduct = async (req, res) =>{
     const productId = req.params.id
     const deletedProduct = await Product.findById(productId)
     if(deletedProduct){
@@ -73,4 +72,4 @@ exports.deleteProduct = (isAuth, isAdmin, async (req, res) =>{
     }else{
         return res.send({message:'Error in Deletion'})
     }
-})
+}

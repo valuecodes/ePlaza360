@@ -1,5 +1,6 @@
 const express = require('express')
 const router = express.Router()
+const {isAuth, isAdmin} = require('../util')
 
 const { 
     products, 
@@ -12,12 +13,12 @@ const {
 router
     .route('/:id')
     .get(productDetails)
-    .put(updateProduct)
-    .delete(deleteProduct)
+    .put(isAuth, isAdmin, updateProduct)
+    .delete(isAuth, isAdmin, deleteProduct)
 
 router
     .route('/')
     .get(products)
-    .post(saveProduct)
+    .post(isAuth, isAdmin, saveProduct)
 
 module.exports = router

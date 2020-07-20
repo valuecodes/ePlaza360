@@ -2,47 +2,28 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import {createOrder} from '../actions/orderActions'
+import {createOrder, detailsOrder} from '../actions/orderActions'
 
-export default function PlaceOrderScreen(props) {
+export default function OrderScreen(props) {
 
-    const createOrder =  useSelector(state => state.orderCreate)
-    const {loading, success, error, order} = createOrder
+    const orderDetails = useSelector(state => state.orderDetails)
+    const {loading, order, error} = orderDetails
+    const dispatch=useDispatch()
 
     useEffect(()=>{
-        if(success){
-            props.history.push(`/order/${order._id}`)
-        }
-    },[success])
-
-    const cart = useSelector(state => state.cart);
-    const { cartItems, shipping, payment } = cart;
-
-    if (Object.values(payment).length!==1) {
-        props.history.push("/payment");
-    }
-
-    if (Object.values(shipping).length!==4) {
-        props.history.push("/shipping");
-    }
+        dispatch(detailsOrder(props.match.params.id))
+    },[])
 
     return (
+            loading?<div>Loading...</div>:error?<div>{error}</div>:
             <div className="placeorder">
-                <Order
-                    cart={cart}
-                    cartItems={cartItems}
-                />
-                <PlaceOrderAction
-                    cart={cart}
-                    cartItems={cartItems}
-                    shipping={shipping}
-                    payment={payment}
-                />
+                <Order order={order}/>
+                <PlaceOrderAction order={order}/>
             </div>    
     )
 }
 
-function Order({cart, cartItems}){
+function Order({order}){
 
     return(    
         <div className="order">
@@ -51,14 +32,21 @@ function Order({cart, cartItems}){
                     Shipping
                 </h3>
                 <div>
-                    {cart.shipping.address}, {cart.shipping.city},
-                    {cart.shipping.postalCode}, {cart.shipping.country},
+                    {order.shipping.address}, {order.shipping.city},
+                    {order.shipping.postalCode}, {order.shipping.country},
                 </div>
+                <div>
+                    {order.isDelivered? "Delivered at"+ order.deliveredAt: 'Not delivered'}
+                </div>
+
             </div>
             <div className='placeorderInfo'>
                 <h3>Payment</h3>
                 <div>
-                    Payment Method: {cart.payment.paymentMethod}
+                    Payment Method: {order.payment.paymentMethod}
+                </div>                
+                <div>
+                    {order.isPaid? "Paid at"+ order.paidAt: 'Not paid'}
                 </div>
             </div>
             <div className='placeorderItems'>
@@ -68,12 +56,12 @@ function Order({cart, cartItems}){
                         <div>Price</div>
                     </li>
                     {
-                    cartItems.length === 0 ?
+                    order.orderItems.length === 0 ?
                         <div>
                         Cart is empty
                 </div>
                         :
-                        cartItems.map(item =>
+                        order.orderItems.map(item =>
                         <li className='cartItem'>
                             <img className="cartItemImage" src={item.image} alt="product" />
                             <div className='cartItemInfo'>
@@ -101,53 +89,39 @@ function Order({cart, cartItems}){
     )
 }
 
-function PlaceOrderAction({cart, cartItems, shipping, payment}){
-
-    const itemsPrice = cartItems.reduce((a, c) => a + c.price * c.qty, 0);
+function PlaceOrderAction({order}){
+    const itemsPrice = order.orderItems.reduce((a, c) => a + c.price * c.qty, 0);
     const shippingPrice = itemsPrice > 100 ? 0 : 10;
     const taxPrice = 0.15 * itemsPrice;
     const totalPrice = itemsPrice + shippingPrice + taxPrice;
-
-    const dispatch = useDispatch();
-
-    const placeOrderHandler=()=>{
-        dispatch(createOrder({
-            orderItems: cartItems, 
-            shipping, 
-            payment, 
-            itemsPrice, 
-            shippingPrice,
-            taxPrice,
-            totalPrice
-        }))
-    }
 
     return (
         <div className="placeorderAction">
             <ul>
                 <li>
-                    <button className="button primary fullWidth" onClick={placeOrderHandler} >Place Order</button>
-                </li>
-                <li>
                     <h3>Order Summary</h3>
                 </li>
                 <li>
                     <div>Items</div>
-                    <div>${itemsPrice}</div>
+                    <div>${order.itemsPrice}</div>
                 </li>
                 <li>
                     <div>Shipping</div>
-                    <div>${shippingPrice}</div>
+                    <div>${order.shippingPrice}</div>
                 </li>
                 <li>
                     <div>Tax</div>
-                    <div>${taxPrice}</div>
+                    <div>${order.taxPrice}</div>
                 </li>
                 <li>
                     <div>Order Total</div>
-                    <div>${totalPrice}</div>
+                    <div>${order.totalPrice}</div>
                 </li>
-            </ul>
+
+            </ul>                
+            <button className='button primary fullWidth'>
+                Pay Now
+            </button>
         </div>
     )
 }
