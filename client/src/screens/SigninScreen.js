@@ -10,12 +10,15 @@ export default function SigninScreen(props) {
     const userSignin = useSelector(state => state.userSignin)
     const {loading, error, userInfo } = userSignin
     const dispatch = useDispatch()
-    
-    useEffect(()=>{
-        if(userInfo){
-            props.history.push('/')
-        }
-    },[userInfo])
+    const redirect = props.location.search ? props.location.search.split("=")[1]:'/';
+    useEffect(() => {
+      if (userInfo) {
+        props.history.push(redirect);
+      }
+      return () => {
+        //
+      };
+    }, [userInfo]);
     
     const submitHandler=(e)=>{
         e.preventDefault()
@@ -46,7 +49,7 @@ export default function SigninScreen(props) {
                     </li>
                     <li className='toRegister'>New to ePlaza360?</li>
                     <li>
-                        <Link className='button secondary' to='/register'>Create Account</Link>
+                        <Link to={redirect === '/' ? 'register': 'register?redirect='+redirect} className='button secondary' >Create Account</Link>
                     </li>
                 </ul>
             </form>

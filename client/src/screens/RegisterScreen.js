@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import { register } from '../actions/userActions';
 import { userInfo } from 'os';
 
-export default function RgisterScreen(props) {
+export default function RegisterScreen(props) {
 
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
@@ -15,10 +15,11 @@ export default function RgisterScreen(props) {
     const {loading, userInfo, error } = userRegister
 
     const dispatch = useDispatch()
-    
+    const redirect = props.location.search?props.location.search.split('=')[1]:'/'
+
     useEffect(()=>{
         if(userInfo){
-            props.history.push('/signin')
+            props.history.push(redirect)
         }
     },[userInfo])
     
@@ -59,7 +60,7 @@ export default function RgisterScreen(props) {
                     </li>
                     <li className='toRegister'>Already have an account?</li>
                     <li>
-                        <Link className='button secondary' to='/signin'>Signin</Link>
+                    <Link to={redirect === '/' ? 'signin': 'signin?redirect='+redirect} className='button secondary' >Create Account</Link>
                     </li>
                 </ul>
             </form>
