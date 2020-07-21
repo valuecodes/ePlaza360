@@ -13,7 +13,7 @@ export default function OrderScreen(props) {
     const orderDetails = useSelector(state => state.orderDetails)
     const {loading, order, error} = orderDetails
     const dispatch=useDispatch()
-    console.log(loadingPay, successPay, errorPay)
+
     useEffect(()=>{
         if(successPay){
             props.history.push('/profile')
@@ -69,25 +69,25 @@ function Order({order}){
                 </div>
                         :
                         order.orderItems.map(item =>
-                        <li className='cartItem'>
-                            <img className="cartItemImage" src={item.image} alt="product" />
-                            <div className='cartItemInfo'>
-                                <div className="cartName">
-                                <div>
-                                    <Link to={"/product/" + item.product}>
-                                    {item.name}
-                                    </Link>
+                            <li key={item.product} className='cartItem'>
+                                <img className="cartItemImage" src={item.image} alt="product" />
+                                <div className='cartItemInfo'>
+                                    <div className="cartName">
+                                    <div>
+                                        <Link to={"/product/" + item.product}>
+                                        {item.name}
+                                        </Link>
 
+                                    </div>
+                                    <div>
+                                        Qty: {item.qty}
+                                    </div>
+                                    </div>
                                 </div>
-                                <div>
-                                    Qty: {item.qty}
+                                <div className="cartItemPrice">
+                                ${item.price}
                                 </div>
-                                </div>
-                            </div>
-                            <div className="cartItemPrice">
-                            ${item.price}
-                            </div>
-                        </li>
+                            </li>
                         )
                     }
                 </ul>

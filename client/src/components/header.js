@@ -4,7 +4,6 @@ import { useSelector } from 'react-redux'
  
 export default function Header() {
     const userSignin = useSelector(state => state.userSignin)
-    console.log(userSignin)
     const { userInfo } = userSignin
     return (
         <header className='header'>
@@ -17,10 +16,18 @@ export default function Header() {
                     <Link to='/signin'>Signin</Link>
                 }
                 <a href='sigin'>Cart</a>
-                {
-                    userInfo?
+                
+                    {userInfo&&
                     userInfo.isAdmin&&
-                    <Link to='products'>Admin</Link>:''}
+                        <div className='dropdown'>
+                            <a href='#' >Admin</a>
+                            <ul className='dropdownContent'>
+                                <li><Link to='/orders'>Orders</Link>
+                                <Link to='/products'>Products</Link></li>
+                            </ul>
+                        </div>
+                    }
+                
             </div>
         </header>
     )

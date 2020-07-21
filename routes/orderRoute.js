@@ -5,12 +5,15 @@ const {
     createOrder, 
     getOrder, 
     payOrder,
-    myOrders
+    myOrders,
+    getOrders,
+    deleteOrder
 } = require('../controllers/order')
 
 router 
     .route('/')
     .post(isAuth,createOrder)
+    .get(isAuth, isAdmin, getOrders)
 
 router  
     .route('/myOrders')
@@ -18,7 +21,8 @@ router
 
 router 
     .route('/:id')
-    .get(isAuth, getOrder)
+    .get(isAuth, isAdmin, getOrder)
+    .delete(isAuth, isAdmin, deleteOrder)
 
 router  
     .route('/:id/pay')

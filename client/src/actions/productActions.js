@@ -30,12 +30,12 @@ const saveProduct = (product) => async (dispatch, getState) => {
         const {userSignin: {userInfo}} = getState()
         if(!product.id){
             const {data} = await axios.post('/api/products',product,{headers:{
-                'Authorization': `Bearer ${userInfo.token}`
+                'Authorization': `Bearer${userInfo.token}`
             }})            
             dispatch({type: PRODUCT_SAVE_SUCCESS, payload: data})
         }else{
             const {data} = await axios.put('/api/products/'+product.id,product,{headers:{
-                'Authorization': `Bearer ${userInfo.token}`
+                'Authorization': `Bearer${userInfo.token}`
             }})     
             dispatch({type: PRODUCT_SAVE_SUCCESS, payload: data})
         }
@@ -60,7 +60,7 @@ const deleteProduct = (productId) => async (dispatch, getState) =>{
         dispatch({type: PRODUCT_DELETE_REQUEST})
         const {userSignin: {userInfo}} = getState()
         const { data } = await axios.delete(`/api/products/${productId}`,{headers:{
-            'Authorization': `Bearer ${userInfo.token}`
+            'Authorization': `Bearer${userInfo.token}`
         }})
         dispatch({type: PRODUCT_DELETE_SUCCESS, payload:data})
     } catch(err){

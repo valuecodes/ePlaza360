@@ -54,10 +54,31 @@ exports.getOrder = async (req, res) => {
     }
 }
 
+// @desc      Get all orders
+// @route     GET /
+// @ access   Auth Admin
+exports.getOrders = async (req, res) => {
+    const orders = await Order.find({}).populate('user')
+    res.send(orders)
+}
+
 // @desc      My orders
 // @route     GET /mine
 // @ access   Auth
 exports.myOrders = async (req, res) => {
     const orders = await Order.find({user: req.user._id})
     res.send(orders)
+}
+
+// @desc      Delete order
+// @route     DELETE /:id
+// @ access   Auth Admin
+exports.deleteOrder = async (req, res) => {
+    const order = await Order.findById(req.params.id)
+    if(order){
+        const deletedOrder = await order.remove()
+        return res.send(order)
+    }else{
+        return res.status(404).send({message: 'Order not found'})
+    }
 }

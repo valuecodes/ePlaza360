@@ -403,6 +403,15 @@ td{
   font-size: 1.4rem;
 }
 
+.tdActions{
+  display: flex;
+}
+
+.tdActions .button{
+  width: 7rem;
+  margin-right: 1rem;
+}
+
 tbody>tr:nth-child(odd){
   background-color: #f0f0f0;
 }
@@ -513,4 +522,26 @@ tbody>tr:nth-child(odd){
 .profileOrders{
   flex: 3 1 60rem;
   margin: 3rem 3rem 3rem 0rem;
+}
+
+/* Admin */
+.dropdown{
+  display: inline-block;
+  position: relative;
+}
+
+.dropdownContent{
+  position: absolute;
+  display: none;
+  right: 0;
+  padding: 1rem;
+  list-style-type: none;
+  z-index: 1;
+  background-color: var(--main-color);
+  margin: 0;
+  margin-top: 1rem;
+}
+
+.dropdown:hover .dropdownContent{
+  display: block;
 }

@@ -5,15 +5,21 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
 export default function ProfileScreen(props) {
+    const dispatch = useDispatch()
+    const handleLogout = () =>{
+        dispatch(logout())
+        props.history.push('/signin')
+    }
+
     return (
         <div className='profile'> 
-            <ProfileInfo/>
+            <ProfileInfo handleLogout={handleLogout}/>
             <ProfileOrders/>
         </div>
     )
 }
 
-function ProfileInfo(props){
+function ProfileInfo({handleLogout}){
     const dispatch = useDispatch()
     const userSignin = useSelector(state => state.userSignin)
     const { userInfo } = userSignin
@@ -37,11 +43,6 @@ function ProfileInfo(props){
     const submitHandler = (e) =>{
         e.preventDefault()
         dispatch(update({userId: userInfo._id, email, name, password}))
-    }
-
-    const handleLogout = () =>{
-        dispatch(logout())
-        props.history.push('/signin')
     }
 
     return(
