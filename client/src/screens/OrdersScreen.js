@@ -69,9 +69,9 @@ function Order({order, deleteHandler}){
             <td>{order.createdAt}</td>
             <td>{order.totalPrice}</td>
             <td>{order.user.name}</td>
-            <td>{order.isPaid}</td>
+            <td>{order.isPaid.toString()}</td>
             <td>{order.paidAt}</td>  
-            <td>{order.isDelivered}</td>
+            <td>{order.isDelivered.toString()}</td>
             <td>{order.deliveredAt}</td>  
             <td className='tdActions'>
                 <Link to={`/order/${order._id}`} className='button secondary'>Details</Link>

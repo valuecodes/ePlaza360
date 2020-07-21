@@ -545,3 +545,15 @@ tbody>tr:nth-child(odd){
 .dropdown:hover .dropdownContent{
   display: block;
 }
+
+/* Filter */
+.filter{
+  display: flex;
+  list-style-type: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.filter li{
+  margin: 2rem;
+}

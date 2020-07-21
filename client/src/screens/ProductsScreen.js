@@ -169,7 +169,6 @@ export default function ProductsScreen(props) {
                                     <td>{product.price}</td>
                                     <td>{product.category}</td>
                                     <td>{product.brand}</td>
-                                    <td>{product.action}</td>  
                                     <td className='productsActions'>
                                         <button className='button' onClick={()=>openModal(product)}>Edit</button>    
                                         {' '}
