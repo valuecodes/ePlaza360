@@ -50,6 +50,32 @@ exports.userRegister = async (req, res)=>{
     }
 }
 
+// @desc      User update
+// @route     PUT /
+// @ access   Public
+exports.userUpdate = async (req, res)=>{
+    const userId = req.params.id
+    const user = await User.findById(userId)
+    console.log(req.body.name)
+    if(user){
+        user.name = req.body.name || user.name 
+        user.email = req.body.email || user.email 
+        user.password = req.body.password || user.password
+        const updatedUser = await user.save()
+        console.log(updatedUser)
+        res.send({message: 'User updated', data: {
+            _id: updatedUser._id,
+            name: updatedUser.name,
+            email: updatedUser.email,
+            isAdmin: updatedUser.isAdmin,
+            token: getToken(updatedUser)
+        }})
+    }else{
+        res.send(404).send({msg: 'User not found'})
+    }
+}
+
+
 // @desc      Create admin
 // @route     GET /createadmin
 // @ access   

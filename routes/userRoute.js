@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
-const {userSignin, userRegister, createAdmin} = require('../controllers/user')
+const { isAuth } = require('../util')
+const {userSignin, userRegister, userUpdate, createAdmin} = require('../controllers/user')
 
 router
     .route('/signin')
@@ -9,6 +10,10 @@ router
 router
     .route('/register')
     .post(userRegister)
+
+router
+    .route('/:id')
+    .put(isAuth,userUpdate)
 
 // router  
 //     .route('/createadmin')

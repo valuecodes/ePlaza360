@@ -498,3 +498,19 @@ tbody>tr:nth-child(odd){
 .placeOrderActionPayment div {
   width: 100%;
 }
+
+/* Profile */
+
+.profile{
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.profileInfo{
+  flex: 1 1 30rem;
+}
+
+.profileOrders{
+  flex: 3 1 60rem;
+  margin: 3rem 3rem 3rem 0rem;
+}

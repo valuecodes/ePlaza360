@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux'
  
 export default function Header() {
     const userSignin = useSelector(state => state.userSignin)
+    console.log(userSignin)
     const { userInfo } = userSignin
     return (
         <header className='header'>

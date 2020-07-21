@@ -45,11 +45,19 @@ exports.payOrder = async (req,res) => {
 // @desc      Get order
 // @route     GET /:id
 // @ access   Auth
-exports.getOrder = async(req, res) => {
+exports.getOrder = async (req, res) => {
     const order = await Order.findOne({_id: req.params.id})
     if(order){
         res.send(order)
     }else{
         res.status(404).send({message: 'Order not found'})
     }
+}
+
+// @desc      My orders
+// @route     GET /mine
+// @ access   Auth
+exports.myOrders = async (req, res) => {
+    const orders = await Order.find({user: req.user._id})
+    res.send(orders)
 }
