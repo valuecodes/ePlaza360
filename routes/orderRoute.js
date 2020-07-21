@@ -1,7 +1,7 @@
 const express = require('express')
 const {isAuth, isAdmin} = require('../util')
 const router = express.Router()
-const {createOrder, getOrder} = require('../controllers/order')
+const {createOrder, getOrder, payOrder} = require('../controllers/order')
 
 router 
     .route('/')
@@ -10,5 +10,9 @@ router
 router 
     .route('/:id')
     .get(isAuth, getOrder)
+
+router  
+    .route('/:id/pay')
+    .put(isAuth, payOrder)
 
 module.exports = router

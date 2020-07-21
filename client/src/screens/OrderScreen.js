@@ -2,17 +2,24 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import {createOrder, detailsOrder} from '../actions/orderActions'
+import {createOrder, detailsOrder, payOrder} from '../actions/orderActions'
+import PaypalButton from '../components/PaypalButton'
 
 export default function OrderScreen(props) {
+
+    const orderPay = useSelector(state => state.orderPay)
+    const {loading: loadingPay, success: successPay, error: errorPay} = orderPay
 
     const orderDetails = useSelector(state => state.orderDetails)
     const {loading, order, error} = orderDetails
     const dispatch=useDispatch()
-
+    console.log(loadingPay, successPay, errorPay)
     useEffect(()=>{
+        if(successPay){
+            props.history.push('/profile')
+        }
         dispatch(detailsOrder(props.match.params.id))
-    },[])
+    },[successPay])
 
     return (
             loading?<div>Loading...</div>:error?<div>{error}</div>:
@@ -46,7 +53,7 @@ function Order({order}){
                     Payment Method: {order.payment.paymentMethod}
                 </div>                
                 <div>
-                    {order.isPaid? "Paid at"+ order.paidAt: 'Not paid'}
+                    {order.isPaid? "Paid at: "+ order.paidAt: 'Not paid'}
                 </div>
             </div>
             <div className='placeorderItems'>
@@ -95,9 +102,23 @@ function PlaceOrderAction({order}){
     const taxPrice = 0.15 * itemsPrice;
     const totalPrice = itemsPrice + shippingPrice + taxPrice;
 
+    const dispatch=useDispatch()
+
+    const handleSuccessPayment = (paymentResult) => {
+        dispatch(payOrder(order, paymentResult));
+    }
+    console.log(order.isPaid)
     return (
         <div className="placeorderAction">
             <ul>
+                <li className='placeOrderActionPayment'>
+                    {!order.isPaid && 
+                    <PaypalButton 
+                        amount={order.totalPrice} 
+                        onSuccess={handleSuccessPayment}
+                    />
+                    }
+                </li>
                 <li>
                     <h3>Order Summary</h3>
                 </li>
@@ -119,9 +140,6 @@ function PlaceOrderAction({order}){
                 </li>
 
             </ul>                
-            <button className='button primary fullWidth'>
-                Pay Now
-            </button>
         </div>
     )
 }

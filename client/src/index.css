@@ -458,16 +458,17 @@ tbody>tr:nth-child(odd){
 
 .placeorderAction{
   flex: 1 1 20rem;
-  /* width: 100%; */
-  height: 22rem;
-  border: 0.1rem #c0c0c0c0 solid;
-  border-radius: 0.5rem;
-  padding: 0 1rem;
-  margin: 0 5rem;
+  
 }
 
 .placeorderAction ul{
+  min-width: 30rem;
   padding: 0;
+  height: auto;
+  border: 0.1rem #c0c0c0c0 solid;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin: 1rem 5rem;
 }
 
 .placeorderAction ul li{
@@ -492,4 +493,8 @@ tbody>tr:nth-child(odd){
   font-size: 1.4rem;
   padding: 0 1rem;
   border-radius: 0.5rem;
+}
+
+.placeOrderActionPayment div {
+  width: 100%;
 }

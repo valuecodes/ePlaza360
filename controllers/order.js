@@ -4,7 +4,6 @@ const Order = require('../models/orderModel')
 // @route     POST /
 // @ access   Auth
 exports.createOrder = async (req,res) => {
-    console.log(req.user)
     const newOrder = new Order({
         orderItems: req.body.orderItems,
         user: req.user._id,
@@ -17,12 +16,35 @@ exports.createOrder = async (req,res) => {
     })
     const newOrderCreated = await newOrder.save()
     res.status(201).send({message: 'New Order Created', data: newOrderCreated})
-    console.log('creating order')
+}
+
+// @desc      Pay order
+// @route     PUT /:id
+// @ access   Auth
+exports.payOrder = async (req,res) => {
+    const order = await Order.findById(req.params.id)
+    console.log(order)
+    if(order){
+        order.isPaid = true
+        order.paidAt = Date.now()
+        order.payment={
+            paymentMethod: 'paypal',
+            paymentResult:{
+                payerID: req.body.payerID,
+                orderID: req.body.orderID,
+                paymentID: req.body.paymentID
+            }
+        }
+        const updatedOrder = await order.save()
+        res.send({message: 'Order Paid.',order: updatedOrder})
+    }else{
+        res.status(404).send({message: 'Order not found'})
+    }
 }
 
 // @desc      Get order
 // @route     GET /:id
-// @ access   Auth Admin
+// @ access   Auth
 exports.getOrder = async(req, res) => {
     const order = await Order.findOne({_id: req.params.id})
     if(order){
