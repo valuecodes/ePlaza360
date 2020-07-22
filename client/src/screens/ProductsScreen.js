@@ -78,108 +78,108 @@ export default function ProductsScreen(props) {
 
     return (
         loading?<div>Loading...</div>:error?<div>{error}</div>:
-        <div className='content contentMargined'>
-            <div className='productHeader'>
-                <h3>Products</h3>
-                <button className='button primary' onClick={() =>openModal()}>Create Product</button>
+            <div className='contentMargined'>
+                <div className='productHeader'>
+                    <h3>Products</h3>
+                    <button className='button primary' onClick={() =>openModal()}>Create Product</button>
+                </div>
+                {modalVisible?
+                    <div className='form'>
+                        <form onSubmit={submitHandler}>
+                            <ul className='formContainer'>
+                                <li>
+                                    <h3>Create Product</h3>
+                                </li>
+                                <li>
+                                    <label htmlFor='name'>
+                                        Name
+                                    </label>
+                                    <input type='text' name='name' id='name' value={name} onChange={e => setName(e.target.value)}>
+                                    </input>
+                                </li>
+                                <li>
+                                    <label htmlFor='price'>
+                                        Price
+                                    </label>
+                                    <input type='number' name='price' id='price' value={price} onChange={e => setPrice(e.target.value)}>
+                                    </input>
+                                </li>
+                                <li>
+                                    <label htmlFor='image'>
+                                        Image
+                                    </label>
+                                    <input type='text' name='image' id='image' value={image} onChange={e => setImage(e.target.value)}>
+                                    </input>
+                                </li>
+                                <li>
+                                    <label htmlFor='brand'>
+                                        Brand
+                                    </label>
+                                    <input type='text' name='brand' id='brand' value={brand} onChange={e => setBrand(e.target.value)}>
+                                    </input>
+                                </li>
+                                <li>
+                                    <label htmlFor='category'>
+                                        Category
+                                    </label>
+                                    <input type='text' name='category' id='category' value={category} onChange={e => setCategory(e.target.value)}>
+                                    </input>
+                                </li>
+                                <li>
+                                    <label htmlFor='countInStock'>
+                                        CountInStock
+                                    </label>
+                                    <input type='text' name='countInStock' value={countInStock} id='countInStock' onChange={e => setCountInStock(e.target.value)}>
+                                    </input>
+                                </li>
+                                <li>
+                                    <label htmlFor='description'>
+                                        Description
+                                    </label>
+                                    <textarea id='description' name='description' value={description} onChange={e => setDescription(e.target.value)}>
+                                    </textarea>
+                                </li>
+                                <li>
+                                    <button type='submit' className='button primary'>{id?"Update":"Create"}</button>
+                                </li>
+                                <li>
+                                    <button type='button' onClick={e => setmodalVisible(false)} className='button secondary'>Back</button>
+                                </li>
+                            </ul>
+                        </form>
+                    </div>  
+                    :
+                    <div className='productList'>
+                        <table className='table'>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Price</th>
+                                    <th>Category</th>
+                                    <th>Brand</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {products.map(product =>
+                                    <tr key={product._id}>
+                                        <td>{product._id}</td>
+                                        <td>{product.name}</td>
+                                        <td>{product.price}</td>
+                                        <td>{product.category}</td>
+                                        <td>{product.brand}</td>
+                                        <td className='productsActions'>
+                                            <button className='button' onClick={()=>openModal(product)}>Edit</button>    
+                                            {' '}
+                                            <button className='button secondary' onClick={()=>deleteHandler(product)}>Delete</button>    
+                                        </td>  
+                                    </tr>                        
+                                )}
+                            </tbody>  
+                        </table>
+                    </div>                      
+                }
             </div>
-            {modalVisible?
-                <div className='form'>
-                    <form onSubmit={submitHandler}>
-                        <ul className='formContainer'>
-                            <li>
-                                <h3>Create Product</h3>
-                            </li>
-                            <li>
-                                <label htmlFor='name'>
-                                    Name
-                                </label>
-                                <input type='text' name='name' id='name' value={name} onChange={e => setName(e.target.value)}>
-                                </input>
-                            </li>
-                            <li>
-                                <label htmlFor='price'>
-                                    Price
-                                </label>
-                                <input type='number' name='price' id='price' value={price} onChange={e => setPrice(e.target.value)}>
-                                </input>
-                            </li>
-                            <li>
-                                <label htmlFor='image'>
-                                    Image
-                                </label>
-                                <input type='text' name='image' id='image' value={image} onChange={e => setImage(e.target.value)}>
-                                </input>
-                            </li>
-                            <li>
-                                <label htmlFor='brand'>
-                                    Brand
-                                </label>
-                                <input type='text' name='brand' id='brand' value={brand} onChange={e => setBrand(e.target.value)}>
-                                </input>
-                            </li>
-                            <li>
-                                <label htmlFor='category'>
-                                    Category
-                                </label>
-                                <input type='text' name='category' id='category' value={category} onChange={e => setCategory(e.target.value)}>
-                                </input>
-                            </li>
-                            <li>
-                                <label htmlFor='countInStock'>
-                                    CountInStock
-                                </label>
-                                <input type='text' name='countInStock' value={countInStock} id='countInStock' onChange={e => setCountInStock(e.target.value)}>
-                                </input>
-                            </li>
-                            <li>
-                                <label htmlFor='description'>
-                                    Description
-                                </label>
-                                <textarea id='description' name='description' value={description} onChange={e => setDescription(e.target.value)}>
-                                </textarea>
-                            </li>
-                            <li>
-                                <button type='submit' className='button primary'>{id?"Update":"Create"}</button>
-                            </li>
-                            <li>
-                                <button type='button' onClick={e => setmodalVisible(false)} className='button secondary'>Back</button>
-                            </li>
-                        </ul>
-                    </form>
-                </div>  
-                :
-                <div className='product-list'>
-                    <table className='table'>
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th>Price</th>
-                                <th>Category</th>
-                                <th>Brand</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {products.map(product =>
-                                <tr key={product._id}>
-                                    <td>{product._id}</td>
-                                    <td>{product.name}</td>
-                                    <td>{product.price}</td>
-                                    <td>{product.category}</td>
-                                    <td>{product.brand}</td>
-                                    <td className='productsActions'>
-                                        <button className='button' onClick={()=>openModal(product)}>Edit</button>    
-                                        {' '}
-                                        <button className='button secondary' onClick={()=>deleteHandler(product)}>Delete</button>    
-                                    </td>  
-                                </tr>                        
-                            )}
-                        </tbody>  
-                    </table>
-                </div>                      
-            }
-        </div>
     )
 }

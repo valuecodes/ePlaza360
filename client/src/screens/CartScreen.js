@@ -11,9 +11,7 @@ export default function CartScreen(props) {
     const productId = props.match.params.id;
     const qty = props.location.search ? Number(props.location.search.split("=")[1]) : 1;
     const dispatch = useDispatch();
-    const removeFromCartHandler = (productId) => {
-      dispatch(removeFromCart(productId));
-    }
+
     useEffect(() => {
       if (productId) {
         dispatch(addToCart(productId, qty));
@@ -83,7 +81,7 @@ function CartItem({item}){
                         )}
                     </select>
                 </div>
-                <button className='button secondary' type='button' onClick={e => removeFromCartHandler(item.product)}>Remove</button>
+                <button className='button secondary cartRemove' type='button' onClick={e => removeFromCartHandler(item.product)}>Remove</button>
             </div>                                
             <div className='cartItemPrice'>${item.price}</div>
         </div>  

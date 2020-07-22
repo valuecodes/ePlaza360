@@ -79,3 +79,28 @@ exports.deleteProduct = async (req, res) =>{
         return res.send({message:'Error in Deletion'})
     }
 }
+
+// @desc      Post review
+// @route     POST /:id/reviews
+// @ access   Auth
+exports.postReview = async (req, res) => {
+     const product = await Product.findById(req.params.id)
+     console.log(product)
+     if(product){
+        const review = {
+            name: req.body.name,
+            rating: Number(req.body.rating),
+            comment: req.body.comment
+        }
+        product.reviews.push(review)
+        product.numReviews = product.reviews.length
+        product.rating = product.reviews.reduce((a, c) => a + c.rating,0) / product.reviews.length 
+        const updatedProduct = await product.save()
+        res.status(201).send({
+            data: updatedProduct.reviews[updatedProduct.reviews.length-1], 
+            message: 'Review saved succesfully'
+        })
+     }else{
+        res.status(404).send({message: 'Product not found'})
+     }
+}

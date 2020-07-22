@@ -15,7 +15,7 @@ export default function Header() {
                     userInfo?<Link to='/profile'>{userInfo.name}</Link>:
                     <Link to='/signin'>Signin</Link>
                 }
-                <a href='sigin'>Cart</a>
+                <a href='/cart'>Cart</a>
                 
                     {userInfo&&
                     userInfo.isAdmin&&
