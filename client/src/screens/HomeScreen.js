@@ -14,6 +14,7 @@ export default function HomeScreen(props) {
 
     useEffect(() => {
         dispatch(listProducts())
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return loading? <div>Loading...</div>:error?<div>
@@ -55,9 +56,6 @@ function Filter({category}){
                 <form className='filterForm' onSubmit={submitHandler}>
                     <input className='filterInput' name='searchKeyWord' onChange={e => setSearchKeyWord(e.target.value)}/>
                     <button className='filterButton first' type='submit '>Search</button>
-
-                    
-                    {/* <button className='' type='button' onClick={resetFilter}>Reset</button> */}
                 </form>
             </li>
             <li>
@@ -67,7 +65,7 @@ function Filter({category}){
                     <option value='highest'>Highest</option>
                 </select>
                 <button type='button' className='second' onClick={resetFilter}>
-                    <i class="fa fa-refresh" aria-hidden="true"></i>
+                    <i className="fa fa-refresh" aria-hidden="true"></i>
                 </button>                
             </li>
         </ul>
@@ -78,7 +76,7 @@ function Products({products}){
   return (
     <div className="products">
         {products.map(product => 
-            <li>
+            <li key={product._id}>
                 <div className='product'>
                     <Link className='imageLink' to={`/product/${product._id}`}>
                         <img className='productImage' src={product.image} alt='product'/>

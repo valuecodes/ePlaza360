@@ -1,6 +1,6 @@
 import React,{ useEffect, useState} from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { detailsProduct, saveProduct, saveProductReview } from '../actions/productActions'
+import { detailsProduct, saveProductReview } from '../actions/productActions'
 import { Link } from 'react-router-dom'
 import Rating from '../components/Rating'
 import { PRODUCT_REVIEW_SAVE_RESET } from '../constants/productConstants';
@@ -15,12 +15,13 @@ export default function ProductScreen(props) {
     
     useEffect(()=>{
         dispatch(detailsProduct(productId))
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
     
     const handleAddToCart = () =>{
         props.history.push(`/cart/${productId}?qty=${qty}`)
     }
-    console.log(loading, error, product)
+
     return (
         loading?<div>Loading...</div>:error?<div>{error}</div>:
         <div className='productScreen'>  
@@ -115,10 +116,11 @@ function Reviews({product}){
             dispatch({type: PRODUCT_REVIEW_SAVE_RESET})
             dispatch(detailsProduct(product._id))
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     },[productSaveSuccess])
 
     const dispatch = useDispatch()
-    console.log(product._id)
+
     const submitHandler = (e) =>{
         e.preventDefault()
         dispatch(saveProductReview(product._id, {
@@ -127,7 +129,7 @@ function Reviews({product}){
             comment: comment
         }))
     }
-    console.log(product)
+
     return(
         <div className='reviewContainer'>
             <ul className='review' id='reviews'>

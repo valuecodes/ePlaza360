@@ -2,7 +2,6 @@ import React,{ useEffect, useState} from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { register } from '../actions/userActions';
-import { userInfo } from 'os';
 
 export default function RegisterScreen(props) {
 
@@ -21,11 +20,12 @@ export default function RegisterScreen(props) {
         if(userInfo){
             props.history.push(redirect)
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     },[userInfo])
     
     const submitHandler=(e)=>{
         e.preventDefault()
-        dispatch(register(name, email, password))
+        dispatch(register(name, email, password, rePassword))
     }
 
     return (

@@ -15,6 +15,7 @@ export default function SigninScreen(props) {
       if (userInfo) {
         props.history.push(redirect);
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [userInfo]);
     
     const submitHandler=(e)=>{

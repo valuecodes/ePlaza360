@@ -1,8 +1,7 @@
-import React,{ useEffect, useState} from 'react'
+import React,{ useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { 
-    saveOrder, 
     listOrders, 
     deleteOrder 
 } from '../actions/orderActions';
@@ -19,6 +18,7 @@ export default function OrdersScreen(props) {
 
     useEffect(()=>{
         dispatch(listOrders())
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     },[successDelete])
     
     const deleteHandler=(order)=>{
@@ -26,7 +26,7 @@ export default function OrdersScreen(props) {
     }
 
     return (
-        loading?<div>Loading...</div>:error?<div>{error}</div>:
+        loading||loadingDelete?<div>Loading...</div>:error||errorDelete?<div>{error}</div>:
         <div className='content contentMargined'>
             <div className='orderHeader'>
                 <h3>Orders</h3>
@@ -49,6 +49,7 @@ export default function OrdersScreen(props) {
                         <tbody>
                             {orders.map(order =>
                                 <Order 
+                                    key={order._id}
                                     order={order}
                                     deleteHandler={deleteHandler}    
                                 />

@@ -20,7 +20,7 @@ export default function Header() {
                     {userInfo&&
                     userInfo.isAdmin&&
                         <div className='dropdown'>
-                            <a href='#' >Admin</a>
+                            <div>Admin</div>
                             <ul className='dropdownContent'>
                                 <li><Link to='/orders'>Orders</Link>
                                 <Link to='/products'>Products</Link></li>

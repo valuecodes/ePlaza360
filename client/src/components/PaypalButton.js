@@ -29,7 +29,7 @@ export default function PaypalButton(props) {
           }
         ]
     });
-    console.log(props)
+
     const onApprove = (data, actions) => actions.order
         .capture()
         .then(details => props.onSuccess(data, details))

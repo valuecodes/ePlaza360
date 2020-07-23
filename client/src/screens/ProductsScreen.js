@@ -37,6 +37,7 @@ export default function ProductsScreen(props) {
             setmodalVisible(false)
         }
         dispatch(listProducts())
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     },[successSave, successDelete])
     
     const submitHandler=(e)=>{
@@ -77,7 +78,8 @@ export default function ProductsScreen(props) {
     }
 
     return (
-        loading?<div>Loading...</div>:error?<div>{error}</div>:
+        loading||loadingSave||loadingDelete?<div>Loading...</div>:
+        error||errorSave||errorDelete?<div>{error}</div>:
             <div className='contentMargined'>
                 <div className='productHeader'>
                     <h3>Products</h3>

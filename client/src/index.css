@@ -54,6 +54,7 @@ body{
   font-size: 1.5rem;
 }
 .navbar a{
+  height: 5rem;
   padding: 0 1rem 0 0;
 }
 
@@ -375,10 +376,17 @@ a > .rating > span:last-child{
 }
 
 .form form{
-  margin: 1rem;
-  width: 40rem;
+  width: 35rem;
   max-width: 100vw;
+  margin: auto;
+  margin-top: 1rem;
+}
 
+.shipping{
+  margin: auto;
+  width: 35rem;
+  max-width: 100vw;
+  margin-top: 1rem;
 }
 
 .formContainer{
@@ -597,8 +605,13 @@ tbody>tr:nth-child(odd){
 
 /* Admin */
 .dropdown{
+  height: 2rem;
   display: inline-block;
   position: relative;
+}
+
+.dropdown div{
+  cursor: pointer;
 }
 
 .dropdownContent{
@@ -610,7 +623,7 @@ tbody>tr:nth-child(odd){
   z-index: 1;
   background-color: var(--main-color);
   margin: 0;
-  margin-top: 1rem;
+  /* margin-top: 1rem; */
 }
 
 .dropdown:hover .dropdownContent{

@@ -13,6 +13,7 @@ export default function PlaceOrderScreen(props) {
         if(success){
             props.history.push(`/order/${order._id}`)
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     },[success])
 
     const cart = useSelector(state => state.cart);
@@ -26,7 +27,7 @@ export default function PlaceOrderScreen(props) {
         props.history.push("/shipping");
     }
 
-    return (
+    return (loading? <div>Loading...</div>:error?<div>error</div>:
             <div className="placeorder">
                 <Order
                     cart={cart}
@@ -74,7 +75,7 @@ function Order({cart, cartItems}){
                 </div>
                         :
                         cartItems.map(item =>
-                        <li className='cartItem'>
+                        <li key={item.product} className='cartItem'>
                             <img className="cartItemImage" src={item.image} alt="product" />
                             <div className='cartItemInfo'>
                                 <div className="cartName">

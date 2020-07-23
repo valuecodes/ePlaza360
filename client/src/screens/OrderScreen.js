@@ -2,7 +2,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import {createOrder, detailsOrder, payOrder} from '../actions/orderActions'
+import { detailsOrder, payOrder} from '../actions/orderActions'
 import PaypalButton from '../components/PaypalButton'
 
 export default function OrderScreen(props) {
@@ -19,10 +19,11 @@ export default function OrderScreen(props) {
             props.history.push('/profile')
         }
         dispatch(detailsOrder(props.match.params.id))
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     },[successPay])
 
     return (
-            loading?<div>Loading...</div>:error?<div>{error}</div>:
+            loading||loadingPay?<div>Loading...</div>:error||errorPay?<div>{error}</div>:
             <div className="placeorder">
                 <Order order={order}/>
                 <PlaceOrderAction order={order}/>
@@ -97,17 +98,13 @@ function Order({order}){
 }
 
 function PlaceOrderAction({order}){
-    const itemsPrice = order.orderItems.reduce((a, c) => a + c.price * c.qty, 0);
-    const shippingPrice = itemsPrice > 100 ? 0 : 10;
-    const taxPrice = 0.15 * itemsPrice;
-    const totalPrice = itemsPrice + shippingPrice + taxPrice;
 
     const dispatch=useDispatch()
 
     const handleSuccessPayment = (paymentResult) => {
         dispatch(payOrder(order, paymentResult));
     }
-    console.log(order.isPaid)
+
     return (
         <div className="placeorderAction">
             <ul>

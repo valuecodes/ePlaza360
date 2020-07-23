@@ -38,6 +38,7 @@ function ProfileInfo({handleLogout}){
             setPassword(userInfo.password)
         }
         dispatch(listMyOrders())
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const submitHandler = (e) =>{
@@ -68,7 +69,7 @@ function ProfileInfo({handleLogout}){
                         </li>
                         <li>
                             <label htmlFor='password'>Password</label>
-                            <input type='password' name='password' id='password' value={password} onChange={e => setPassword(e.target.value)}/>
+                            <input type='password' name='password' id='password' onChange={e => setPassword(e.target.value)}/>
                         </li>
                         <li>
                             <button type='submit' className='button primary fullWidth'>Update</button> 
@@ -104,7 +105,7 @@ function ProfileOrders(){
                 </thead>
                 <tbody>
                     {orders.map(order =>
-                        <Order order={order}/>
+                        <Order key={order._id} order={order}/>
                     )}
                 </tbody>
             </table>

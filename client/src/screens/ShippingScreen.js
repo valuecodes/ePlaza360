@@ -1,7 +1,5 @@
 import React,{ useState } from 'react'
-import { Link } from 'react-router-dom'
-import { useSelector, useDispatch } from 'react-redux'
-import { register } from '../actions/userActions';
+import { useDispatch } from 'react-redux'
 import { saveShipping } from '../actions/cartActions'
 import CheckoutSteps from '../components/CheckoutSteps'
 
@@ -23,7 +21,7 @@ export default function ShippingScreen(props) {
     return (
         <div>
         <CheckoutSteps step1 step2/>
-            <form className='form' onSubmit={submitHandler}>
+            <form className='shipping' onSubmit={submitHandler}>
                 <ul className='formContainer'>
                     <li>
                         <h3>Shipping</h3>
