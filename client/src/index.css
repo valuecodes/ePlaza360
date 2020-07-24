@@ -31,6 +31,41 @@ body{
   height: 100%;
 }
 
+/* Buttons */
+.button{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 3rem;
+  border:0.1rem ;
+  border-radius: 0.5rem;
+  background-color: #c9c9c9;
+  font-size: 1.4rem;
+  text-decoration: none;
+  color: black;
+  margin-top: 3rem;
+}
+
+.primary{
+  background-color: var(--primary-button);
+  height: 4rem;
+  
+}
+
+.secondary{
+  background-color: rgb(136, 136, 136);
+  color: rgb(240, 240, 240);
+  height: 3rem;
+}
+
+.fullWidth{
+  width: 100%;
+}
+
+.button:hover{
+ cursor: pointer; 
+}
+
 /* Header */
 .header{
   background-color: var(--main-color);
@@ -211,37 +246,6 @@ body{
   font-size: 1.6rem;
 }
 
-.button{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 3rem;
-  border:0.1rem ;
-  border-radius: 0.5rem;
-  background-color: #c9c9c9;
-  font-size: 1.4rem;
-  text-decoration: none;
-  color: black;
-}
-
-.primary{
-  background-color: var(--primary-button);
-  height: 4rem;
-}
-
-.secondary{
-  background-color: rgb(136, 136, 136);
-  color: rgb(240, 240, 240);
-  height: 3rem;
-}
-
-.fullWidth{
-  width: 100%;
-}
-
-.button:hover{
- cursor: pointer; 
-}
 
 /* Rating */
 .rating span{
@@ -366,20 +370,10 @@ a > .rating > span:last-child{
   align-items: center;
 }
 
-/* Signin */
-
-.form{
+.contentCenter{
   display: flex;
-  width: 40rem;
+  justify-content: center;
   max-width: 100vw;
-  margin: auto;
-}
-
-.form form{
-  width: 35rem;
-  max-width: 100vw;
-  margin: auto;
-  margin-top: 1rem;
 }
 
 .shipping{
@@ -389,51 +383,227 @@ a > .rating > span:last-child{
   margin-top: 1rem;
 }
 
+/* Form */
+
+.form{
+  margin: 5rem 1rem 1rem 1rem;
+  width: 35rem;
+}
+
 .formContainer{
   margin: 0;
   padding: 1rem;
   list-style-type: none;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
   background-color: #e4e4e481;
   border-radius: 0.5rem;
 }
 
 .formContainer li{
-  display: flex;
-  flex-direction: column;
-  padding: 1rem 0;
+  width: 100%;
+  margin: 1rem auto 1rem;
 }
 
-.formContainer li h3{
-  font-size: 2rem;
+.formField{
+  width: 100%;
+  border-bottom:  2px solid dimgray;
+  transition: 300ms;
+  padding-top: 1rem;
+}
+
+.formField:focus{
+  border: none;
+}
+
+.textArea{
+  width: 100%;
+  background-color: rgba(204, 204, 204, 0.329);
+  border-radius: 0.3rem;
+  border: none;
+  height: 4rem;
+  padding: 0;
+  font-size: 1.6rem;
+  margin-bottom: -0.9rem;
+}
+
+textarea {
+  border: none;
+  overflow: auto;
+  outline: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+
+.formField input{
+  margin-top: auto;
+  outline: none;
+  border: none;
+  overflow: hidden;
+  position: relative;
   margin: 0;
-}
-
-.formContainer li label{
+  width: 100%;
+  padding: 0.25rem 0;
+  padding-top: 2rem;
+  background: none;
   font-size: 1.6rem;
+  font-weight: bold;
+  transition: border 500ms;
+  padding-left: 0.1rem;
+  z-index: 2;
 }
 
-.formContainer li div{
+
+.input:focus{
+  outline: none;
+}
+
+.formField input:valid{
+  color: rgb(36, 36, 36);
+}
+
+.formField input:invalid{
+  /* color: rgb(214, 87, 28); */
+}
+
+.formField input:not(:focus-within){
+  color: rgb(97, 97, 97);
+}
+
+.formField::after{
+  content: "";
+  position: relative;
+  display: block;
+  height: 4px;
+  width: 100%;
+  background: rgb(30, 210, 165);
+  transform: scaleX(0);
+  transform-origin: 0%;
+  transition: all 500ms ease;
+  top: 2px;
+}
+
+.formField:focus-within::after{
+ transform: scaleX(1);
+ opacity: 1;
+}
+
+.label{
   display: flex;
-  align-items: center;
-}
-.formContainer li div label{
-  padding-top: 0.3rem;
+  position: absolute;
+  color:black;
+  z-index: 1;
+  opacity: 0.9;
+  transform: translateY(-2.5rem);
+  transform-origin: -100%;
+  transition: transform 400ms;
+  text-transform: capitalize;
 }
 
-.formContainer li input{
-  height: 3rem;
-  border-radius: 0.5rem;
-  border: 0.1rem solid black;
-  font-size: 1.6rem;
+.formField:focus-within .label,
+.input:not(:placeholder-shown) + .label {
+  transform:  translateY(-4.5rem);
 }
 
 .toRegister{
   font-size: 1.6rem;
   height: 0.5rem;
   margin: 1rem 0;
+}
+
+.showPassword{
+  position: relative;
+  height: 0;
+  display: flex;
+  justify-content: flex-end;
+  top: 1.5rem;
+  z-index: 3;
+}
+
+.showPassword button{
+  height: 2.6rem;
+  width: 5rem;
+  border: none;
+}
+
+.showPassword i{
+  transform: scale(0.9);
+  color: rgb(56, 56, 56);
+}
+
+.changePassword{
+  position:relative;
+  width: 17rem;
+  top:-2.8rem;
+  z-index: 4;
+}
+
+.changePassword{
+  width:100%;
+  position: relative;
+  height: 0;
+  display: flex;
+  justify-content: flex-end;
+  z-index: 3;
+  top:-2rem;
+}
+
+/* PasswordStrengtMeter */
+.passwordStrengthMeter{
+  height: 1rem;
+  transition: opacity 200ms ease-out, margin-top 200ms ease-in;
+}
+
+.passwordMeter{
+  position: relative;
+  border-radius: 0.5rem;
+  margin: 0.2rem;
+  height: 1rem;
+}
+
+.passwordMeter::before{
+  content: '';
+  position: absolute;
+  height: 1rem;
+  /* background-image: linear-gradient(to right,#aa4b6b, #6b6b83,#3b8d99); */
+  background-image: linear-gradient(to right,#e45669,#6be585);
+  width: calc(1% * var(--strength, 0));
+  width: 100%;
+  border-radius: 0.3rem;
+}
+
+.passwordMeter::after{
+  content: '';
+  position: absolute;
+  height: 1.0rem;
+  background-color: #e4e4e4;
+  width: calc(1% * var(--strength, 0));
+  left: calc(1% * (100.2 - var(--strength, 0)));
+  border-radius: 0 0.3rem 0.3rem 0;
+  transition: width 200ms ease-out, left 200ms ease-out;
+}
+
+.passwordWeaknesses{
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.passwordWeakess{
+  height: 1.5rem;
+  font-size: 1.2rem;
+  width: 100%;
+  margin: 0.2rem;
+  text-align: center;
+  color: rgb(0, 0, 0);
+}
+
+.passwordWeakess:first-child{
+  border-radius: 0.3rem 0 0 0.3rem;
+}
+
+.passwordWeakess:last-child{
+  border-radius: 0 0.3rem 0.3rem 0;
 }
 
 .productList{
@@ -692,4 +862,14 @@ tbody>tr:nth-child(odd){
   height: 2.6rem;
   border-radius: 0.5rem 0 0 0.5rem;
   border: 0.1rem solid rgb(194, 194, 194);
+}
+
+
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    transition: all 5000s ease-in-out 0s;
+    transition-property: background-color, color;
 }

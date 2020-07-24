@@ -3,6 +3,14 @@ import { logout, update } from '../actions/userActions'
 import { listMyOrders } from '../actions/orderActions'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { 
+    FormField, 
+    FormFieldButton, 
+    FormFieldHeader, 
+    FormFieldMessages, 
+    FormFieldChangePassword,
+    checkFormErrors
+} from '../components/FormComponents'
 
 export default function ProfileScreen(props) {
     const dispatch = useDispatch()
@@ -31,6 +39,12 @@ function ProfileInfo({handleLogout}){
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
+    const [currentPassword, setCurrentPassword]=useState('')
+    const [formErrors, setFormErrors] = useState([])
+
+    const [newPassword, setNewPassword] = useState('')
+    const [newRePassword, setNewRePassword] = useState('')
+
     useEffect(() => {
         if(userInfo){
             setName(userInfo.name)
@@ -43,43 +57,58 @@ function ProfileInfo({handleLogout}){
 
     const submitHandler = (e) =>{
         e.preventDefault()
-        dispatch(update({userId: userInfo._id, email, name, password}))
+        let errors=checkFormErrors(newPassword, newRePassword)
+        if(errors.length===0){    
+            dispatch(update({
+                userId: userInfo._id, 
+                email, 
+                name, 
+                currentPassword,
+                newPassword
+            }))
+        }else{
+            setFormErrors(errors)
+        }
     }
 
     return(
-        <div className='profileInfo'>
-            <div className='form'>
-                <form onSubmit={submitHandler}>
-                    <ul className='formContainer'>
-                        <li>
-                            <h3>User Profile</h3>
-                        </li>
-                        <li>
-                            {loading && <div>Loading...</div>}
-                            {error && <div>{error}</div>}
-                            {success && <div>Profile Saved Succesfully</div>}
-                        </li>
-                        <li>
-                            <label htmlFor='name'>Name</label>
-                            <input type='text' name='name' id='name' value={name} onChange={e => setName(e.target.value)}/>
-                        </li>
-                        <li>
-                            <label htmlFor='email'>Email</label>
-                            <input type='email' name='email' id='email' value={email} onChange={e => setEmail(e.target.value)}/>
-                        </li>
-                        <li>
-                            <label htmlFor='password'>Password</label>
-                            <input type='password' name='password' id='password' onChange={e => setPassword(e.target.value)}/>
-                        </li>
-                        <li>
-                            <button type='submit' className='button primary fullWidth'>Update</button> 
-                        </li>
-                        <li>
-                            <button type='button' onClick={handleLogout} className='button secondary fullWidth'>Logout</button>
-                        </li>
-                    </ul>
-                </form>
-            </div>
+        <div className='profileInfo contentCenter'>
+            <form className='form' onSubmit={submitHandler}>
+                <ul className='formContainer'>
+                    <FormFieldHeader text={'User Profile'}/>
+                    <FormFieldMessages 
+                        loading={loading}
+                        error={error}
+                        success={success}
+                        formErrors={formErrors}
+                    />
+                    <FormField 
+                        name={'name'} 
+                        value={name} 
+                        type={'text'} 
+                        setState={setName}
+                    />
+                    <FormField 
+                        name={'email'} 
+                        value={email} 
+                        type={'email'} 
+                      setState={setEmail}
+                    />
+                    <FormFieldChangePassword
+                        password={password}
+                        currentPassword={currentPassword}
+                        setCurrentPassword={setCurrentPassword}
+                        newPassword={newPassword}
+                        setNewPassword={setNewPassword}
+                        newRePassword={newRePassword}
+                        setNewRePassword={setNewRePassword}
+                    />
+                    <FormFieldButton text={'Update'}/>
+                    <li>
+                        <button type='button' onClick={handleLogout} className='button secondary fullWidth'>Logout</button>
+                    </li>
+                </ul>
+            </form>
         </div>
     )
 }

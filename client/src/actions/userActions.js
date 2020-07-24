@@ -50,7 +50,7 @@ const update = (updatedUserInfo) => async (dispatch, getState) =>{
         dispatch({type: USER_UPDATE_SUCCESS, payload: data})
         Cookie.set('userInfo', JSON.stringify(data))
     } catch(err){
-       dispatch({type: USER_UPDATE_FAIL}) 
+       dispatch({type: USER_UPDATE_FAIL, payload: err.message}) 
     }
 }
 

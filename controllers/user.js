@@ -19,7 +19,7 @@ exports.userSignin = async (req, res) => {
             token: getToken(signinUser)
         })
     }else{
-        re.status(401).send({msg: 'Invalid Email or password'})
+        res.status(401).send({msg: 'Invalid Email or password'})
     }
 }
 
@@ -56,13 +56,14 @@ exports.userRegister = async (req, res)=>{
 exports.userUpdate = async (req, res)=>{
     const userId = req.params.id
     const user = await User.findById(userId)
-    console.log(req.body.name)
     if(user){
+        if(user.password!==req.body.currentPassword){
+            return res.status(404).send({message: 'Current password is wrong'})
+        }
         user.name = req.body.name || user.name 
         user.email = req.body.email || user.email 
-        user.password = req.body.password || user.password
+        user.password = req.body.newPassword || user.password
         const updatedUser = await user.save()
-        console.log(updatedUser)
         res.send({message: 'User updated', data: {
             _id: updatedUser._id,
             name: updatedUser.name,
