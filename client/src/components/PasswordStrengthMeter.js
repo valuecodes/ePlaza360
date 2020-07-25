@@ -66,14 +66,17 @@ export default function PasswordStrengthMeter({password, passwordFocus}) {
     }
 
     return (
-        <div className='passwordStrengthMeter'
+        <div 
+            className='passwordStrengthMeter'
             style={{
                 opacity:passwordFocus&&password.length>0?1:0,
                 marginTop:passwordFocus&&password.length>0?'0':'-2rem'
-            }}>
+            }}
+        >
             <div className='passwordMeter'></div>            
             <div className='passwordWeaknesses'>
-                <div className='passwordWeakess'
+                <div 
+                    className='passwordWeakess'
                     style={{backgroundColor: getWeaknessColor('length')}}
                 >Length</div>
                 <div className='passwordWeakess'

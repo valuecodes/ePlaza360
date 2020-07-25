@@ -2,6 +2,7 @@ import React,{ useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { saveShipping } from '../actions/cartActions'
 import CheckoutSteps from '../components/CheckoutSteps'
+import { FormFieldHeader, FormField, FormFieldButton } from '../components/FormComponents'
 
 export default function ShippingScreen(props) {
 
@@ -19,44 +20,40 @@ export default function ShippingScreen(props) {
     }
 
     return (
-        <div>
-        <CheckoutSteps step1 step2/>
-            <form className='shipping' onSubmit={submitHandler}>
+        <div className='contentCenter'>  
+            <form className='form' onSubmit={submitHandler}>
+                <CheckoutSteps step1 step2/>
                 <ul className='formContainer'>
-                    <li>
-                        <h3>Shipping</h3>
-                    </li>
-                    <li>
-                        <label htmlFor='address'>
-                            Address
-                        </label>
-                        <input type='text' name='address' id='address' onChange={e => setAddress(e.target.value)}>
-                        </input>
-                    </li>
-                    <li>
-                        <label htmlFor='city'>
-                            City
-                        </label>
-                        <input type='text' name='city' id='city' onChange={e => setCity(e.target.value)}>
-                        </input>
-                    </li>
-                    <li>
-                        <label htmlFor='postalCode'>
-                            Postal Code
-                        </label>
-                        <input type='text' name='postalCode' id='postalCode' onChange={e => setPostalCode(e.target.value)}>
-                        </input>
-                    </li>
-                    <li>
-                        <label htmlFor='country'>
-                            Country
-                        </label>
-                        <input type='text' name='country' id='country' onChange={e => setCountry(e.target.value)}>
-                        </input>
-                    </li>
-                    <li>
-                        <button type='submit' className='button primary'>Continue</button>
-                    </li>
+                    <FormFieldHeader 
+                        text={'Shipping'}
+                    />
+                    <FormField 
+                        name={'address'} 
+                        value={address} 
+                        type={'text'} 
+                        setState={setAddress}
+                    />
+                    <FormField 
+                        name={'city'} 
+                        value={city} 
+                        type={'text'} 
+                        setState={setCity}
+                    />
+                    <FormField 
+                        name={'Postal Code'} 
+                        value={postalCode} 
+                        type={'text'} 
+                        setState={setPostalCode}
+                    />
+                    <FormField 
+                        name={'Country'} 
+                        value={country} 
+                        type={'text'} 
+                        setState={setCountry}
+                    />
+                    <FormFieldButton
+                        text='Continue'
+                    />
                 </ul>
             </form>             
         </div>

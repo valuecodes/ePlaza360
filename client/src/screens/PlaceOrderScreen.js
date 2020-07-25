@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import {createOrder} from '../actions/orderActions'
+import { ListHeader, ListButton, ListItem, ListItemLast, ListItemFullWidth } from '../components/ListComponents'
 
 export default function PlaceOrderScreen(props) {
 
@@ -83,7 +84,6 @@ function Order({cart, cartItems}){
                                     <Link to={"/product/" + item.product}>
                                     {item.name}
                                     </Link>
-
                                 </div>
                                 <div>
                                     Qty: {item.qty}
@@ -124,31 +124,35 @@ function PlaceOrderAction({cart, cartItems, shipping, payment}){
     }
 
     return (
-        <div className="placeorderAction">
-            <ul>
-                <li>
-                    <button className="button primary fullWidth" onClick={placeOrderHandler} >Place Order</button>
-                </li>
-                <li>
-                    <h3>Order Summary</h3>
-                </li>
-                <li>
-                    <div>Items</div>
-                    <div>${itemsPrice}</div>
-                </li>
-                <li>
-                    <div>Shipping</div>
-                    <div>${shippingPrice}</div>
-                </li>
-                <li>
-                    <div>Tax</div>
-                    <div>${taxPrice}</div>
-                </li>
-                <li>
-                    <div>Order Total</div>
-                    <div>${totalPrice}</div>
-                </li>
-            </ul>
+        <div className='actions'>
+            <div className='actionContainer'>
+                <ul className='actionList'>                    
+                    <ListButton 
+                        text={'Place Order'} 
+                        onClick={placeOrderHandler} 
+                    />
+                    <ListHeader 
+                        text={'Order Summary'} 
+                        border={false}
+                    />
+                    <ListItemFullWidth 
+                        text={'Items'} 
+                        value={`$${itemsPrice}`}
+                    />
+                    <ListItemFullWidth 
+                        text={'Shipping'} 
+                        value={`$${shippingPrice}`}
+                    />
+                    <ListItemFullWidth 
+                        text={'Tax'} 
+                        value={`$${taxPrice}`}
+                    />
+                    <ListItemLast 
+                        text={'Order Total'} 
+                        value={`$${totalPrice}`}
+                    />
+                </ul>
+            </div>
         </div>
     )
 }

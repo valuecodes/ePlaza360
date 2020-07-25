@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { detailsOrder, payOrder} from '../actions/orderActions'
 import PaypalButton from '../components/PaypalButton'
+import { ListHeader, ListItemFullWidth, ListItemLast, ListItemPaypal } from '../components/ListComponents'
 
 export default function OrderScreen(props) {
 
@@ -106,37 +107,35 @@ function PlaceOrderAction({order}){
     }
 
     return (
-        <div className="placeorderAction">
-            <ul>
-                <li className='placeOrderActionPayment'>
-                    {!order.isPaid && 
-                    <PaypalButton 
-                        amount={order.totalPrice} 
-                        onSuccess={handleSuccessPayment}
+        <div className='actions'>
+            <div className="actionContainer">
+                <ul className='actionList'>
+                    <ListHeader 
+                        text={'Order Summary'} 
+                        border={false}
                     />
-                    }
-                </li>
-                <li>
-                    <h3>Order Summary</h3>
-                </li>
-                <li>
-                    <div>Items</div>
-                    <div>${order.itemsPrice}</div>
-                </li>
-                <li>
-                    <div>Shipping</div>
-                    <div>${order.shippingPrice}</div>
-                </li>
-                <li>
-                    <div>Tax</div>
-                    <div>${order.taxPrice}</div>
-                </li>
-                <li>
-                    <div>Order Total</div>
-                    <div>${order.totalPrice}</div>
-                </li>
-
-            </ul>                
+                    <ListItemFullWidth 
+                        text={'Items'}  
+                        value={`$${order.itemsPrice}`}
+                    />
+                    <ListItemFullWidth 
+                        text={'Shipping'}  
+                        value={`$${order.shippingPrice}`}
+                    />
+                    <ListItemFullWidth 
+                        text={'Tax'}  
+                        value={`$${order.taxPrice}`}
+                    />
+                    <ListItemLast 
+                        text={'Order Total'}  
+                        value={`$${order.totalPrice}`}
+                    />
+                    <ListItemPaypal 
+                        order={order} 
+                        handleSuccessPayment={handleSuccessPayment}
+                    />
+                </ul>                
+            </div>
         </div>
     )
 }

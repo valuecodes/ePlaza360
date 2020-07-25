@@ -63,7 +63,6 @@ export default function OrdersScreen(props) {
 
 function Order({order, deleteHandler}){
 
-
     return(
         <tr key={order._id}>
             <td>{order._id}</td>

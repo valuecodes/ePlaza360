@@ -27,6 +27,26 @@ export function FormField({name,type, value,setState}) {
     )
 }
 
+export function FormFieldRadioButton(props){
+
+    const{
+        name,
+        label,
+        value,
+        setState
+    } = props
+
+    return(
+        <li className='formFieldRadioButton'>              
+            <input className='radioButton' type='radio' name={name} id={value} value={value} onClick={e => setState(e.target.value)}>
+            </input>             
+            <label htmlFor={name}>
+                {label}
+            </label>                                     
+        </li>          
+    )
+}
+
 export function FormFieldPassword(props) {
 
     const {
@@ -96,7 +116,7 @@ export function FormFieldChangePassword(props) {
         <>
             <li className='formField'>
                 <div className='changePassword' >
-                    <button type='button' className='button secondary' onClick={e => setChancePassword(!changePassword)}>
+                    <button type='button' className='button secondary changePasswordButton' onClick={e => setChancePassword(!changePassword)}>
                         Change Password
                     </button>
                 </div>
@@ -190,3 +210,4 @@ export function checkFormErrors(password, rePassword){
     if(password!==rePassword) errors.push('Re-password is wrong')
     return errors
 }
+

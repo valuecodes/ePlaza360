@@ -4,6 +4,7 @@ import { detailsProduct, saveProductReview } from '../actions/productActions'
 import { Link } from 'react-router-dom'
 import Rating from '../components/Rating'
 import { PRODUCT_REVIEW_SAVE_RESET } from '../constants/productConstants';
+import { ListItem, ListSelect, ListButton, ListHeader } from '../components/ListComponents'
 
 export default function ProductScreen(props) {
 
@@ -70,27 +71,16 @@ function Details({product}){
 function Actions({product, handleAddToCart, qty, setQty}){
     return(
         <div className='actions'>
-            <div className='detailsAction'>
-                <ul>
-                    <li>
-                        <p>Price:</p>
-                        <b>${product.price}</b> 
-                    </li>
-                    <li>
-                        <p>Status:</p>
-                        <b>{product.countInStock>0?'In stock':'Unavailable'}</b>
-                    </li>
-                    <li>
-                        <p>Qty: </p>
-                        <select onChange={e => setQty(e.target.value)} value={qty}>
-                            {[...Array(product.countInStock).keys()].map((value) =>
-                                <option key={value+1} value={value+1}>{value+1}</option>
-                            )}
-                        </select>
-                    </li>                         
+            <div className='actionContainer'>
+                <ul className='actionList'>
+                    <ListHeader text={'Cart'}/>
+                    <ListItem text={'Price:'} value={'$'+product.price}/>
+                    <ListItem text={'Status:'} value={product.countInStock>0?'In stock':'Unavailable'}/>
+                    <ListSelect text={'Qty: '} setState={setQty} value={qty} optionNumbers={product.countInStock}/>
+                    {product.countInStock && 
+                        <ListButton text='Add to Cart' onClick={handleAddToCart}/>
+                    }                    
                 </ul>
-                {product.countInStock && 
-                <button onClick={handleAddToCart} className='button fullWidth primary'>Add to cart</button>}
             </div>  
             <Reviews product={product}/>
         </div>
@@ -146,10 +136,7 @@ function Reviews({product}){
                 <li className='reviewAction'>
                     <h3>Write a customer review</h3>
                     {userInfo ? <form onSubmit={submitHandler}>
-                        <ul 
-                            className='formContainer'
-                            
-                            >
+                        <ul className='formContainer'>
                             <li>
                                 <label htmlFor='rating'>
                                     Rating

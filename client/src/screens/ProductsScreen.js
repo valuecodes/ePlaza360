@@ -90,14 +90,51 @@ export default function ProductsScreen(props) {
                     <div className='contentCenter'>
                         <form className='form' onSubmit={submitHandler}>
                             <ul className='formContainer'>
-                                <FormFieldHeader text={'Create Product'}/>
-                                <FormField name={'name'} value={name} type={'text'} setState={setName}/>
-                                <FormField name={'Price'} value={price} type={'number'} setState={setPrice}/>
-                                <FormField name={'image'} value={image} type={'text'} setState={setImage}/>
-                                <FormField name={'brand'} value={brand} type={'text'} setState={setBrand}/>
-                                <FormField name={'category'} value={category} type={'text'} setState={setCategory}/>
-                                <FormField name={'countInStock'} value={countInStock} type={'number'} setState={setCountInStock}/>
-                                <FormFieldText name={'description'} value={description} type={'text'} setState={setDescription}/>
+                                <FormFieldHeader 
+                                    text={'Create Product'}
+                                />
+                                <FormField 
+                                    name={'name'} 
+                                    value={name} 
+                                    type={'text'} 
+                                    setState={setName}
+                                />
+                                <FormField 
+                                    name={'Price'} 
+                                    value={price} 
+                                    type={'number'} 
+                                    setState={setPrice}
+                                />
+                                <FormField 
+                                    name={'image'} 
+                                    value={image} 
+                                    type={'text'} 
+                                    setState={setImage}
+                                />
+                                <FormField 
+                                    name={'brand'} 
+                                    value={brand} 
+                                    type={'text'} 
+                                    setState={setBrand}
+                                />
+                                <FormField 
+                                    name={'category'} 
+                                    value={category} 
+                                    type={'text'} 
+                                    setState={setCategory}
+                                />
+                                <FormField 
+                                    name={'countInStock'} 
+                                    value={countInStock} 
+                                    type={'number'} 
+                                    setState={setCountInStock}
+                                />
+                                <FormFieldText 
+                                    name={'description'} 
+                                    value={description} 
+                                    type={'text'} 
+                                    setState={setDescription}
+                                />
                                 <li>
                                     <button type='submit' className='button primary fullWidth'>{id?"Update":"Create"}</button>
                                 </li>
