@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { listProducts } from '../actions/productActions'
 import { Link } from 'react-router-dom'
-import Rating from '../components/Rating'
+import { Rating } from '../components/RatingComponents'
 
 export default function HomeScreen(props) {
 
@@ -88,7 +88,7 @@ function Products({products}){
                     <div className='productPrice'>${product.price}</div>    
                     <div className='productRating'>
                         <Rating 
-                            value={product.rating}
+                            rating={product.rating}
                             text={product.numReviews+' reviews'} 
                         />
                     </div>        

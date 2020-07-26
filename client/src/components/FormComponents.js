@@ -167,7 +167,7 @@ export function FormFieldText(props) {
             <label  htmlFor={name}>
                 Description
             </label>
-            <textarea placeholder=' ' className='textArea' name={name} value={value} onChange={e => setState(e.target.value)}>            
+            <textarea className='textArea' placeholder=' ' name={name} value={value} onChange={e => setState(e.target.value)}>            
             </textarea>            
 
         </li>

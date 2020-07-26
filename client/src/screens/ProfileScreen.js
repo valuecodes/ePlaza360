@@ -105,7 +105,12 @@ function ProfileInfo({handleLogout}){
                     />
                     <FormFieldButton text={'Update'}/>
                     <li>
-                        <button type='button' onClick={handleLogout} className='button secondary fullWidth'>Logout</button>
+                        <button 
+                            type='button' 
+                            onClick={handleLogout} 
+                            className='button secondary fullWidth'>
+                            Logout
+                        </button>
                     </li>
                 </ul>
             </form>

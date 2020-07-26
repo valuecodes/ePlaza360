@@ -2,9 +2,9 @@ import React,{ useEffect, useState} from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { detailsProduct, saveProductReview } from '../actions/productActions'
 import { Link } from 'react-router-dom'
-import Rating from '../components/Rating'
 import { PRODUCT_REVIEW_SAVE_RESET } from '../constants/productConstants';
 import { ListItem, ListSelect, ListButton, ListHeader } from '../components/ListComponents'
+import { TotalRating, CustomerReviews, Rating, WriteReview } from '../components/RatingComponents'
 
 export default function ProductScreen(props) {
 
@@ -52,12 +52,10 @@ function Details({product}){
                         <div className='productPrice detailPrice'>${product.price}</div>
                     </li>  
                     <li>
-                        <a href='#reviews'>
-                            <Rating
-                                value={product.rating}
-                                text={product.numReviews+' reviews'} 
-                            />
-                        </a>
+                        <Rating
+                            rating={product.rating}
+                            text={product.numReviews+' reviews'} 
+                        />
                     </li>
                 </ul>
             </div>
@@ -73,21 +71,37 @@ function Actions({product, handleAddToCart, qty, setQty}){
         <div className='actions'>
             <div className='actionContainer'>
                 <ul className='actionList'>
-                    <ListHeader text={'Cart'}/>
-                    <ListItem text={'Price:'} value={'$'+product.price}/>
-                    <ListItem text={'Status:'} value={product.countInStock>0?'In stock':'Unavailable'}/>
-                    <ListSelect text={'Qty: '} setState={setQty} value={qty} optionNumbers={product.countInStock}/>
+                    <ListHeader 
+                        text={'Cart'}
+                    />
+                    <ListItem 
+                        text={'Price:'} 
+                        value={'$'+product.price}
+                    />
+                    <ListItem 
+                        text={'Status:'} 
+                        value={product.countInStock>0?'In stock':'Unavailable'}
+                    />
+                    <ListSelect 
+                        text={'Qty: '} 
+                        setState={setQty} 
+                        value={qty} 
+                        optionNumbers={product.countInStock}
+                    />
                     {product.countInStock && 
-                        <ListButton text='Add to Cart' onClick={handleAddToCart}/>
+                        <ListButton 
+                            text='Add to Cart' 
+                            onClick={handleAddToCart}
+                        />
                     }                    
                 </ul>
             </div>  
-            <Reviews product={product}/>
+            <Ratings product={product}/>
         </div>
     )
 }
 
-function Reviews({product}){
+function Ratings({product}){
     
     const [rating, setRating] = useState(0)
     const [comment, setComment] = useState('')
@@ -121,46 +135,24 @@ function Reviews({product}){
     }
 
     return(
-        <div className='reviewContainer'>
-            <ul className='review' id='reviews'>
-                <h2>Reviews</h2>
-                {!product.reviews.length && <div>There are no reviews</div>}
-                {product.reviews.map(review =>
-                    <li key={review._id}>
-                        <div>{review.name}</div>
-                        <div><Rating value={review.rating}/></div>
-                        <div>{review.createdAt.substring(0, 10)}</div>
-                        <div>{review.comment}</div>
-                    </li>
-                )}            
-                <li className='reviewAction'>
-                    <h3>Write a customer review</h3>
-                    {userInfo ? <form onSubmit={submitHandler}>
-                        <ul className='formContainer'>
-                            <li>
-                                <label htmlFor='rating'>
-                                    Rating
-                                </label>
-                                <select name='rating' id='rating' value={rating} onChange={e => setRating(e.target.value)}>
-                                    <option value='1'>1- Poor</option>
-                                    <option value='2'>2- Fair</option>
-                                    <option value='3'>3- Good</option>
-                                    <option value='4'>4- Very Good</option>
-                                    <option value='5'>5- Excellent</option>
-                                </select>
-                            </li>
-                            <li>
-                                <label htmlFor='comment'>Comment</label>
-                                <textarea name='comment' value={comment} onChange={e => setComment(e.target.value)}/>
-                            </li>
-                            <li>
-                                <button type='submit' className='button primary'>Submit</button>
-                            </li>
-                        </ul>
-                    </form>:
-                    <div>Please <Link to='/signin'>Signin</Link> to write a review</div>}
-                </li>
-            </ul>  
+        <div className='actions'>
+            <div className='actionContainer'>
+                <ul className='actionList'>
+                    <TotalRating product={product}/>
+                    <CustomerReviews product={product}/>
+                    {!product.reviews.length && <div>There are no reviews</div>}      
+                    {userInfo ? 
+                        <WriteReview 
+                            submitHandler={submitHandler}
+                            rating={rating}
+                            setRating={setRating}
+                            comment={comment}
+                            setComment={setComment}
+                        />
+                    :
+                    <div>Please <Link to='/signin'>Signin</Link> to write a review</div>}    
+                </ul>
+            </div>
         </div>
     )
 }
