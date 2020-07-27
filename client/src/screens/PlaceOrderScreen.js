@@ -1,9 +1,9 @@
 
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
 import {createOrder} from '../actions/orderActions'
-import { ListHeader, ListButton, ListItem, ListItemLast, ListItemFullWidth } from '../components/ListComponents'
+import { ListHeader, ListButton, ListItemLast, ListItemFullWidth } from '../components/ListComponents'
+import { CartList } from '../components/CartComponents' 
 
 export default function PlaceOrderScreen(props) {
 
@@ -49,9 +49,7 @@ function Order({cart, cartItems}){
     return(    
         <div className="order">
             <div className='placeorderInfo'>
-                <h3>
-                    Shipping
-                </h3>
+                <h3>Shipping</h3>
                 <div>
                     {cart.shipping.address}, {cart.shipping.city},
                     {cart.shipping.postalCode}, {cart.shipping.country},
@@ -63,41 +61,11 @@ function Order({cart, cartItems}){
                     Payment Method: {cart.payment.paymentMethod}
                 </div>
             </div>
-            <div className='placeorderItems'>
-                <ul className="cartListContainer">
-                    <li>
-                        <h3>Shopping Cart</h3>
-                        <div>Price</div>
-                    </li>
-                    {
-                    cartItems.length === 0 ?
-                        <div>
-                        Cart is empty
-                </div>
-                        :
-                        cartItems.map(item =>
-                        <li key={item.product} className='cartItem'>
-                            <img className="cartItemImage" src={item.image} alt="product" />
-                            <div className='cartItemInfo'>
-                                <div className="cartName">
-                                <div>
-                                    <Link to={"/product/" + item.product}>
-                                    {item.name}
-                                    </Link>
-                                </div>
-                                <div>
-                                    Qty: {item.qty}
-                                </div>
-                                </div>
-                            </div>
-                            <div className="cartItemPrice">
-                            ${item.price}
-                            </div>
-                        </li>
-                        )
-                    }
-                </ul>
-            </div>
+            {
+                cartItems.length === 0 ?
+                <div>Cart is empty</div>:
+                <CartList cartItems={cartItems} actions={false}/>
+            }
         </div>
     )
 }

@@ -20,6 +20,7 @@ export default function ProductScreen(props) {
     },[])
     
     const handleAddToCart = () =>{
+        console.log('adding to cart')
         props.history.push(`/cart/${productId}?qty=${qty}`)
     }
 
@@ -73,6 +74,7 @@ function Actions({product, handleAddToCart, qty, setQty}){
                 <ul className='actionList'>
                     <ListHeader 
                         text={'Cart'}
+                        border={false}
                     />
                     <ListItem 
                         text={'Price:'} 

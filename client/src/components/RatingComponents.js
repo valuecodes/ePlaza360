@@ -4,17 +4,16 @@ export function TotalRating({product}) {
 
     const [open, setOpen] = useState(false);
     const ratingPercent=Math.floor(product.rating*20)
-    const stars=[1,2,3,4,5]
 
     return (
         <div className='subContainer'>
             <div className='subContainerHeader'>
                 <h2>Rating</h2>
                 <div className='totalRatingStars'>
-                    <Rating rating={product.rating} size={1}/>
+                    <Rating rating={product.rating} size={2}/>
                 </div>
                 <div >
-                    <h3 className='highlight' >{ratingPercent} %</h3> 
+                    <h3 className='highlight' >{ratingPercent}%</h3> 
                 </div>
                 <ContainerOpenButton open={open} setOpen={setOpen} />
             </div>
@@ -36,7 +35,7 @@ function ContainerOpenButton({open, setOpen}){
             <button className='iconButton'
                 onClick={e => setOpen(!open)}
             >
-                <i class="fa fa-plus-circle fa-2x" aria-hidden="true"></i>
+                <i className="fa fa-plus-circle fa-2x" aria-hidden="true"></i>
             </button>
         </div>
     )
@@ -62,6 +61,7 @@ function RatingStatistics({product}){
             }
         });
         setRatings(newRatings)
+         // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
 
     return(
@@ -76,7 +76,8 @@ function RatingStatistics({product}){
 function RatingStat({rating, index}){
     useEffect(() => {
         let ratebar=document.getElementsByClassName('rateBar')[index]
-        ratebar.style.setProperty('--percentage', rating.rate+'%')        
+        ratebar.style.setProperty('--percentage', rating.rate+'%')  
+         // eslint-disable-next-line react-hooks/exhaustive-deps      
     }, [])
     return(
         <div className='ratingStat'>
@@ -121,7 +122,7 @@ function Reviews({product}){
             {product.reviews.map(review =>
                 <li className='reviewItem' key={review._id}>
                     <div className='reviewUser'>
-                        <i class="fa fa-user-circle-o fa-2x" aria-hidden="true"></i>
+                        <i className="fa fa-user-circle-o fa-2x" aria-hidden="true"></i>
                         <p>{review.name}</p>
                         <span>{review.createdAt.substring(0, 10)}</span>
                     </div>
@@ -138,20 +139,40 @@ function Reviews({product}){
 export function Rating({text='', rating=0, size=1}) {
 
     const stars=[1,2,3,4,5]
+    const [starSize, setStarSize] = useState(`fa-1x`)
 
-    const starSize=`fa-${size}x`
+    useEffect(()=>{
+        window.addEventListener("resize", displayWindowSize);
+        return () => window.removeEventListener("resize", displayWindowSize)
+         // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[])
+
+    useEffect(()=>{
+        let ssize=size
+        if(window.innerWidth<1100){
+            ssize=1
+        } 
+        setStarSize(ssize)
+         // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[])
+
+    function displayWindowSize(){
+        if(window.innerWidth<1100){
+            setStarSize(1)
+        }
+    }
 
     return (
         !rating? <div></div>:
         <div className='rating'>
             {stars.map(star => 
-                <span>
+                <span key={star}>
                     <i className={
                         rating>=star?
-                        `fa fa-star ${starSize}`:
+                        `fa fa-star fa-${starSize}x`:
                         rating >= star-0.5?
-                        `fa fa-star-half-o ${starSize}`:
-                        `fa fa-star-o ${starSize}`}>
+                        `fa fa-star-half-o fa-${starSize}x`:
+                        `fa fa-star-o fa-${starSize}x`}>
                     </i>                      
                 </span> 
             )}    

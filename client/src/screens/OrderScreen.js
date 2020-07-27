@@ -1,10 +1,9 @@
 
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { detailsOrder, payOrder} from '../actions/orderActions'
-import PaypalButton from '../components/PaypalButton'
 import { ListHeader, ListItemFullWidth, ListItemLast, ListItemPaypal } from '../components/ListComponents'
+import { CartList } from '../components/CartComponents'
 
 export default function OrderScreen(props) {
 
@@ -58,7 +57,17 @@ function Order({order}){
                     {order.isPaid? "Paid at: "+ order.paidAt: 'Not paid'}
                 </div>
             </div>
-            <div className='placeorderItems'>
+            {
+                order.orderItems.length === 0 ?
+                <div>Cart is empty</div>:
+                <CartList
+                    header={'Order'} 
+                    cartItems={order.orderItems} 
+                    actions={false}
+                />
+            }
+
+            {/* <div className='placeorderItems'>
                 <ul className="cartListContainer">
                     <li>
                         <h3>Shopping Cart</h3>
@@ -93,7 +102,7 @@ function Order({order}){
                         )
                     }
                 </ul>
-            </div>
+            </div> */}
         </div>
     )
 }

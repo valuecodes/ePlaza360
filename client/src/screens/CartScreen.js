@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { addToCart, removeFromCart } from '../actions/cartActions'
-import { Link } from 'react-router-dom'
-import { ListHeader, ListItemFullWidth, ListItem, ListButton } from '../components/ListComponents'
+import { useSelector, useDispatch } from 'react-redux'
+import { addToCart } from '../actions/cartActions';
+import { ListHeader, ListButton, ListItemFullWidth } from '../components/ListComponents'
+import { CartList } from '../components/CartComponents'
 
 export default function CartScreen(props) {
     const cart = useSelector(state => state.cart);
@@ -14,16 +14,15 @@ export default function CartScreen(props) {
     const dispatch = useDispatch();
 
     useEffect(() => {
-      if (productId) {
-        dispatch(addToCart(productId, qty));
-      }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-  
+        if (productId) {
+          dispatch(addToCart(productId, qty));
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+      }, []);
+
     const checkoutHandler = () => {
       props.history.push("/signin?redirect=shipping");
     }
-
     return (
         <div className='cart'>
             <CartList 
@@ -37,59 +36,6 @@ export default function CartScreen(props) {
     )
 }
 
-function CartList({cartItems}){
-    return(
-        <div className='cartList'>
-            <ul className='cartListContainer'>
-                <li>
-                    <h3>Shopping cart</h3>
-                    <div>Price</div>
-                </li>
-                {
-                    cartItems.length === 0 ?
-                    <div>Cart is empty</div>:
-                    cartItems.map(item =>
-                        <CartItem key={item.product} item={item}/>
-                    )
-                }
-            </ul>
-        </div>        
-    )
-}
-
-function CartItem({item}){
-
-    const dispatch = useDispatch()
-
-    const removeFromCartHandler=(productId)=>{
-        dispatch(removeFromCart(productId))
-    }
-
-    return(
-        <div key={item.product} className='cartItem'> 
-            <img className='cartItemImage' src={item.image} alt='product'/>
-            <div className='cartItemInfo'>
-                <div className='cartItemName'>
-                    <Link to={`/product/${item.product}`}>
-                        {item.name}
-                    </Link>
-                </div>
-                <div>{item.description}</div>
-                <div>
-                    Qty:{' '}
-                    <select onChange={e => dispatch(addToCart(item.product, e.target.value))} value={item.qty}>
-                        {[...Array(item.countInStock).keys()].map((value) =>
-                            <option key={value+1} value={value+1}>{value+1}</option>
-                        )}
-                    </select>
-                </div>
-                <button className='button secondary cartRemove' type='button' onClick={e => removeFromCartHandler(item.product)}>Remove</button>
-            </div>                                
-            <div className='cartItemPrice'>${item.price}</div>
-        </div>  
-    )
-}
-
 function CartAction({cartItems, checkoutHandler}){
     return(
         <div className='actions'>
@@ -97,12 +43,13 @@ function CartAction({cartItems, checkoutHandler}){
                 <ul className='actionList'>
                     <ListHeader 
                         text='Checkout'
+                        border={false}
                     />
-                    <ListItem 
+                    <ListItemFullWidth 
                         text={'Items: '} 
                         value={`${cartItems.reduce((a, c) => a + Number(c.qty),0)} pcs` } 
                     />
-                    <ListItem
+                    <ListItemFullWidth
                         text={'Subtotal: '}
                         value={`$ ${cartItems.reduce((a, c) => a + (c.price*c.qty),0)}`}
                     />
