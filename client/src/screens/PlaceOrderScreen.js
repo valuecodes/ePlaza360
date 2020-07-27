@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {createOrder} from '../actions/orderActions'
 import { ListHeader, ListButton, ListItemLast, ListItemFullWidth } from '../components/ListComponents'
-import { CartList } from '../components/CartComponents' 
+import { CartList, OrderInfo } from '../components/CartComponents' 
 
 export default function PlaceOrderScreen(props) {
 
@@ -48,24 +48,8 @@ function Order({cart, cartItems}){
 
     return(    
         <div className="order">
-            <div className='placeorderInfo'>
-                <h3>Shipping</h3>
-                <div>
-                    {cart.shipping.address}, {cart.shipping.city},
-                    {cart.shipping.postalCode}, {cart.shipping.country},
-                </div>
-            </div>
-            <div className='placeorderInfo'>
-                <h3>Payment</h3>
-                <div>
-                    Payment Method: {cart.payment.paymentMethod}
-                </div>
-            </div>
-            {
-                cartItems.length === 0 ?
-                <div>Cart is empty</div>:
-                <CartList cartItems={cartItems} actions={false}/>
-            }
+            <OrderInfo cart={cart}/>
+            <CartList cartItems={cartItems} actions={false}/>
         </div>
     )
 }

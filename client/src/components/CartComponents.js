@@ -16,7 +16,7 @@ export function CartList({header ,cartItems, actions=true}){
                     )
                 }
             </ul>
-        </div>        
+        </div>
     )
 }
 
@@ -70,3 +70,73 @@ export function CartHeader({header='Shopping cart'}) {
     )
 }
 
+export function OrderInfo({cart, showStatus=false}){
+    return(
+        <div className='orderInfoContainer'>
+            <div className='orderInfo'>
+                <div className='infoContainerHeader'>
+                    <h3>Shipping</h3>
+                    {showStatus &&
+                        <span>Status <b>{cart.isDelivered? "Delivered at"+ cart.deliveredAt: 'Not delivered'}</b></span>
+                    }
+                </div>
+                <div className='infoContainer'>
+                    <div>
+                        <i className="fa fa-address-card fa-5x cardBig " aria-hidden="false"></i>
+                    </div>
+                    <div className='infoText'>
+                        <span><b>Address</b></span>
+                        <span>{cart.shipping.address} </span>
+                        <span>{cart.shipping.city}</span>
+                        <span>{cart.shipping.postalCode}</span>
+                        <span>{cart.shipping.country}</span>
+                    </div>
+                </div>
+            </div>
+            <div className='orderInfo'>
+                <div className='infoContainerHeader'>
+                    <h3>Payment</h3>                        
+                    {showStatus&&
+                        <span>Status <b>{cart.isPaid? ' Paid': 'Not paid'}</b></span>     
+                    }
+                </div>                
+                <div className='infoContainer'>
+                    <div>
+                        <i className="fa fa-credit-card fa-5x cardBig " aria-hidden="false"></i>
+                    </div>
+                    <div className='infoText'>
+                        <span><b>Payment Method</b></span>
+                        <span>{cart.payment.paymentMethod}</span> 
+                    </div>
+                </div>
+                {showStatus&&cart.isPaid&&
+                    <div className='infoPaidAt'>
+                        <b>Paid At: </b>{cart.paidAt}
+                    </div>     
+                }
+            </div>
+            <div className='orderInfo'>
+                <div className='infoContainerHeader'>
+                    <h3>Review</h3>                        
+                    {showStatus&&
+                        <span>Status <b>{cart.isPaid? ' Reviewed': ' No reviews'}</b></span>     
+                    }
+                </div>                
+                <div className='infoContainer'>
+                    <div>
+                        <i className="fa fa-tags fa-5x cardBig " aria-hidden="false"></i>
+                    </div>
+                    <div className='infoText'>
+                        <span><b>Items reviewed</b></span>
+                        <span>{cart.payment.paymentMethod}</span> 
+                    </div>
+                </div>
+                {showStatus&&cart.isPaid&&
+                    <div className='infoPaidAt'>
+                        <b>Paid At: </b>{cart.paidAt}
+                    </div>     
+                }
+            </div>
+        </div>
+    )
+}

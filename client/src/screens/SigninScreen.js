@@ -15,6 +15,7 @@ export default function SigninScreen(props) {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [showPassword, setShowPassword] = useState(false)
+    const [passwordFocus ,setPasswordFocus] = useState(false)
 
     const userSignin = useSelector(state => state.userSignin)
     const {loading, error, userInfo } = userSignin
@@ -55,6 +56,7 @@ export default function SigninScreen(props) {
                         showPassword={showPassword}
                         setState={setPassword}
                         value={password}
+                        setPasswordFocus={setPasswordFocus}
                     />
                     <FormFieldButton text={'Signin'}/>
                     <li className='toRegister'>   

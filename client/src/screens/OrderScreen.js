@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { detailsOrder, payOrder} from '../actions/orderActions'
 import { ListHeader, ListItemFullWidth, ListItemLast, ListItemPaypal } from '../components/ListComponents'
-import { CartList } from '../components/CartComponents'
+import { CartList, OrderInfo } from '../components/CartComponents'
 
 export default function OrderScreen(props) {
 
@@ -13,7 +13,7 @@ export default function OrderScreen(props) {
     const orderDetails = useSelector(state => state.orderDetails)
     const {loading, order, error} = orderDetails
     const dispatch=useDispatch()
-
+    console.log(successPay)
     useEffect(()=>{
         if(successPay){
             props.history.push('/profile')
@@ -32,77 +32,18 @@ export default function OrderScreen(props) {
 }
 
 function Order({order}){
-
+    console.log(order.shipping.address)
     return(    
         <div className="order">
-            <div className='placeorderInfo'>
-                <h3>
-                    Shipping
-                </h3>
-                <div>
-                    {order.shipping.address}, {order.shipping.city},
-                    {order.shipping.postalCode}, {order.shipping.country},
-                </div>
-                <div>
-                    {order.isDelivered? "Delivered at"+ order.deliveredAt: 'Not delivered'}
-                </div>
-
-            </div>
-            <div className='placeorderInfo'>
-                <h3>Payment</h3>
-                <div>
-                    Payment Method: {order.payment.paymentMethod}
-                </div>                
-                <div>
-                    {order.isPaid? "Paid at: "+ order.paidAt: 'Not paid'}
-                </div>
-            </div>
-            {
-                order.orderItems.length === 0 ?
-                <div>Cart is empty</div>:
-                <CartList
-                    header={'Order'} 
-                    cartItems={order.orderItems} 
-                    actions={false}
-                />
-            }
-
-            {/* <div className='placeorderItems'>
-                <ul className="cartListContainer">
-                    <li>
-                        <h3>Shopping Cart</h3>
-                        <div>Price</div>
-                    </li>
-                    {
-                    order.orderItems.length === 0 ?
-                        <div>
-                        Cart is empty
-                </div>
-                        :
-                        order.orderItems.map(item =>
-                            <li key={item.product} className='cartItem'>
-                                <img className="cartItemImage" src={item.image} alt="product" />
-                                <div className='cartItemInfo'>
-                                    <div className="cartName">
-                                    <div>
-                                        <Link to={"/product/" + item.product}>
-                                        {item.name}
-                                        </Link>
-
-                                    </div>
-                                    <div>
-                                        Qty: {item.qty}
-                                    </div>
-                                    </div>
-                                </div>
-                                <div className="cartItemPrice">
-                                ${item.price}
-                                </div>
-                            </li>
-                        )
-                    }
-                </ul>
-            </div> */}
+            <OrderInfo 
+                cart={order} 
+                showStatus={true}
+            />
+            <CartList
+                header={'Order'} 
+                cartItems={order.orderItems} 
+                actions={false}
+            />
         </div>
     )
 }
