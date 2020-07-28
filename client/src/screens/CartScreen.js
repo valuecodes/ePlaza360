@@ -27,6 +27,7 @@ export default function CartScreen(props) {
         <div className='cart'>
             <CartList 
                 cartItems={cartItems} 
+                cartActions={true}
             />
             <CartAction 
                 cartItems={cartItems}

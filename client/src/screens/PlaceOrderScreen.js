@@ -49,7 +49,10 @@ function Order({cart, cartItems}){
     return(    
         <div className="order">
             <OrderInfo cart={cart}/>
-            <CartList cartItems={cartItems} actions={false}/>
+            <CartList 
+                cartItems={cartItems} 
+                orderActions={true}
+            />
         </div>
     )
 }

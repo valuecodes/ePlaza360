@@ -42,7 +42,8 @@ function Order({order}){
             <CartList
                 header={'Order'} 
                 cartItems={order.orderItems} 
-                actions={false}
+                orderActions={true}
+                reviewActions={true}
             />
         </div>
     )
@@ -57,7 +58,7 @@ function PlaceOrderAction({order}){
     }
 
     return (
-        <div className='actions'>
+        <div className='actions placeorderAction'>
             <div className="actionContainer">
                 <ul className='actionList'>
                     <ListHeader 
