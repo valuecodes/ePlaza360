@@ -1,4 +1,5 @@
 const Product = require('../models/productModel')
+const User = require('../models/userModel')
 
 // @desc      Get products
 // @route     GET /
@@ -84,23 +85,71 @@ exports.deleteProduct = async (req, res) =>{
 // @route     POST /:id/reviews
 // @ access   Auth
 exports.postReview = async (req, res) => {
-     const product = await Product.findById(req.params.id)
-     console.log(product)
-     if(product){
-        const review = {
-            name: req.body.name,
-            rating: Number(req.body.rating),
-            comment: req.body.comment
+    const product = await Product.findById(req.params.id)
+    const user = await User.findById(req.user._id)      
+
+    if(product.reviews.length && user.reviews.length){
+
+        let newRating = product.reviews.reduce((a, c) => a + 
+            (req.params.id===c.productId?req.body.rating:c.rating)
+        ,0) / product.reviews.length
+
+        let productUpdate =  await Product.findOneAndUpdate(
+            {_id:req.params.id,
+                reviews: {
+                    $elemMatch: {
+                        userId: req.user._id
+                    }
+                }
+            },{$set:{
+                "reviews.$.comment": req.body.comment,
+                "reviews.$.rating": req.body.rating,
+                "rating": newRating
+                }
+            },
+            {upsert: true, new: true, useFindAndModify: false},
+        )
+        
+        let userUpdate =  await User.findOneAndUpdate(
+            {_id:req.user._id,
+                reviews: {
+                    $elemMatch: {productId: req.params.id}
+                }
+                },{$set:{
+                    "reviews.$.comment": req.body.comment,
+                    "reviews.$.rating": req.body.rating,
+                }     
+            },{upsert: true, new: true, useFindAndModify: false},
+        )
+
+        if(userUpdate&&productUpdate){
+            return res.status(201).send({
+                data: productUpdate.reviews[productUpdate.reviews.length-1], 
+                message: 'Review saved succesfully'
+            })
         }
-        product.reviews.push(review)
-        product.numReviews = product.reviews.length
-        product.rating = product.reviews.reduce((a, c) => a + c.rating,0) / product.reviews.length 
-        const updatedProduct = await product.save()
-        res.status(201).send({
-            data: updatedProduct.reviews[updatedProduct.reviews.length-1], 
-            message: 'Review saved succesfully'
-        })
+    }
+
+    if(product&&user){
+
+            const review = {
+                name: req.body.name,
+                rating: Number(req.body.rating),
+                comment: req.body.comment,
+                productId: product._id,
+                userId: user._id
+            }
+            product.reviews.push(review)
+            user.reviews.push(review)
+            product.numReviews = product.reviews.length
+            product.rating = product.reviews.reduce((a, c) => a + c.rating,0) / product.reviews.length
+            const updatedProduct = await product.save()
+            await user.save()
+            res.status(201).send({
+                data: updatedProduct.reviews[updatedProduct.reviews.length-1], 
+                message: 'Review saved succesfully'
+            })
      }else{
-        res.status(404).send({message: 'Product not found'})
+        res.status(404).send({message: 'Product or user not found'})
      }
 }

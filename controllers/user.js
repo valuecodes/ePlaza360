@@ -16,7 +16,8 @@ exports.userSignin = async (req, res) => {
             name: signinUser.name,
             email: signinUser.email,
             isAdmin: signinUser.isAdmin,
-            token: getToken(signinUser)
+            token: getToken(signinUser),
+            reviews: signinUser.reviews
         })
     }else{
         res.status(401).send({msg: 'Invalid Email or password'})
@@ -57,7 +58,9 @@ exports.userUpdate = async (req, res)=>{
     const userId = req.params.id
     const user = await User.findById(userId)
     if(user){
-        if(user.password!==req.body.currentPassword){
+        if(
+            req.body.currentPassword&&user.password!==req.body.currentPassword
+        ){
             return res.status(404).send({message: 'Current password is wrong'})
         }
         user.name = req.body.name || user.name 
@@ -69,7 +72,8 @@ exports.userUpdate = async (req, res)=>{
             name: updatedUser.name,
             email: updatedUser.email,
             isAdmin: updatedUser.isAdmin,
-            token: getToken(updatedUser)
+            token: getToken(updatedUser),
+            reviews: updatedUser.reviews
         }})
     }else{
         res.send(404).send({msg: 'User not found'})

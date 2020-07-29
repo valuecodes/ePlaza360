@@ -1,8 +1,8 @@
 import React from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { addToCart, removeFromCart } from '../actions/cartActions'
 import { Link } from 'react-router-dom'
-import { WriteReviewSlim } from '../components/RatingComponents'
+import { WriteReview } from '../components/RatingComponents'
 
 export function CartList(props){
     
@@ -13,6 +13,10 @@ export function CartList(props){
         orderActions = false,
         reviewActions = false 
     } = props
+
+    const userSignin = useSelector(state => state.userSignin)
+    const state = useSelector(state => state)
+    let userInfo = userSignin.userInfo
 
     return(
         <div className='cartList'>
@@ -79,7 +83,7 @@ function CartItem(props){
                 }
             </div>  
             {reviewActions &&
-                <WriteReviewSlim product={item.product} />
+                <WriteReview product={item.product} />
             }                              
             <div className='cartItemPrice'>${item.price}</div>
         </div>  

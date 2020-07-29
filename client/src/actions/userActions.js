@@ -47,8 +47,10 @@ const update = (updatedUserInfo) => async (dispatch, getState) =>{
         const {data:{data}} = await axios.put('/api/users/'+updatedUserInfo.userId,updatedUserInfo,{headers:{
             Authorization: 'Bearer'+userInfo.token
         }})
-        dispatch({type: USER_UPDATE_SUCCESS, payload: data})
+        console.log(data)
         Cookie.set('userInfo', JSON.stringify(data))
+        dispatch({type: USER_UPDATE_SUCCESS, payload: data})
+        
     } catch(err){
        dispatch({type: USER_UPDATE_FAIL, payload: err.message}) 
     }

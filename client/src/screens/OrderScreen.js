@@ -13,7 +13,7 @@ export default function OrderScreen(props) {
     const orderDetails = useSelector(state => state.orderDetails)
     const {loading, order, error} = orderDetails
     const dispatch=useDispatch()
-    console.log(successPay)
+
     useEffect(()=>{
         if(successPay){
             props.history.push('/profile')
@@ -32,7 +32,6 @@ export default function OrderScreen(props) {
 }
 
 function Order({order}){
-    console.log(order.shipping.address)
     return(    
         <div className="order">
             <OrderInfo 

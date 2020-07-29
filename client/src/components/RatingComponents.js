@@ -2,7 +2,9 @@ import React, { useState,useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { saveProductReview } from '../actions/productActions'
 import { PRODUCT_REVIEW_SAVE_RESET } from '../constants/productConstants';
-
+import { update } from '../actions/userActions';
+import { Link } from 'react-router-dom'
+import Cookie from 'js-cookie'
 
 export function TotalRating({product}) {
 
@@ -45,6 +47,8 @@ function ContainerOpenButton({open, setOpen}){
     )
 }
 
+
+
 function RatingStatistics({product}){
 
     const [ratings, setRatings] = useState([])
@@ -59,6 +63,7 @@ function RatingStatistics({product}){
             {id:1, name:'1 star',rate:0},   
         ]
         const total =  product.numReviews
+        console.log(product.reviews)
         product.reviews.forEach(review =>{
             if(product.rating>0){
                 newRatings[4-(review.rating-1)].rate+=(1/total)*100
@@ -185,87 +190,48 @@ export function Rating({text='', rating=0, size=1}) {
     )
 }
 
-export function WriteReview(props){
+export function WriteReview({product}){
+
+    let userInfo = useSelector(state => state.userSignin.userInfo)
+    const userUpdate = useSelector(state => state.userUpdate)
+    const { updatedUserInfo } = userUpdate
     
-    const {
-        submitHandler,
-        rating,
-        setRating,
-        comment,
-        setComment
-    } = props
-
-    const [open, setOpen] = useState(false);
-
-    function getColor(id){
-        if(id===rating){
-            return {
-                backgroundColor:'rgba(255, 0, 0, 0)',
-                outline: 'none',
-                boxShadow:'0 0 2px 1px rgba(0, 0, 0, 0.6)'                
-            }
-        }
+    if(updatedUserInfo){
+        userInfo=updatedUserInfo
     }
 
-    return(
-        <div className='subContainer'>
-            <div className='subContainerHeader'>
-                <h2>Write a customer review</h2>
-                <div></div>
-                <div></div>
-                <ContainerOpenButton open={open} setOpen={setOpen} />
-            </div>
-            <div className='subContainerContent'
-                style={{
-                    height:open?'auto':0,
-                    margin:open?'1rem':0
-                }}
-            > 
-                <form onSubmit={submitHandler}>      
-                    <li>
-                        <label htmlFor='rating'>
-                            Rating
-                        </label>
-                        <div className='optionButtons'>
-                            <button style={getColor(1)} onClick={e => setRating(1)} type='button'>Poor</button>
-                            <button style={getColor(2)} onClick={e => setRating(2)} type='button'>Fair</button>
-                            <button style={getColor(3)} onClick={e => setRating(3)} type='button'>Good</button>
-                            <button style={getColor(4)} onClick={e => setRating(4)} type='button'>Very Good</button>
-                            <button style={getColor(5)} onClick={e => setRating(5)} type='button'>Excellent</button>
-                        </div>
-                    </li>
-                    <li className='reviewComment'>
-                        <label htmlFor='comment'>Comment</label>
-                        <textarea className='textArea' name='comment' value={comment} onChange={e => setComment(e.target.value)}/>
-                    </li>
-                    <li>
-                        <button type='submit' className='button primary'>Submit</button>
-                    </li>
-                </form>              
-            </div>        
-        </div>
-    )
-}
-
-export function WriteReviewSlim(props){
-    
     const [rating, setRating] = useState(0)
     const [comment, setComment] = useState('')
+    const [reviewed, setReviewed] = useState(false)
+    const [open, setOpen] = useState(true);
+    const [myRating, setMyRating] = useState(null)
     const dispatch = useDispatch()
 
-    const userSignin = useSelector(state => state.userSignin)
-    const userInfo = userSignin.userInfo
+    const productReviewSave = useSelector(state => state.productReviewSave)
+    const {success:productSaveSuccess, review} = productReviewSave
 
-    const [open, setOpen] = useState(false);
-    // useEffect(()=>{
-    //     if(productSaveSuccess){
-    //         alert('Review submitted succesfully')
-    //         setRating(0)
-    //         setComment('')
-    //         dispatch({type: PRODUCT_REVIEW_SAVE_RESET})
-    //     }
-    //     // eslint-disable-next-line react-hooks/exhaustive-deps
-    // },[productSaveSuccess])
+    useEffect(()=>{
+        if(userInfo){
+            let myReview = userInfo.reviews.find(review => review.productId===product)
+            console.log(myReview)
+            if(myReview){
+                setRating(myReview.rating)
+                setComment(myReview.comment)
+                setReviewed(true)
+                setMyRating(myReview)
+            }            
+        }
+    },[])
+
+    useEffect(()=>{
+        if(productSaveSuccess){
+            dispatch({type: PRODUCT_REVIEW_SAVE_RESET})        
+            dispatch(update({
+                userId: userInfo._id, 
+            }))      
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[productSaveSuccess])
 
     const submitHandler = (e) =>{
         e.preventDefault()
@@ -274,14 +240,72 @@ export function WriteReviewSlim(props){
             rating: rating,
             comment: comment
         }))
+        
+        setReviewed(true)
     }
-    const{
-        product
-    } = props
+
+    const changeRating=(rate)=>{
+        if(!reviewed){
+            setRating(rate)
+        }
+    }
+
+    return(
+        
+        <div className='subContainer reviewContainer'>
+            {!userInfo ? <div>Please <Link to='/signin'>Signin</Link> to write a review</div>
+            :<>
+            <div className='reviewContainerHeader'>
+                <h2>
+                    {reviewed?'My review':
+                    'Write a customer review'}
+                </h2>
+            </div>         
+        
+            <div className='reviewUserMy'>
+                <i className="fa fa-user-circle-o fa-2x" aria-hidden="true"></i>
+                <p>Juha Kangas</p>
+                <OptionButtons 
+                    changeRating={changeRating}
+                    rating={rating}    
+                    reviewed={reviewed}
+                />
+                <ContainerUpdateButton 
+                    reviewed={reviewed} 
+                    setReviewed={setReviewed}
+                />        
+            </div>              
+
+            <div className='reviewCommentContainer'>
+                {reviewed?
+                        <li className='reviewComment'>
+                            <span>{parseDate(myRating.updatedAt)}</span>
+                            <p>{comment}</p>
+                        </li>
+                        :  
+                        <form className='reviewCommentForm' onSubmit={submitHandler}>  
+                                <textarea className='textArea' name='comment' value={comment} onChange={e => setComment(e.target.value)}/> 
+                                
+                                <button type='submit' className='button primary'>Submit</button>         
+                        </form>
+                    }  
+                </div>    
+           </>}      
+        </div>
+    )
+}
+
+function parseDate(date){
+    return `${date.split('T')[0].split('-').join('/')} ${'\u00A0'}${date.split('T')[1].substring(0,5)}`
+}
+
+function OptionButtons({changeRating, rating, reviewed}){
+
     function getColor(id){
         if(id===rating){
             return {
-                backgroundColor:'rgba(255, 0, 0, 0)',
+                backgroundColor:'rgba(255, 255, 255, 1)',
+                color:'black',
                 outline: 'none',
                 boxShadow:'0 0 2px 1px rgba(0, 0, 0, 0.6)'                
             }
@@ -289,30 +313,26 @@ export function WriteReviewSlim(props){
     }
 
     return(
-        <div>
-            <div className='subContainer myRating'>
-                <div className='subContainerContent'> 
-                    <form onSubmit={submitHandler}>      
-                        <li className='liSlim'>
-                            <label htmlFor='rating'>
-                                My Rating
-                            </label>
-                            <div className='optionButtons'>
-                                <button style={getColor(1)} onClick={e => setRating(1)} type='button'>Poor</button>
-                                <button style={getColor(2)} onClick={e => setRating(2)} type='button'>Fair</button>
-                                <button style={getColor(3)} onClick={e => setRating(3)} type='button'>Good</button>
-                                <button style={getColor(4)} onClick={e => setRating(4)} type='button'>Very Good</button>
-                                <button style={getColor(5)} onClick={e => setRating(5)} type='button'>Excellent</button>
-                            </div>
-                        </li>
-                        <li className='reviewCommentSlim'>
-                            <label htmlFor='comment'>Comment</label>
-                            <textarea className='textArea' name='comment' value={comment} onChange={e => setComment(e.target.value)}/>
-                            <button type='submit' className='button primary'>Submit</button>
-                        </li>
-                    </form>              
-                </div>        
+        <div className='ratingBar'>
+            <div className='optionButtons'>
+                <button disabled={reviewed} style={getColor(1)} onClick={e => changeRating(1)} type='button'>1</button>
+                <button disabled={reviewed} style={getColor(2)} onClick={e => changeRating(2)} type='button'>2</button>
+                <button disabled={reviewed} style={getColor(3)} onClick={e => changeRating(3)} type='button'>3</button>
+                <button disabled={reviewed} style={getColor(4)} onClick={e => changeRating(4)} type='button'>4</button>
+                <button disabled={reviewed} style={getColor(5)} onClick={e => changeRating(5)} type='button'>5</button>
             </div>
+        </div>
+    )
+}
+
+function ContainerUpdateButton({reviewed, setReviewed}){
+    return(
+        <div className='updateButton'>
+            <button className='iconButton'
+                onClick={e => setReviewed(!reviewed)}
+            >
+                <i className="fa fa-pencil fa-1x" aria-hidden="true"></i>
+            </button>
         </div>
     )
 }

@@ -104,55 +104,14 @@ function Actions({product, handleAddToCart, qty, setQty}){
 }
 
 function Ratings({product}){
-    
-    const [rating, setRating] = useState(0)
-    const [comment, setComment] = useState('')
-
-    const userSignin = useSelector(state => state.userSignin)
-    const userInfo = userSignin.userInfo
-
-    const productReviewSave = useSelector(state => state.productReviewSave)
-    const {success:productSaveSuccess} = productReviewSave
-
-    useEffect(()=>{
-        if(productSaveSuccess){
-            alert('Review submitted succesfully')
-            setRating(0)
-            setComment('')
-            dispatch({type: PRODUCT_REVIEW_SAVE_RESET})
-            dispatch(detailsProduct(product._id))
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[productSaveSuccess])
-
-    const dispatch = useDispatch()
-
-    const submitHandler = (e) =>{
-        e.preventDefault()
-        dispatch(saveProductReview(product._id, {
-            name: userInfo.name,
-            rating: rating,
-            comment: comment
-        }))
-    }
 
     return(
         <div className='actions'>
             <div className='actionContainer'>
                 <ul className='actionList'>
                     <TotalRating product={product}/>
-                    <CustomerReviews product={product}/>
-                    {!product.reviews.length && <div>There are no reviews</div>}      
-                    {userInfo ? 
-                        <WriteReview 
-                            submitHandler={submitHandler}
-                            rating={rating}
-                            setRating={setRating}
-                            comment={comment}
-                            setComment={setComment}
-                        />
-                    :
-                    <div>Please <Link to='/signin'>Signin</Link> to write a review</div>}    
+                    <CustomerReviews product={product}/>     
+                    <WriteReview product={product._id}/>
                 </ul>
             </div>
         </div>
