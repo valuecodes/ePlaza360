@@ -47,7 +47,6 @@ const update = (updatedUserInfo) => async (dispatch, getState) =>{
         const {data:{data}} = await axios.put('/api/users/'+updatedUserInfo.userId,updatedUserInfo,{headers:{
             Authorization: 'Bearer'+userInfo.token
         }})
-        console.log(data)
         Cookie.set('userInfo', JSON.stringify(data))
         dispatch({type: USER_UPDATE_SUCCESS, payload: data})
         

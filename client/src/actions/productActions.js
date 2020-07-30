@@ -16,7 +16,6 @@ import {
     PRODUCT_REVIEW_SAVE_FAIL,
 } from "../constants/productConstants";
 import axios from "axios";
-import Cookie from 'js-cookie'
 
 const listProducts = (category='', searchKeyWord='', sortOrder='') => async (dispatch) => {
     try{
@@ -76,7 +75,6 @@ const saveProductReview = (productId, review) => async (dispatch, getState) => {
     try{
         const {userSignin:{userInfo:{token}}} = getState()
         dispatch({type: PRODUCT_REVIEW_SAVE_REQUEST, payload: review})
-        console.log(productId)
         const {data} = await axios.post(`/api/products/${productId}/reviews`, review,{
             headers:{
                 Authorization: 'Bearer'+token

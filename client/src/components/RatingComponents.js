@@ -1,10 +1,9 @@
-import React, { useState,useEffect } from 'react'
+import React, { useState,useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { saveProductReview } from '../actions/productActions'
 import { PRODUCT_REVIEW_SAVE_RESET } from '../constants/productConstants';
 import { update } from '../actions/userActions';
 import { Link } from 'react-router-dom'
-import Cookie from 'js-cookie'
 
 export function TotalRating({product}) {
 
@@ -15,8 +14,8 @@ export function TotalRating({product}) {
         <div className='subContainer'>
             <div className='subContainerHeader'>
                 <h2>Rating</h2>
-                <div className='totalRatingStars'>
-                    <Rating rating={product.rating} size={2}/>
+                <div className='totalRatingContainer'>
+                    <TotalRatingBar rating={product.rating}/>
                 </div>
                 <div >
                     <h3 className='highlight' >{ratingPercent}%</h3> 
@@ -63,7 +62,6 @@ function RatingStatistics({product}){
             {id:1, name:'1 star',rate:0},   
         ]
         const total =  product.numReviews
-        console.log(product.reviews)
         product.reviews.forEach(review =>{
             if(product.rating>0){
                 newRatings[4-(review.rating-1)].rate+=(1/total)*100
@@ -130,14 +128,16 @@ function Reviews({product}){
         <div className='customerReviews'>
             {product.reviews.map(review =>
                 <li className='reviewItem' key={review._id}>
-                    <div className='reviewUser'>
+                    <div className='reviewUserMy'>
                         <i className="fa fa-user-circle-o fa-2x" aria-hidden="true"></i>
                         <p>{review.name}</p>
-                        <span>{review.createdAt.substring(0, 10)}</span>
+                        <div className='reviewNumber'>{review.rating}</div> 
                     </div>
                     <div className='reviewRating'>
-                        <Rating rating={review.rating} />
-                        <p>{review.comment}</p>
+                        <div className='reviewComment'>
+                            <span>{parseDate(review.updatedAt)}</span>
+                            <p>{review.comment}</p>
+                        </div>
                     </div>
                 </li>
             )}   
@@ -145,50 +145,58 @@ function Reviews({product}){
     )
 }
 
-export function Rating({text='', rating=0, size=1}) {
+export function Rating({text='', rating=0, totalRating=false}) {
+    
+    const review=useRef()
 
-    const stars=[1,2,3,4,5]
-    const [starSize, setStarSize] = useState(`fa-1x`)
-
-    useEffect(()=>{
-        window.addEventListener("resize", displayWindowSize);
-        return () => window.removeEventListener("resize", displayWindowSize)
-         // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[])
+    const ratingPercent=Math.floor(rating*20)
 
     useEffect(()=>{
-        let ssize=size
-        if(window.innerWidth<1100){
-            ssize=1
-        } 
-        setStarSize(ssize)
-         // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[])
-
-    function displayWindowSize(){
-        if(window.innerWidth<1100){
-            setStarSize(1)
-        }
-    }
+       if(rating){
+            review.current.style.setProperty('--rating-percent',ratingPercent+'%')           
+       }
+    },[rating,ratingPercent])
 
     return (
         !rating? <div></div>:
-        <div className='rating'>
-            {stars.map(star => 
-                <span key={star}>
-                    <i className={
-                        rating>=star?
-                        `fa fa-star fa-${starSize}x`:
-                        rating >= star-0.5?
-                        `fa fa-star-half-o fa-${starSize}x`:
-                        `fa fa-star-o fa-${starSize}x`}>
-                    </i>                      
-                </span> 
-            )}    
-            <span>{text}</span>
+        <div className='productRating'>    
+            <div className='rating'>
+                <div
+                    style={{left:ratingPercent+'%'}}
+                    className='ratingPercent'>
+                    <span>{ratingPercent}%</span>
+                </div>
+                <div></div>
+                <div ref={review} className='reviewBar'>
+                
+                </div>
+                <span>{text}</span>
+            </div>
         </div>
     )
 }
+
+export function TotalRatingBar({rating}){
+    const review=useRef()
+
+    const ratingPercent=Math.floor(rating*20)
+
+    useEffect(()=>{
+       if(rating){
+            review.current.style.setProperty('--rating-percent',ratingPercent+'%')           
+       }
+    },[rating,ratingPercent])
+
+    return (
+        !rating? <div></div>:
+        <div className='productRating'>    
+            <div className='rating'>
+                <div ref={review} className='reviewBar'>
+                </div>
+            </div>
+        </div>
+    )
+} 
 
 export function WriteReview({product}){
 
@@ -203,24 +211,23 @@ export function WriteReview({product}){
     const [rating, setRating] = useState(0)
     const [comment, setComment] = useState('')
     const [reviewed, setReviewed] = useState(false)
-    const [open, setOpen] = useState(true);
-    const [myRating, setMyRating] = useState(null)
+    const [updatedAt, setUpdatedAt] = useState(null)
     const dispatch = useDispatch()
 
     const productReviewSave = useSelector(state => state.productReviewSave)
-    const {success:productSaveSuccess, review} = productReviewSave
+    const {success:productSaveSuccess} = productReviewSave
 
     useEffect(()=>{
         if(userInfo){
             let myReview = userInfo.reviews.find(review => review.productId===product)
-            console.log(myReview)
             if(myReview){
                 setRating(myReview.rating)
                 setComment(myReview.comment)
                 setReviewed(true)
-                setMyRating(myReview)
+                setUpdatedAt(myReview.updatedAt)
             }            
         }
+         // eslint-disable-next-line react-hooks/exhaustive-deps        
     },[])
 
     useEffect(()=>{
@@ -264,7 +271,7 @@ export function WriteReview({product}){
         
             <div className='reviewUserMy'>
                 <i className="fa fa-user-circle-o fa-2x" aria-hidden="true"></i>
-                <p>Juha Kangas</p>
+                <p>{userInfo.name}</p>
                 <OptionButtons 
                     changeRating={changeRating}
                     rating={rating}    
@@ -279,14 +286,13 @@ export function WriteReview({product}){
             <div className='reviewCommentContainer'>
                 {reviewed?
                         <li className='reviewComment'>
-                            <span>{parseDate(myRating.updatedAt)}</span>
+                            <span>{parseDate(updatedAt)}</span>
                             <p>{comment}</p>
                         </li>
                         :  
                         <form className='reviewCommentForm' onSubmit={submitHandler}>  
                                 <textarea className='textArea' name='comment' value={comment} onChange={e => setComment(e.target.value)}/> 
-                                
-                                <button type='submit' className='button primary'>Submit</button>         
+                                <button type='submit' className='button primary submitButton'>Submit</button>         
                         </form>
                     }  
                 </div>    
@@ -296,6 +302,7 @@ export function WriteReview({product}){
 }
 
 function parseDate(date){
+    if(!date) return ''
     return `${date.split('T')[0].split('-').join('/')} ${'\u00A0'}${date.split('T')[1].substring(0,5)}`
 }
 

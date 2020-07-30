@@ -88,10 +88,10 @@ exports.postReview = async (req, res) => {
     const product = await Product.findById(req.params.id)
     const user = await User.findById(req.user._id)      
 
-    if(product.reviews.length && user.reviews.length){
+    let userReview = user.reviews.findIndex(review => review.productId===req.params.id) 
+    if(product.reviews.length && user.reviews.length && userReview!==-1){
 
-        let newRating = product.reviews.reduce((a, c) => a + 
-            (req.params.id===c.productId?req.body.rating:c.rating)
+        let newRating = product.reviews.reduce((a, c) => a + c.rating
         ,0) / product.reviews.length
 
         let productUpdate =  await Product.findOneAndUpdate(
@@ -121,7 +121,7 @@ exports.postReview = async (req, res) => {
                 }     
             },{upsert: true, new: true, useFindAndModify: false},
         )
-
+        
         if(userUpdate&&productUpdate){
             return res.status(201).send({
                 data: productUpdate.reviews[productUpdate.reviews.length-1], 

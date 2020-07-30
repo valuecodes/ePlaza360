@@ -8,11 +8,12 @@ html{
   --main-text-color:rgb(31, 31, 31);
   --main-red-color:rgb(179, 28, 28);
   --container-color:#f0f0f081;
-  --sub-container-color:rgba(208, 233, 227, 0.527);
-  --primary-button:#add889;
+  --sub-container-color:rgba(231, 231, 231, 0.527);
+  --primary-button: #6aa4ad;
   --star-color: rgb(30, 210, 165);
   --primary-box-shadow: 0 0 4px 1px rgba(0, 0, 0, 0.3);
   --ligth-box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.3);
+  --rating-background: linear-gradient(to right,#aa4b6b, #6b6b83,#3b8c99);
 }
 
 body{
@@ -46,22 +47,15 @@ body{
 
 /* Buttons */
 .button{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 3rem;
-  border:0.1rem ;
+  border:none;
   border-radius: 0.5rem;
-  background-color: #c9c9c9;
-  font-size: 1.4rem;
-  text-decoration: none;
-  color: black;
-  box-shadow: var(--ligth-box-shadow);
+  font-size: 1.6rem;
 }
 
 .primary{
   background-color: var(--primary-button);
   height: 4rem;
+  color: rgb(255, 255, 255);
 }
 
 .secondary{
@@ -154,7 +148,6 @@ body{
   padding: 0px;
   flex: 1 1 30rem;
   margin: 3rem 3rem;
-  height: 40rem;
   max-width: 40rem;
   border-bottom: 0.1rem #c0c0c0 solid;
 }
@@ -164,13 +157,30 @@ body{
   flex-direction: column;
   height: 100%;
 }
+.imageLink{
+  display: flex;
+  justify-content: center;
+}
 
-.productName{
-  font-size: 1.5rem;
+.productName a{
+  font-size: 1.8rem;
+  color: black;
 }
 
 .productBrand{
   font-size: 1.2rem;
+  margin: 0.4rem 0;
+}
+.productBrand span{
+  background-color: rgb(136, 136, 136);
+  color: white;
+  border-radius: 0.4rem;
+  padding: 0 0.2rem;
+}
+
+.productInfo{
+  display: grid;
+  grid-template-columns:1fr 2fr ;
 }
 
 .productPrice{
@@ -178,9 +188,71 @@ body{
   font-weight: bold;
 }
 
-.imageLink{
+.productRating{
   display: flex;
-  justify-content: center;
+  align-items: flex-end;
+}
+
+.rating{
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr auto ;
+  grid-column-gap: 1rem;
+  align-items: center;
+}
+
+.ratingPercent{
+  width: 0;
+  position: relative;
+  top: -0.5rem;
+  margin-left: 0.2rem;
+}
+
+.ratingPercent span{
+  padding-left: 0.5rem;
+  border-bottom: 0.1rem solid gray;
+}
+
+.totalRatingContainer div{
+  padding-left: 1rem;
+  height: 2rem;
+  width: 100%;
+  border-radius: 0.5rem;
+}
+.totalRatingContainer div::before{
+  height: 2rem;
+  padding: 0 0.5rem;
+}
+.totalRatingContainer div::after{
+  height: 0;
+}
+
+.reviewBar{
+  height: 1rem;
+  background: linear-gradient(to right,#aa4b6b, #6b6b83,#3b8c99);
+}
+
+.reviewBar::before{
+  content: '';
+  display: block;
+  height: 1rem;
+  width: 0.5rem;
+  margin-left: var(--rating-percent);
+  margin-top: -0.1rem;
+  background-color: rgb(255, 255, 255);
+  border: 0.1rem solid black;
+}
+
+.reviewBar::after{
+  position: relative;
+  top: -2.2rem;
+  left: 0.2rem;
+  width: 0.1rem;
+  content: ' ';
+  display: block;
+  height: 1rem;
+  margin-left: var(--rating-percent);
+  background-color: gray;
 }
 
 .productImage{
@@ -199,10 +271,10 @@ body{
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
+  height: 100%;
 }
 
 .details{
-  height: auto;
   display: flex;
   flex-wrap: wrap;
   margin: auto;
@@ -244,12 +316,11 @@ body{
   max-width: 100vw;
   margin: 1rem;
   padding: 1rem;
-  background-color: #f0f0f081;  
   border-radius: 0.5rem;
   color: rgb(44, 44, 44);
   font-size: 1.6rem;
   display: flex;
-  box-shadow: var(--primary-box-shadow)
+  box-shadow: var(--primary-box-shadow);
 }
 
 .actionContainer ul{
@@ -260,6 +331,11 @@ body{
 
 .actionList {
   width: 100%;
+}
+.actionListHeader {
+  display: grid;
+  grid-template-columns:  1fr 1fr;
+  grid-column-gap: 1rem;
 }
 
 .actionList li{
@@ -276,8 +352,9 @@ body{
   width: 100%;
   max-width: 100vw;
   margin-bottom: 1rem;
-  background-color: var(--sub-container-color);
+  background-color: rgb(245, 245, 245);
   border-radius: 0.5rem;
+  border-bottom: 0.2rem solid rgb(189, 189, 189);
 }
 
 .subContainerHeader{
@@ -304,12 +381,6 @@ body{
   margin: 0 1rem;
 }
 
-.totalRatingStars{
-  display: flex;
-  justify-content: flex-start;
-  padding-left: 2rem;
-}
-
 .highlight{
   margin: 0;
   padding: 0;
@@ -322,7 +393,6 @@ body{
 .subContainerContent{
   overflow: hidden;
   margin: 1rem;  
-  max-height: 33vh;
   overflow-y: auto;
 }
 
@@ -366,31 +436,44 @@ body{
   text-align: right;
 }
 
-.totalRatingStars{
-  color: var(--star-color);
-}
-
-/* Rating */
-.rating span{
-  color: var(--star-color);
-  font-size: 1.8rem;
-  margin: 0.1rem;
-}
-
-.rating span:last-child{
-  color: rgb(43, 43, 43);
-  font-size: 1.4rem;
-  padding: 0;
-  margin: 0;
-}
-
-a > .rating > span:last-child{
-  color: #0000ff;
+.customerReviews{
+  width: 100%;
+  
+  /* background-color: #e4e4e481; */
 }
 
 .reviewItem{
-  padding: 1rem;
-  border-top:  0.1rem solid rgb(173, 173, 173);
+  padding-top: 1rem;
+  border-radius: 0.5rem;
+  margin: 0.2rem;
+  margin-top: 1rem;
+  border: 0.1rem solid rgb(194, 194, 194);
+  background-color: rgb(255, 255, 255);
+}
+
+.reviewItem .reviewUserMy{
+  /* background-color: rgb(255, 255, 255); */
+}
+.reviewItem .reviewComment{
+  /* background-color: rgb(255, 255, 255); */
+}
+
+.reviewNumber{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: auto;
+  margin-right: 2rem;
+  text-align: center;
+  padding: .5rem;
+  height: 1rem;
+  width: 3.5rem;
+  font-size: 1.3rem;
+  border: rgba(255, 255, 255, 0);
+  color: rgb(0, 0, 0);
+  background-color:rgb(255, 255, 255);
+  cursor: pointer;
+  box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.6);
 }
 
 .reviewUser{
@@ -412,7 +495,8 @@ a > .rating > span:last-child{
 }
 
 .reviewRating{
-  display: flex;
+  margin: 1rem;
+  margin-bottom: 0;
 }
 
 .reviewRating p{
@@ -424,7 +508,7 @@ a > .rating > span:last-child{
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   background-color: rgb(196, 196, 196);
-  background-image: linear-gradient(to right,#aa4b6b, #6b6b83,#3b8c99);
+  background-image: var(--rating-background);
   min-height: 2rem;
   border-radius: 0.5rem;
   padding: 0 0.1rem;
@@ -461,7 +545,9 @@ a > .rating > span:last-child{
   background-color: white;
   margin-bottom:0rem; 
   margin: 0;
-  padding: 0;
+  padding: 0 ;
+  border: none;
+  /* box-shadow: var(--ligth-box-shadow) */
 }
 
 .reviewContainerHeader h2{
@@ -481,13 +567,16 @@ a > .rating > span:last-child{
   padding-left: 0.5rem;
   margin: 0 0.5rem;
   height: 4rem;
-  background-color: rgb(202, 202, 202);
   border-radius: 5rem;
+  border: 0.1rem solid rgb(190, 190, 190);
 }
 
 .reviewUserMy span{
   text-align: right;
   margin-right: 1rem;
+}
+.reviewUserMy p{
+  line-height: 1.8rem;
 }
 
 .reviewCommentContainer{
@@ -500,7 +589,7 @@ a > .rating > span:last-child{
   background-color: rgb(240, 240, 240);
   border-radius: 0.5rem;
   min-height: 3rem;
-  margin: 0;
+  margin-bottom: 1rem;
   max-width: 100vw;
   padding: 0.5rem;
   display: grid;
@@ -537,26 +626,19 @@ a > .rating > span:last-child{
   border: 0.1rem solid gray;
 }
 
-.myRating{
-  background-color: white;
+.submitButton{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  border: 0.1rem solid rgb(121, 121, 121);
+  color: black;
+
+  /* box-shadow: var(--primary-box-shadow) */
 }
 
-.reviewCommentSlim{
-  display: flex;
-  flex-wrap: wrap;
-  padding-bottom: 0.1rem;
-}
-.reviewCommentSlim label{
-  width: 100%;
-}
-.reviewCommentSlim textarea{
-  background-color: rgb(223, 223, 223);
-  width: 65%;
-  margin-right: 5%;
-}
-.reviewCommentSlim button{
- width: 30%;
- background-color: white;
+.myRating{
+  background-color: white;
 }
 
 /* Cart */
@@ -599,15 +681,51 @@ a > .rating > span:last-child{
   flex-wrap: wrap;
 }
 
-.cartItem div select{
-  min-width: 11rem;
-}
-
 .cartItemInfo{
   display: flex;
   flex-direction: column;
   height: 14rem;
   margin-left: 1rem;
+  margin-right: 2rem;
+}
+
+.cartItemDescription{
+  margin-top: 1rem;
+  font-size: 1.5rem;
+}
+
+.cartItemList{
+  margin-top: auto;
+  margin-bottom: 1rem;
+}
+
+.cartItemList .listItem{
+  max-width: 15rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 1.5rem;
+}
+.cartItemList .listItem{
+  min-width: 15rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 1.5rem;
+  margin: 0.5rem 0;
+}
+
+.cartItemList .listItemColors{
+  width: auto;
+  max-width: 100vw;
+  display: grid;
+  align-content: center;
+  height: 3rem;
+  padding-bottom: 1rem;
+}
+
+.cartItemList .listItemColors div button{
+  height: 1.5rem;
 }
 
 .cartItemName{
@@ -621,8 +739,14 @@ a > .rating > span:last-child{
   text-decoration: none;
 }
 
-.cartItemDescription{
-  height: 5rem;
+.cartSelect{
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.cartSelect .listItem{
+  margin-bottom: 1rem;
 }
 
 .cartQty{
@@ -634,20 +758,32 @@ a > .rating > span:last-child{
   margin-left: 0.5rem;
 }
 
+.cartPriceColumn{
+  margin-left: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
 .cartRemove{
+  /* align-self: flex-end; */
   max-width: 14.5rem;
   margin: 1rem 0;
 }
 
 .cartItemPrice{
+  /* justify-self: flex-end; */
   font-size: 2rem;
   font-weight: bold;
   margin-left: auto;
   padding-top: 0.5rem;
 }
 
+.cartItemImageContainer{
+  width: 20rem;
+}
 .cartItemImage{
-  max-width: 14rem;
+  max-height: 15rem;
 }
 
 /* Footer */
@@ -676,9 +812,9 @@ a > .rating > span:last-child{
 
 /* Action components */
 .listItem{
+  height: auto;
   display: grid;
-  grid-template-columns: 1fr 7rem;
-  width: 17rem;
+  grid-template-columns: 1fr auto;
   background-color:  var(--sub-container-color);
   padding: 0.3rem;
   border-radius: 0.5rem;
@@ -691,6 +827,32 @@ a > .rating > span:last-child{
   padding: 1rem 0;
   font-weight: bold;
   font-size: 1.8rem;
+}
+
+.listItemColors{
+  display:grid;
+  grid-template-columns: 5rem 1fr;
+  grid-row: 3/5;
+  grid-column: 2/3;
+}
+
+.listItemColors div{
+  grid-column: 1/3;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.listItemColor{
+  width: 3rem;
+  height: 1.5rem;
+  margin-left: 0.2rem;
+  border-radius: 0.5rem;
+  opacity: 0.8;
+  cursor: pointer;
+  outline: none;
+  border: none;
 }
 
 .listItemFullWidth{
@@ -723,6 +885,7 @@ a > .rating > span:last-child{
 }
 
 .listHeader{
+  grid-column: 1/3;
   border-bottom:  0.1rem solid rgb(173, 173, 173);
   margin: 0; 
   margin-bottom: 2rem;
@@ -734,8 +897,10 @@ a > .rating > span:last-child{
   background-color:rgba(155, 155, 155, 0.582);
   border: none;
   border-radius: 0.5rem;
-  margin-bottom: 0.2rem;
-  height: 2.2rem;
+}
+
+.listButton{
+  grid-column: 1/3;
 }
 
 /* Form */
@@ -1201,39 +1366,55 @@ tbody>tr:nth-child(odd){
   display: block;
 }
 
+.filterContainer {
+  max-width: 100vw;
+  width: 30rem; 
+  margin: auto;
+  /* display: flex; */
+  /* align-items: center; */
+}
+
 /* Filter */
 .filter{
-  display: flex;
-  list-style-type: none;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-column-gap: 0.5rem;
   padding: 0;
-  max-width: 100vw;
-  margin: 2rem;
-  /* background-color: var(--sub-container-color); */
+  margin-top: 3rem;
 }
 
 .filter li{
   display: flex;
+  flex-grow: 1;
 }
 
 .filterForm{
+  display: grid;
+  grid-template-columns: 1fr 6rem;
+}
+
+.filterActions{
   display: flex;
+  flex-direction: column;
+}
+.filterActions button{
+  width: 3rem;
+  position: relative;
+  top: -5rem;
+  margin-left: auto;
 }
 
 .sortOrder{
   height: 4rem;
-  /* background-color:red; */
   border: none;
   border-radius: 3rem;
 }
 
 .filterButton{
   height: 3rem;
-  margin-right: 0.2rem;
-  width: 6rem;
   border-radius: 0.5rem;
   border:none;
-  background-color: rgb(201, 201, 201);
+  background-color: rgb(216, 216, 216);
 }
 
 .first{
@@ -1243,20 +1424,17 @@ tbody>tr:nth-child(odd){
 .second{
   border-radius: 0.5rem;
   border:none;
-  margin-left: 0.5rem;
 }
 
 .roundButton{
   text-align: center;
   height: 3rem;
-  min-width: 7rem;
-  background-color: var(--primary-button);
+  background-color: rgb(216, 216, 216);
   border: none;
   border-radius: 0.5rem;
 }
 
 .filterInput{
-  max-width: 35vw;
   height: 2.6rem;
   border-radius: 0.5rem 0 0 0.5rem;
   border: 0.1rem solid rgb(194, 194, 194);

@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { listProducts } from '../actions/productActions'
+import { ProductInfo } from '../components/ProductComponents'
 import { Link } from 'react-router-dom'
-import { Rating } from '../components/RatingComponents'
 
 export default function HomeScreen(props) {
 
@@ -51,24 +51,26 @@ function Filter({category}){
     }
 
     return(
-        <ul className='filter'>
-            <li>
-                <form className='filterForm' onSubmit={submitHandler}>
-                    <input className='filterInput' name='searchKeyWord' onChange={e => setSearchKeyWord(e.target.value)}/>
-                    <button className='filterButton first' type='submit '>Search</button>
-                </form>
-            </li>
-            <li>
-                <select className='sortOrder roundButton' name='sortOrder' value={sortOrder} onChange={e => sortHandler(e.target.value)}>
-                    <option value=''>Newest</option>
-                    <option value='lowest'>Lowest</option>
-                    <option value='highest'>Highest</option>
-                </select>
-                <button type='button' className='second' onClick={resetFilter}>
-                    <i className="fa fa-refresh" aria-hidden="true"></i>
-                </button>                
-            </li>
-        </ul>
+        <div className='filterContainer'>    
+            <ul className='filter'>
+                <li>
+                    <form className='filterForm' onSubmit={submitHandler}>
+                        <input className='filterInput' name='searchKeyWord' onChange={e => setSearchKeyWord(e.target.value)}/>
+                        <button className='filterButton first' type='submit '>Search</button>
+                    </form>
+                </li>
+                <li className='filterActions'>
+                    <select className='sortOrder roundButton' name='sortOrder' value={sortOrder} onChange={e => sortHandler(e.target.value)}>
+                        <option value=''>Newest</option>
+                        <option value='lowest'>Lowest</option>
+                        <option value='highest'>Highest</option>
+                    </select>
+                        <button type='button' className='second' onClick={resetFilter}>
+                        <i className="fa fa-refresh" aria-hidden="true"></i>
+                    </button>    
+                </li>
+            </ul>
+        </div>
     )
 }
 
@@ -76,23 +78,14 @@ function Products({products}){
   return (
     <div className="products">
         {products.map(product => 
+
             <li key={product._id}>
                 <div className='product'>
                     <Link className='imageLink' to={`/product/${product._id}`}>
                         <img className='productImage' src={product.image} alt='product'/>
                     </Link>
-                    <div className='productName'>
-                    <Link to={`/product/${product._id}`}>{product.name}</Link>
-                    </div>
-                    <div className='productBrand'>{product.brand}</div>
-                    <div className='productPrice'>${product.price}</div>    
-                    <div className='productRating'>
-                        <Rating 
-                            rating={product.rating}
-                            text={product.numReviews+' reviews'} 
-                        />
-                    </div>        
-            </div>
+                    <ProductInfo product={product} link={true}/>
+                </div>
             </li>        
         )}
     </div>

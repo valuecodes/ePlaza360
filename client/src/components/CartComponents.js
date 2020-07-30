@@ -1,8 +1,9 @@
-import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React,{useState} from 'react'
+import { useDispatch } from 'react-redux'
 import { addToCart, removeFromCart } from '../actions/cartActions'
 import { Link } from 'react-router-dom'
 import { WriteReview } from '../components/RatingComponents'
+import { ListSelect, ListSelectColors, ListItem,ListSelectArray, ListItemColor } from './ListComponents';
 
 export function CartList(props){
     
@@ -13,10 +14,6 @@ export function CartList(props){
         orderActions = false,
         reviewActions = false 
     } = props
-
-    const userSignin = useSelector(state => state.userSignin)
-    const state = useSelector(state => state)
-    let userInfo = userSignin.userInfo
 
     return(
         <div className='cartList'>
@@ -48,44 +45,86 @@ function CartItem(props){
         orderActions,
         reviewActions
     } = props
-
+    const [color, setColor] = useState('Khaki')
+    const [size, setSize] = useState(42)
     const dispatch = useDispatch()
 
     const removeFromCartHandler=(productId)=>{
         dispatch(removeFromCart(productId))
     }
-    console.log(props)
+
+    const addToCartHandler=(qty)=>{
+        dispatch(addToCart(item.product, qty))
+    }
+
+    const colors=['Khaki','Teal','Gray','Black']
+    const sizes=[38,40,41,42,43,44,45]
+    
     return(
         <div key={item.product} className='cartItem'> 
-            <img className='cartItemImage' src={item.image} alt='product'/>
+            <div className='cartItemImageContainer'>
+                <img className='cartItemImage' src={item.image} alt='product'/>
+            </div>
+            
             <div className='cartItemInfo'>
                 <div className='cartItemName'>
                     <Link to={`/product/${item.product}`}>
                         {item.name}
                     </Link>
                 </div>
-                <div className='cartItemDescription'>{item.description}</div>
+                          
                 {cartActions &&
-                    <>
-                        <div className='cartQty'>
-                            Qty: {' '}
-                            <select className='select' onChange={e => dispatch(addToCart(item.product, e.target.value))} value={item.qty}>
-                                {[...Array(item.countInStock).keys()].map((value) =>
-                                    <option key={value+1} value={value+1}>{value+1}</option>
-                                )}
-                            </select>
-                        </div>
-                        <button className='button secondary cartRemove' type='button' onClick={e => removeFromCartHandler(item.product)}>Remove</button>   
-                    </>             
-                }
+                    <div className='cartItemList'>
+                        <ListSelect
+                            text={'Qty'}
+                            value={item.qty}
+                            optionNumbers={item.countInStock}
+                            setState={addToCartHandler}
+                        />                     
+                        <ListSelectArray
+                            text={'Size'}
+                            value={size}
+                            array={sizes}
+                            setState={setSize}
+                        />   
+                        <ListSelectColors
+                            text={'Color '} 
+                            colors={colors}
+                            color={color}
+                            setColor={setColor}
+                        />
+                    </div>
+                } 
+
                 {orderActions &&
-                    <p>Qty: <b>{item.qty}</b></p>
+                    <div className='cartItemList'>
+                        <ListItem 
+                            text={'Qty'}
+                            value={item.qty}
+                        />
+                        <ListItem 
+                            text={'Size'}
+                            value={size}
+                        />
+                        <ListItemColor 
+                            text={'Color'}
+                            value={color}
+                        />
+                    </div>
                 }
-            </div>  
+
+            </div>                 
+                              
             {reviewActions &&
                 <WriteReview product={item.product} />
-            }                              
-            <div className='cartItemPrice'>${item.price}</div>
+            }      
+            <div className='cartPriceColumn'>
+                <div className='cartItemPrice'>${item.price}</div>
+
+                {cartActions &&
+                    <button className='button secondary cartRemove' type='button' onClick={e => removeFromCartHandler(item.product)}>Remove</button>                 
+                }       
+            </div>                           
         </div>  
     )
 }

@@ -1,14 +1,15 @@
 import React,{ useEffect, useState} from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { detailsProduct, saveProductReview } from '../actions/productActions'
-import { Link } from 'react-router-dom'
-import { PRODUCT_REVIEW_SAVE_RESET } from '../constants/productConstants';
-import { ListItem, ListSelect, ListButton, ListHeader } from '../components/ListComponents'
-import { TotalRating, CustomerReviews, Rating, WriteReview } from '../components/RatingComponents'
+import { detailsProduct } from '../actions/productActions'
+import { ListItem, ListSelect, ListButton, ListHeader, ListSelectColors, ListSelectArray } from '../components/ListComponents'
+import { TotalRating, CustomerReviews, WriteReview } from '../components/RatingComponents'
+import { ProductInfo } from '../components/ProductComponents'
 
 export default function ProductScreen(props) {
 
     const [qty, setQty] = useState(1)
+    const [color, setColor] = useState('Gray')
+    const [size, setSize] = useState(42)
     const productDetails = useSelector(state => state.productDetails)
     const { product, loading, error } = productDetails
     const productId = props.match.params.id
@@ -27,12 +28,18 @@ export default function ProductScreen(props) {
     return (
         loading?<div>Loading...</div>:error?<div>{error}</div>:
         <div className='productScreen'>  
-            <Details product={product}/>          
+            <Details 
+                product={product}
+            />          
             <Actions 
                 product={product} 
                 handleAddToCart={handleAddToCart}
                 qty={qty}
                 setQty={setQty}
+                color={color}
+                setColor={setColor}
+                size={size}
+                setSize={setSize}
             />
         </div>
     )
@@ -42,23 +49,7 @@ function Details({product}){
     return(
         <div className='details'>
             <div className='detailsInfo'>
-                <ul>
-                    <li>
-                        <div className='productName'>{product.name}</div>
-                    </li>
-                    <li>
-                        <div className='productBrand'>{product.brand}</div>
-                    </li>
-                    <li>
-                        <div className='productPrice detailPrice'>${product.price}</div>
-                    </li>  
-                    <li>
-                        <Rating
-                            rating={product.rating}
-                            text={product.numReviews+' reviews'} 
-                        />
-                    </li>
-                </ul>
+                <ProductInfo product={product} ratingBar={false}/>
             </div>
             <div className='detailsImage'>
                 <img className='detailsImage' src={product.image} alt='product'/>
@@ -67,11 +58,26 @@ function Details({product}){
     )
 }
 
-function Actions({product, handleAddToCart, qty, setQty}){
+function Actions(props){
+
+    const {
+        product, 
+        handleAddToCart, 
+        qty, 
+        setQty,
+        color,
+        setColor,
+        size,
+        setSize
+    } = props
+
+    const colors=['White','Lime','Khaki','Teal','Gray','Black']
+    const sizes=[38,40,41,42,43,44,45]
+
     return(
         <div className='actions'>
             <div className='actionContainer'>
-                <ul className='actionList'>
+                <ul className='actionList actionListHeader'>
                     <ListHeader 
                         text={'Cart'}
                         border={false}
@@ -80,9 +86,21 @@ function Actions({product, handleAddToCart, qty, setQty}){
                         text={'Price:'} 
                         value={'$'+product.price}
                     />
+                    <ListSelectArray
+                        text={'Size'}
+                        value={size}
+                        array={sizes}
+                        setState={setSize}
+                    />   
                     <ListItem 
                         text={'Status:'} 
                         value={product.countInStock>0?'In stock':'Unavailable'}
+                    />                    
+                    <ListSelectColors
+                        text={'Color: '} 
+                        colors={colors}
+                        color={color}
+                        setColor={setColor}
                     />
                     <ListSelect 
                         text={'Qty: '} 
@@ -90,6 +108,7 @@ function Actions({product, handleAddToCart, qty, setQty}){
                         value={qty} 
                         optionNumbers={product.countInStock}
                     />
+
                     {product.countInStock && 
                         <ListButton 
                             text='Add to Cart' 
