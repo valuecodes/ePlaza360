@@ -8,14 +8,17 @@ export default function CartScreen(props) {
     const cart = useSelector(state => state.cart);
 
     const { cartItems } = cart;
-  
+    
     const productId = props.match.params.id;
-    const qty = props.location.search ? Number(props.location.search.split("=")[1]) : 1;
+    
+    const qty = props.location.search ? Number(props.location.search.split("qty=")[1].split('?')[0]) : 1;
+    const color = props.location.search ? props.location.search.split("color=")[1].split('?size')[0] : '';
+    const size = props.location.search ? Number(props.location.search.split("size=")[1]) : '';
     const dispatch = useDispatch();
 
     useEffect(() => {
         if (productId) {
-          dispatch(addToCart(productId, qty));
+          dispatch(addToCart( productId, qty, color, size ));
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
       }, []);

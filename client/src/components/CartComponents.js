@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React,{useState, useEffect} from 'react'
 import { useDispatch } from 'react-redux'
 import { addToCart, removeFromCart } from '../actions/cartActions'
 import { Link } from 'react-router-dom'
@@ -45,6 +45,8 @@ function CartItem(props){
         orderActions,
         reviewActions
     } = props
+
+    const [qty, setQty] = useState(1)
     const [color, setColor] = useState('Khaki')
     const [size, setSize] = useState(42)
     const dispatch = useDispatch()
@@ -52,12 +54,22 @@ function CartItem(props){
     const removeFromCartHandler=(productId)=>{
         dispatch(removeFromCart(productId))
     }
+    
+    useEffect(() => {
+        setQty(item.qty)
+        setColor(item.color)
+        setSize(item.size)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
-    const addToCartHandler=(qty)=>{
-        dispatch(addToCart(item.product, qty))
-    }
+    useEffect(()=>{
+        if(cartActions){
+            dispatch(addToCart(item.product, qty, color, size))
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[qty, color, size])
 
-    const colors=['Khaki','Teal','Gray','Black']
+    const colors=['White','Lime','Khaki','Teal','Gray','Black']
     const sizes=[38,40,41,42,43,44,45]
     
     return(
@@ -77,9 +89,9 @@ function CartItem(props){
                     <div className='cartItemList'>
                         <ListSelect
                             text={'Qty'}
-                            value={item.qty}
+                            value={qty}
                             optionNumbers={item.countInStock}
-                            setState={addToCartHandler}
+                            setState={setQty}
                         />                     
                         <ListSelectArray
                             text={'Size'}

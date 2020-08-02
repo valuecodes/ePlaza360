@@ -14,6 +14,8 @@ const paymentSchema = {
 const orderItemsSchema = new mongoose.Schema({
     name: {type: String, required:true},
     qty: {type: Number, required:true},
+    color: {type: String},
+    size: {type: Number},
     image: {type: String, required:true},
     price: {type: String, required:true},
     product: {

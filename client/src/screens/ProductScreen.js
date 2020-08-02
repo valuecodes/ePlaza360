@@ -22,7 +22,7 @@ export default function ProductScreen(props) {
     
     const handleAddToCart = () =>{
         console.log('adding to cart')
-        props.history.push(`/cart/${productId}?qty=${qty}`)
+        props.history.push(`/cart/${productId}?qty=${qty}?color=${color}?size=${size}`)
     }
 
     return (
@@ -49,7 +49,7 @@ function Details({product}){
     return(
         <div className='details'>
             <div className='detailsInfo'>
-                <ProductInfo product={product} ratingBar={false}/>
+                <ProductInfo product={product} ratingBar={true}/>
             </div>
             <div className='detailsImage'>
                 <img className='detailsImage' src={product.image} alt='product'/>

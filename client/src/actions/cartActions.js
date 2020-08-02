@@ -7,7 +7,7 @@ import {
     CART_SAVE_PAYMENT
 } from '../constants/cartConstants'
 
-const addToCart = (productId, qty) => async (dispatch, getState) => {
+const addToCart = (productId, qty, color, size) => async (dispatch, getState) => {
     try{
         const { data } = await axios.get(`/api/products/${productId}`)
         dispatch({type: CART_ADD_ITEM, payload:{
@@ -17,7 +17,9 @@ const addToCart = (productId, qty) => async (dispatch, getState) => {
             price: data.price,
             brand: data.brand,
             countInStock: data.countInStock,
-            qty
+            qty,
+            color,
+            size
         }})
         const {cart:{cartItems}} = getState()
         Cookie.set('cartItems',JSON.stringify(cartItems))

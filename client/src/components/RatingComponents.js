@@ -40,7 +40,7 @@ function ContainerOpenButton({open, setOpen}){
             <button className='iconButton'
                 onClick={e => setOpen(!open)}
             >
-                <i className="fa fa-plus-circle fa-2x" aria-hidden="true"></i>
+                <i className={`fa fa-${open?"minus":"plus"}-circle fa-2x`} aria-hidden="true"></i>
             </button>
         </div>
     )
@@ -131,7 +131,7 @@ function Reviews({product}){
                     <div className='reviewUserMy'>
                         <i className="fa fa-user-circle-o fa-2x" aria-hidden="true"></i>
                         <p>{review.name}</p>
-                        <div className='reviewNumber'>{review.rating}</div> 
+                        <UserReview rating={review.rating}/>
                     </div>
                     <div className='reviewRating'>
                         <div className='reviewComment'>
@@ -161,15 +161,13 @@ export function Rating({text='', rating=0, totalRating=false}) {
         !rating? <div></div>:
         <div className='productRating'>    
             <div className='rating'>
-                <div
-                    style={{left:ratingPercent+'%'}}
-                    className='ratingPercent'>
-                    <span>{ratingPercent}%</span>
+                <div 
+                    className='reviewBar'
+                    ref={review}
+                    >  
+
                 </div>
-                <div></div>
-                <div ref={review} className='reviewBar'>
-                
-                </div>
+                <h3 className='ratingPercent'>{ratingPercent}%</h3>
                 <span>{text}</span>
             </div>
         </div>
@@ -322,11 +320,11 @@ function OptionButtons({changeRating, rating, reviewed}){
     return(
         <div className='ratingBar'>
             <div className='optionButtons'>
-                <button disabled={reviewed} style={getColor(1)} onClick={e => changeRating(1)} type='button'>1</button>
-                <button disabled={reviewed} style={getColor(2)} onClick={e => changeRating(2)} type='button'>2</button>
-                <button disabled={reviewed} style={getColor(3)} onClick={e => changeRating(3)} type='button'>3</button>
-                <button disabled={reviewed} style={getColor(4)} onClick={e => changeRating(4)} type='button'>4</button>
-                <button disabled={reviewed} style={getColor(5)} onClick={e => changeRating(5)} type='button'>5</button>
+                <button className='optionButton' disabled={reviewed} style={getColor(1)} onClick={e => changeRating(1)} type='button'>1</button>
+                <button className='optionButton' disabled={reviewed} style={getColor(2)} onClick={e => changeRating(2)} type='button'>2</button>
+                <button className='optionButton' disabled={reviewed} style={getColor(3)} onClick={e => changeRating(3)} type='button'>3</button>
+                <button className='optionButton' disabled={reviewed} style={getColor(4)} onClick={e => changeRating(4)} type='button'>4</button>
+                <button className='optionButton' disabled={reviewed} style={getColor(5)} onClick={e => changeRating(5)} type='button'>5</button>
             </div>
         </div>
     )
@@ -340,6 +338,32 @@ function ContainerUpdateButton({reviewed, setReviewed}){
             >
                 <i className="fa fa-pencil fa-1x" aria-hidden="true"></i>
             </button>
+        </div>
+    )
+}
+
+function UserReview({ rating }){
+
+    function getColor(id){
+        if(id===rating){
+            return {
+                backgroundColor:'rgba(255, 255, 255, 1)',
+                color:'black',
+                outline: 'none',
+                boxShadow:'0 0 2px 1px rgba(0, 0, 0, 0.6)'                
+            }
+        }
+    }
+
+    return(
+        <div className='ratingBar'>
+            <div className='optionButtons'>
+                <div className='optionButton' style={getColor(1)}>1</div>
+                <div className='optionButton' style={getColor(2)}>2</div>
+                <div className='optionButton' style={getColor(3)}>3</div>
+                <div className='optionButton' style={getColor(4)}>4</div>
+                <div className='optionButton' style={getColor(5)}>5</div>
+            </div>
         </div>
     )
 }
