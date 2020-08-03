@@ -4,6 +4,7 @@ const Order = require('../models/orderModel')
 // @route     POST /
 // @ access   Auth
 exports.createOrder = async (req,res) => {
+    
     const newOrder = new Order({
         orderItems: req.body.orderItems,
         user: req.user._id,
@@ -13,7 +14,15 @@ exports.createOrder = async (req,res) => {
         taxPrice: req.body.taxPrice,
         shippingPrice: req.body.shippingPrice,
         totalPrice: req.body.totalPrice,
+        trackPackage:{
+            status: 'Order sent',
+            orderReceived: false,
+            inTransit: false,
+            readyToPickUp: false,
+            orderDelivered: false
+        }
     })
+
     const newOrderCreated = await newOrder.save()
     res.status(201).send({message: 'New Order Created', data: newOrderCreated})
 }
@@ -23,7 +32,7 @@ exports.createOrder = async (req,res) => {
 // @ access   Auth
 exports.payOrder = async (req,res) => {
     const order = await Order.findById(req.params.id)
-    console.log(order)
+
     if(order){
         order.isPaid = true
         order.paidAt = Date.now()

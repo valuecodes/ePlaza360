@@ -19,7 +19,7 @@ export default function PlaceOrderScreen(props) {
 
     const cart = useSelector(state => state.cart);
     const { cartItems, shipping, payment } = cart;
-
+  
     if (Object.values(payment).length!==1) {
         props.history.push("/payment");
     }

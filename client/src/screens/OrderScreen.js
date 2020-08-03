@@ -13,7 +13,7 @@ export default function OrderScreen(props) {
     const orderDetails = useSelector(state => state.orderDetails)
     const {loading, order, error} = orderDetails
     const dispatch=useDispatch()
-
+    
     useEffect(()=>{
         if(successPay){
             props.history.push('/profile')

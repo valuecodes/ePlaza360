@@ -25,6 +25,18 @@ const orderItemsSchema = new mongoose.Schema({
     },
 })
 
+const packageTrackingSchema = {
+    status: {type: String, default: 'Order sent'},
+    orderReceived: {type: Boolean, default: false},
+    orderReceivedAt: {type: Date},
+    inTransit: {type: Boolean, default: false},
+    inTransitAt: {type: Date},
+    readyToPickup: {type: Boolean, default: false},
+    readyToPickupAt: {type: Date},
+    orderDelivered: {type: Boolean, default: false},
+    orderDeliveredAt: {type: Date}
+}
+
 const orderSchema = new mongoose.Schema({
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     orderItems:[orderItemsSchema],
@@ -38,6 +50,7 @@ const orderSchema = new mongoose.Schema({
     paidAt:{type: Date},
     isDelivered:{type: Boolean, default:false},
     deliveredAt:{type: Date},
+    trackPackage: packageTrackingSchema
 },{
     timestamps: true
 })

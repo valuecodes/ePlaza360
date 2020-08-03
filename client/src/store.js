@@ -10,7 +10,7 @@ import { orderCreateReducer, orderDetailsReducer, orderPayReducer, myOrderListRe
 const cartItems = Cookie.getJSON('cartItems') || []
 const userInfo = Cookie.getJSON('userInfo') || undefined
 
-const initialState = {cart:{cartItems,shipping:{},payment:{}}, userSignin:{userInfo}}
+const initialState = {cart:{cartItems,shipping:{},payment:{},trackPackage:{}}, userSignin:{userInfo}}
 
 const reducer = combineReducers({
     productList: productListReducer,

@@ -1,5 +1,5 @@
 import React,{useState, useEffect} from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { addToCart, removeFromCart } from '../actions/cartActions'
 import { Link } from 'react-router-dom'
 import { WriteReview } from '../components/RatingComponents'
@@ -222,12 +222,28 @@ function PaymentInfo({cart, showStatus}){
 }
 
 function ReviewInfo({cart, showStatus}){
+
+    const userInfo = useSelector(state => state.userSignin.userInfo)
+    const [reviewFound, setReviewFound] = useState(false)
+
+    function getColor(item){
+        let review = userInfo.reviews.findIndex(review => review.productId===item.product)
+        if(review===-1){
+            return 'var(--main-red-color)'
+        }else{
+            if(!reviewFound) setReviewFound(true)
+            return 'green'
+        }
+    }
+
     return(
         <div className='orderInfo'>
             <div className='infoContainerHeader'>
                 <h3>Review</h3>                        
                 {showStatus&&
-                    <span>Status <b style={{color:'var(--main-red-color)'}}>{false? ' Reviewed': ' No reviews'}</b></span>     
+                    <span>Status 
+                        <b>{reviewFound? ' Reviewed': ' No reviews'}</b>
+                    </span>
                 }
             </div>                
             <div className='infoContainer'>
@@ -237,7 +253,12 @@ function ReviewInfo({cart, showStatus}){
                 <div className='infoText'>
                     <span><b>Items reviewed</b></span>
                     {cart.orderItems.map(item => 
-                        <span className='reviewedItems' key={item._id}>{item.name}</span> 
+                        <span 
+                            className='reviewedItems' 
+                            key={item._id}
+                            style={{color: getColor(item)}}    
+                            >{item.name}
+                        </span> 
                     )}
                 </div>
             </div>
@@ -246,30 +267,37 @@ function ReviewInfo({cart, showStatus}){
 }
 
 function TrackingInfo({cart, showStatus}){
+
+    const { orderReceived, inTransit, readyToPickup, orderDelivered, status } = cart.trackPackage
+    
     return(
         <div className='orderInfo'>
             <div className='infoContainerHeader'>
                 <h3>Track Package</h3>                        
                 {showStatus&&
-                    <span>Status <b>Order received</b></span>     
+                    <span>Status <b>{status}</b></span>     
                 }
             </div>                
             <div className='infoContainerTracking'>
-                <TrackingIcon icon={'fa fa-file-o'}/>
+                <TrackingIcon icon={'fa fa-file-o'} completed={orderReceived}/>
                 <AngleRight/>
-                <TrackingIcon icon={'fa fa-plane'}/>
+                <TrackingIcon icon={'fa fa-plane'} completed={inTransit}/>
                 <AngleRight/>
-                <TrackingIcon icon={'fa fa-plane landing'}/>
+                <TrackingIcon icon={'fa fa-plane landing'} completed={readyToPickup}/>
                 <AngleRight/>
-                <TrackingIcon icon={'fa fa-calendar-check-o'}/>
+                <TrackingIcon icon={'fa fa-calendar-check-o'} completed={orderDelivered}/>
             </div>
         </div>
     )
 }
 
-export function TrackingIcon({icon}) {
+export function TrackingIcon({icon,completed}) {
     return (
-        <div className='trackingIconContainer'>
+        <div className='trackingIconContainer'
+            style={{
+                backgroundColor: completed?'#3b8c':'',
+            }}
+        >
             <i className={`${icon} trackingIcon`} aria-hidden="true">
             </i>            
         </div>

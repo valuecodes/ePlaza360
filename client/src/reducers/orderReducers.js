@@ -35,7 +35,7 @@ function orderDeleteReducer(state={
     order: {
         orderItems: [],
         shipping: {},
-        payment: {}
+        payment: {},
       }
 }, action){
     switch(action.type){
@@ -53,7 +53,8 @@ function orderDetailsReducer(state={
     order:{
         orderItems:[],
         shipping:{},
-        payment:{}
+        payment:{},
+        trackPackage:{}
     }
 }, action){
     switch(action.type){

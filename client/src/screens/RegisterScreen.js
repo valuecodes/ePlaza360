@@ -95,9 +95,9 @@ export default function RegisterScreen(props) {
                     <li className='toRegister'>
                         Already have an account?
                     </li>
-                    <li>
-                        <Link to={redirect === '/' ? 'signin': 'signin?redirect='+redirect} className='button secondary' >Sign-in</Link>
-                    </li>
+                    <button className='button secondary fullWidth' >
+                        <Link to={redirect === '/' ? 'signin': 'signin?redirect='+redirect} >Sign-in</Link>
+                    </button>
                 </ul>
             </form>
         </div>

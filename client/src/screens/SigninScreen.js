@@ -62,9 +62,9 @@ export default function SigninScreen(props) {
                     <li className='toRegister'>   
                         New to ePlaza360?
                     </li>
-                    <li>
-                        <Link to={redirect === '/' ? 'register': 'register?redirect='+redirect} className='button secondary' >Create Account</Link>
-                    </li>
+                    <button className='button secondary fullWidth'>
+                        <Link to={redirect === '/' ? 'register': 'register?redirect='+redirect}  >Create Account</Link>
+                    </button>
                 </ul>
             </form>
         </div>
