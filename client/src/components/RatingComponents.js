@@ -165,7 +165,6 @@ export function Rating({text='', rating=0, totalRating=false}) {
                     className='reviewBar'
                     ref={review}
                     >  
-
                 </div>
                 <h3 className='ratingPercent'>{ratingPercent}%</h3>
                 <span>{text}</span>

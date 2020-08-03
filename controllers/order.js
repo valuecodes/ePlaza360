@@ -4,7 +4,7 @@ const Order = require('../models/orderModel')
 // @route     POST /
 // @ access   Auth
 exports.createOrder = async (req,res) => {
-    
+
     const newOrder = new Order({
         orderItems: req.body.orderItems,
         user: req.user._id,
@@ -15,7 +15,8 @@ exports.createOrder = async (req,res) => {
         shippingPrice: req.body.shippingPrice,
         totalPrice: req.body.totalPrice,
         trackPackage:{
-            status: 'Order sent',
+            status: 0,
+            statusText:'Order Sent',
             orderReceived: false,
             inTransit: false,
             readyToPickUp: false,
@@ -89,5 +90,44 @@ exports.deleteOrder = async (req, res) => {
         return res.send(order)
     }else{
         return res.status(404).send({message: 'Order not found'})
+    }
+}
+
+// @desc      Change order status
+// @route     PUT /:id/status
+// @ access   Auth
+exports.changeOrderStatus = async (req, res) => {
+    
+    const order = await Order.findOne({_id: req.params.id})
+
+    if(order){
+        let phase=req.body.phase;
+        let phaseText=''
+
+        switch(phase){
+            case 1:
+                phaseText='Order Received'
+                break
+            case 2:
+                phaseText='In Transit'
+                break
+            case 3:
+                phaseText='Ready for pickup'
+                break
+            case 4:
+                phaseText='Order Delivered'
+                break
+            default : return ''
+        }
+
+        
+        order.trackPackage.status = phase
+        order.trackPackage.statusText = phaseText
+        order.trackPackage[phase]=true
+
+        const updatedOrder = await order.save()
+        res.send({message: 'Order Saved.',order: updatedOrder})
+    }else{
+        res.status(404).send({message: 'Order not found'})
     }
 }

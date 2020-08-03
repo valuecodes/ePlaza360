@@ -4,6 +4,7 @@ import { addToCart, removeFromCart } from '../actions/cartActions'
 import { Link } from 'react-router-dom'
 import { WriteReview } from '../components/RatingComponents'
 import { ListSelect, ListSelectColors, ListItem,ListSelectArray, ListItemColor } from './ListComponents';
+import { statusOrder } from '../actions/orderActions';
 
 export function CartList(props){
     
@@ -268,35 +269,74 @@ function ReviewInfo({cart, showStatus}){
 
 function TrackingInfo({cart, showStatus}){
 
-    const { orderReceived, inTransit, readyToPickup, orderDelivered, status } = cart.trackPackage
+    const { statusText } = cart.trackPackage
     
     return(
         <div className='orderInfo'>
             <div className='infoContainerHeader'>
                 <h3>Track Package</h3>                        
                 {showStatus&&
-                    <span>Status <b>{status}</b></span>     
+                    <span>Status <b>{statusText}</b></span>     
                 }
-            </div>                
-            <div className='infoContainerTracking'>
-                <TrackingIcon icon={'fa fa-file-o'} completed={orderReceived}/>
-                <AngleRight/>
-                <TrackingIcon icon={'fa fa-plane'} completed={inTransit}/>
-                <AngleRight/>
-                <TrackingIcon icon={'fa fa-plane landing'} completed={readyToPickup}/>
-                <AngleRight/>
-                <TrackingIcon icon={'fa fa-calendar-check-o'} completed={orderDelivered}/>
-            </div>
+            </div>   
+            <PackageTracking order={cart}/>             
         </div>
     )
 }
 
-export function TrackingIcon({icon,completed}) {
+export function PackageTracking({order, actions=false}){
+
+    return(
+        <div className='infoContainerTracking'>
+            <TrackingIcon 
+                icon={'fa fa-file-o'} 
+                actions={actions}
+                phase={1}
+                order={order}
+            />
+            <AngleRight/>
+            <TrackingIcon 
+                icon={'fa fa-plane'} 
+                actions={actions}
+                phase={2}
+                order={order}
+            />
+            <AngleRight/>
+            <TrackingIcon 
+                icon={'fa fa-plane landing'} 
+                actions={actions}
+                phase={3}
+                order={order}
+            />
+            <AngleRight/>
+            <TrackingIcon 
+                icon={'fa fa-calendar-check-o'} 
+                actions={actions}
+                phase={4}
+                order={order}
+            />
+        </div>        
+    )
+}
+
+export function TrackingIcon({icon, actions, phase, order}) {
+
+    const status = order.trackPackage.status
+    const dispatch=useDispatch()
+
+    function changeOrderStatus(){
+        if(actions){
+            dispatch(statusOrder(order,phase))
+        }
+    }
+
     return (
         <div className='trackingIconContainer'
             style={{
-                backgroundColor: completed?'#3b8c':'',
+                backgroundColor: status>=phase?'#3b8c':'',
+                cursor: actions?'pointer':''
             }}
+            onClick={changeOrderStatus}
         >
             <i className={`${icon} trackingIcon`} aria-hidden="true">
             </i>            

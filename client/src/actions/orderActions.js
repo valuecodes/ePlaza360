@@ -17,7 +17,10 @@ import {
     ORDER_LIST_FAIL,
     ORDER_DELETE_REQUEST,
     ORDER_DELETE_SUCCESS,
-    ORDER_DELETE_FAIL
+    ORDER_DELETE_FAIL,
+    ORDER_STATUS_REQUEST,
+    ORDER_STATUS_SUCCESS,
+    ORDER_STATUS_FAIL
 } from "../constants/orderConstants";
 
 const createOrder = (order) => async (dispatch, getState) => {
@@ -110,11 +113,29 @@ const payOrder = (order, paymentResult) => async (dispatch, getState) =>{
     }
 }
 
+const statusOrder = (order,phase) => async (dispatch, getState) => {
+    try{
+        dispatch({type: ORDER_STATUS_REQUEST})
+        const {userSignin:{userInfo}} = getState()
+        console.log(phase)
+        const {data} = await axios.put(`/api/orders/${order._id}/status`,{phase},{
+            headers:{
+                Authorization: 'Bearer'+userInfo.token
+            }
+        })
+
+        dispatch({type: ORDER_STATUS_SUCCESS, payload:data})
+    } catch(err){
+        dispatch({type: ORDER_STATUS_FAIL, payload: err.message})
+    }
+}
+
 export{
     createOrder, 
     detailsOrder,
     payOrder, 
     listMyOrders, 
     listOrders,
-    deleteOrder
+    deleteOrder,
+    statusOrder
 }

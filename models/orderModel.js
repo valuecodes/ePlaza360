@@ -26,7 +26,8 @@ const orderItemsSchema = new mongoose.Schema({
 })
 
 const packageTrackingSchema = {
-    status: {type: String, default: 'Order sent'},
+    status: {type: Number, default: 0},
+    statusText: {type: String, default: 'Order Sent'},
     orderReceived: {type: Boolean, default: false},
     orderReceivedAt: {type: Date},
     inTransit: {type: Boolean, default: false},

@@ -7,7 +7,8 @@ const {
     payOrder,
     myOrders,
     getOrders,
-    deleteOrder
+    deleteOrder,
+    changeOrderStatus
 } = require('../controllers/order')
 
 router 
@@ -27,6 +28,10 @@ router
 router  
     .route('/:id/pay')
     .put(isAuth, payOrder)
+
+router  
+    .route('/:id/status')
+    .put(isAuth, isAdmin, changeOrderStatus)
 
 
 

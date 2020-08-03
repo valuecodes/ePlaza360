@@ -16,7 +16,10 @@ import {
     ORDER_LIST_FAIL,
     ORDER_DELETE_REQUEST,
     ORDER_DELETE_SUCCESS,
-    ORDER_DELETE_FAIL
+    ORDER_DELETE_FAIL,
+    ORDER_STATUS_REQUEST,
+    ORDER_STATUS_SUCCESS,
+    ORDER_STATUS_FAIL,
 } from "../constants/orderConstants";
 
 function orderCreateReducer(state={}, action){
@@ -114,11 +117,24 @@ function orderPayReducer(state={
     }
 }
 
+function orderStatusReducer(state={}, action){
+    switch(action.type){
+        case ORDER_STATUS_REQUEST:
+            return {loading: true}
+        case ORDER_STATUS_SUCCESS:
+            return {loading: false, success:true, orders: action.payload}
+        case ORDER_STATUS_FAIL:
+            return {loading:false, error: action.payload}
+        default: return state
+    }
+}
+
 export {
     orderCreateReducer, 
     orderDetailsReducer, 
     orderPayReducer, 
     myOrderListReducer,
     orderListReducer,
-    orderDeleteReducer
+    orderDeleteReducer,
+    orderStatusReducer,
 }

@@ -11,6 +11,9 @@ import {
     FormFieldChangePassword,
     checkFormErrors
 } from '../components/FormComponents'
+import {
+    TableItemDate, TableItemPrice, TableItemBoolean, TrackPackage
+} from '../components/TableComponents'
 
 export default function ProfileScreen(props) {
     const dispatch = useDispatch()
@@ -134,7 +137,8 @@ function ProfileOrders(){
                         <th>DATE</th>
                         <th>TOTAL</th>
                         <th>PAID</th>
-                        <th>ACTIONS</th>
+                        <th>STATUS</th>
+                        <th>DETAILS</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -152,11 +156,14 @@ function Order({order}){
     return(
         <tr>
             <td>{order._id}</td>
-            <td>{order.createdAt}</td>
-            <td>{order.totalPrice}</td>
-            <td>{order.isPaid?'Paid':'Not Paid'}</td>
-            <td>
-                <Link to={'/order/'+order._id}>DETAILS</Link>
+            <TableItemDate date={order.createdAt} />
+            <TableItemPrice price={order.totalPrice}/>
+            <TableItemBoolean condition={order.isPaid}/>
+            <TrackPackage order={order} actions={false}/>
+            <td className='tableButtons'>
+                <button className='button secondary'>
+                    <Link to={'/order/'+order._id}>Details</Link>
+                </button>      
             </td>
         </tr>
     )
