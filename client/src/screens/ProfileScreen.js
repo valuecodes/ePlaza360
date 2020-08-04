@@ -12,7 +12,13 @@ import {
     checkFormErrors
 } from '../components/FormComponents'
 import {
-    TableItemDate, TableItemPrice, TableItemBoolean, TrackPackage
+    TableTitle,
+    TableHeader,
+    TableItem,
+    TableItemDate, 
+    TableItemPrice, 
+    TableItemBoolean, 
+    TrackPackage
 } from '../components/TableComponents'
 
 export default function ProfileScreen(props) {
@@ -128,26 +134,28 @@ function ProfileOrders(){
 
     return(
         <div className='profileOrders'>
-        {
-            loadingOrders? <div>Loading...</div>:errorOrders?<div>{errorOrders}</div>:
+            <TableTitle text={'My Orders'}/>
             <table className='table'>
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>DATE</th>
-                        <th>TOTAL</th>
-                        <th>PAID</th>
-                        <th>STATUS</th>
-                        <th>DETAILS</th>
+                        <TableHeader text={'ID'}/>
+                        <TableHeader text={'DATE'}/>
+                        <TableHeader text={'TOTAL'}/>
+                        <TableHeader text={'PAID'}/>
+                        <TableHeader text={'STATUS'}/>
+                        <TableHeader text={'DETAILS'}/>
                     </tr>
                 </thead>
                 <tbody>
-                    {orders.map(order =>
-                        <Order key={order._id} order={order}/>
-                    )}
+                    {loadingOrders? <div>Loading...</div>:
+                    errorOrders? <div>{errorOrders}</div>:
+                    <>
+                        {orders.map(order =>
+                            <Order key={order._id} order={order}/>
+                        )}
+                    </>}
                 </tbody>
             </table>
-        }
         </div>
     )
 }
@@ -155,7 +163,7 @@ function ProfileOrders(){
 function Order({order}){
     return(
         <tr>
-            <td>{order._id}</td>
+            <TableItem text={order._id}/>
             <TableItemDate date={order.createdAt} />
             <TableItemPrice price={order.totalPrice}/>
             <TableItemBoolean condition={order.isPaid}/>

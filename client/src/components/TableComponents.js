@@ -1,12 +1,35 @@
 import React from 'react'
 import { PackageTracking } from './CartComponents'
-import { func } from 'prop-types';
 
 export function TrackPackage({order, actions=true}) {
     return (
         <td className='trackPackage tableItemHighlighted'>
             <span>{order.trackPackage.statusText}</span>
             <PackageTracking order={order} actions={actions}/>
+        </td>
+    )
+}
+
+export function TableTitle({text}){
+    return(
+        <div className='tableTitle'>
+            <h3>{text}</h3>
+        </div>  
+    )
+}
+
+export function TableHeader({text}){
+    return(
+        <th>
+            {text}
+        </th>
+    )
+}
+
+export function TableItem({text}){
+    return(
+        <td>
+            {text}
         </td>
     )
 }

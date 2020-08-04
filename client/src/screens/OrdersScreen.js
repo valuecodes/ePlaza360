@@ -5,7 +5,16 @@ import {
     listOrders, 
     deleteOrder,
 } from '../actions/orderActions';
-import { TrackPackage, TableItemUser, TableItemBoolean, TableItemDate, TableItemPrice } from '../components/TableComponents'
+import { 
+    TrackPackage,
+    TableTitle,
+    TableHeader, 
+    TableItemUser, 
+    TableItemBoolean, 
+    TableItemDate, 
+    TableItemPrice, 
+    TableItem 
+} from '../components/TableComponents'
 
 export default function OrdersScreen(props) {
 
@@ -31,36 +40,35 @@ export default function OrdersScreen(props) {
     }
 
     return (
-        loading||loadingDelete||loadingStatus?<div>Loading...</div>:error||errorDelete?<div>{error}</div>:
-
         <div className='content tableCenter'>
                 <div className='orderList'>
-                     <div className='tableHeader'>
-                        <h3>Orders</h3>
-                    </div>       
+                    <TableTitle text={'Orders'}/>    
                     <table className='table'>
                         <thead>
-                            <tr  className='tableHeader'>
-                                <th>ID</th>
-                                <th>DATE</th>
-                                <th>TOTAL</th>
-                                <th>USER</th>
-                                <th>PAID</th>
-                                <th>PAID AT</th>
-                                {/* <th>DELIVERED</th> */}
-                                <th>DELIVERED AT</th>
-                                <th>ORDER STATUS</th>
-                                <th>ACTIONS</th>
+                            <tr className='tableHeader'>
+                                <TableHeader text={'ID'}/>
+                                <TableHeader text={'DATE'}/>
+                                <TableHeader text={'TOTAL'}/>
+                                <TableHeader text={'USER'}/>
+                                <TableHeader text={'PAID'}/>
+                                <TableHeader text={'PAID AT'}/>
+                                <TableHeader text={'DELIVERED AT'}/>
+                                <TableHeader text={'ORDER STATUS'}/>
+                                <TableHeader text={'ACTIONS'}/>
                             </tr>
                         </thead>
-                        <tbody>
-                            {orders.map(order =>
-                                <Order 
-                                    key={order._id}
-                                    order={order}
-                                    deleteHandler={deleteHandler}    
-                                />
-                            )}
+                        <tbody>        
+                            {loading||loadingDelete||loadingStatus?<div>Loading...</div>:error||errorDelete?<div>{error}</div>:
+                            <>
+                                {orders.map(order =>
+                                    <Order 
+                                        key={order._id}
+                                        order={order}
+                                        deleteHandler={deleteHandler}    
+                                    />
+                                )}
+                            </>
+                            }
                         </tbody>  
                     </table>
                 </div>                      
@@ -71,13 +79,12 @@ export default function OrdersScreen(props) {
 function Order({order, deleteHandler}){
     return(
         <tr key={order._id}>
-            <td>{order._id}</td>
+            <TableItem text={order._id}/>
             <TableItemDate date={order.createdAt} />
             <TableItemPrice price={order.totalPrice}/>
             <TableItemUser name={order.user.name}/>
             <TableItemBoolean condition={order.isPaid}/>
             <TableItemDate date={order.paidAt} />
-            {/* <TableItemBoolean condition={order.isDelivered}/> */}
             <TableItemDate date={order.deliveredAt} />
             <TrackPackage order={order}/>
             <td className='tableButtons'>

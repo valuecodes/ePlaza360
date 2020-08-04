@@ -45,6 +45,10 @@ body{
   color: rgb(197, 197, 197);
 }
 
+.contentMargined{
+  margin: 1rem;
+}
+
 /* Buttons */
 .button{
   border:none;
@@ -810,6 +814,9 @@ body{
   text-align: left;
 }
 
+.tableTitle h3{
+  margin: 1rem 0;
+}
 
 .shipping{
   margin: auto;
@@ -1209,13 +1216,14 @@ th{
   text-align: left;
   font-size: 1.6rem;
   padding: 0 1rem;
+  border-radius: 0.5rem; 
+  background-color: rgb(184, 184, 184);
 }
 
 td{
   font-size: 1.4rem;
   padding: 0 1rem;
   background-color: rgb(218, 218, 218);
-  /* color: white; */
   border-radius: 0.5rem; 
 }
 
