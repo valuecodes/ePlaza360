@@ -1,32 +1,43 @@
 import React,{ useState } from 'react'
+import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
 export default function SideBar(props) {
 
-    const [open, setOpen] = useState(true)
+    const [open, setOpen] = useState(false)
     const [options, setOptions] = useState({
         Gender: '',
-        Category: ''
+        Category: '',
+        SubCategory: ''
     })
+    const categories=[
+        {name:'Shirts',values:['T-Shirts','Long-Sleeves','Polos','Dress-Shirts']},
+        {name:'Pants',values:['Jeans','Chinos','Casual','Shorts']},
+        {name:'Shoes',values:['Sneakers','Boots','Casual','Slippers']},
+    ]
+    const {userSignin:{userInfo}} = useSelector(state => state)
 
     return (
         <>
         <aside className='sideBar'>
             <div className='sideBarToggle' onClick={e => setOpen(true)}>
-                <i class="fa fa-bars fa-2x" aria-hidden="true"></i>
+                <i className="fa fa-bars fa-2x" aria-hidden="true"></i>
             </div>
             <div className='sideBarPage'
                 style={{right:open?'-20rem':'25rem'}}
             >
                 <div className='sideBarHeader'>
-                    <h3>Categories</h3>
+                    <h3>{`Welcome ${userInfo?userInfo.name:'Visitor'}`}</h3>    
                     <button
                         className='closeSideBar'
                         onClick={e => setOpen(false)}
-                    ><i class="fa fa-window-close-o fa-2x" aria-hidden="true"></i>
+                    >
+                    <i className="fa fa-angle-left fa-3x" aria-hidden="true"></i>
+
                     </button>                    
                 </div>
                 <div className='sideBarContent'>
+                    <h3>Categories</h3>
                     <SideSubBarHeader text={'Gender'}/>
                     <div className='sideBarGender'>    
                         <SideBarOption setOptions={setOptions} options={options} option={'Gender'} value={'Men'}/>
@@ -34,15 +45,15 @@ export default function SideBar(props) {
                     </div>
                     <SideSubBarHeader text={'Category'}/>
                     <div className='sideBarCategories'>    
-                        <SideBarOption setOptions={setOptions} options={options} option={'Category'} value={'Shoes'}/>
-                        <SideBarOption setOptions={setOptions} options={options} option={'Category'} value={'Hats'}/>
-                        <SideBarOption setOptions={setOptions} options={options} option={'Category'} value={'Pants'}/>
-                        <SideBarOption setOptions={setOptions} options={options} option={'Category'} value={'Shirts'}/>
+                        {categories.map(category =>
+                            <Category key={category.name} category={category} options={options} setOptions={setOptions}/>
+                        )}
                     </div>
                 </div>
             </div>   
         </aside>            
         <div className='sideBarShader'
+        onClick={e => setOpen(false)}
             style={{
                 opacity:open?0.5:0,
                 zIndex:open?1:-1
@@ -50,6 +61,20 @@ export default function SideBar(props) {
         ></div> 
         </>
 
+    )
+}
+
+function Category({category, options, setOptions}){
+    let height=category.values.length*4+'rem'
+    return(
+        <div className='sideBarCategory'
+            style={{height:category.name===options.Category?height:'3.5rem'}}
+        >
+            <SideBarOption setOptions={setOptions} options={options} option={'Category'} value={category.name}/> 
+            {category.values.map(subCategory =>
+                <SideBarSubOption key={subCategory} setOptions={setOptions} options={options} option={'SubCategory'} mainCategory={category.name} value={subCategory}/>  
+            )}
+        </div>
     )
 }
 
@@ -66,8 +91,27 @@ function SideBarOption({ setOptions, options, option, value }){
         <Link
             className='sideBarOption'
             onClick={e => setOptions({...options, [option]:value})}
-            style={{backgroundColor:options[option]===value?'dimgray':'gray'}}        
+            style={{
+                backgroundColor:options[option]===value?'dimgray':'',
+                color:options[option]===value?'white':'black'
+            }}        
             to={`/category/${value.toLowerCase()}`}
+        >
+            {value}    
+        </Link>        
+    )
+}
+
+function SideBarSubOption({ setOptions, options, option, mainCategory, value }){
+    return(
+        <Link
+            className='sideBarSubOption'
+            onClick={e => setOptions({...options, [option]:value})}
+            style={{
+                backgroundColor:options[option]===value?'dimgray':'',
+                color:options[option]===value?'white':'black'
+            }}        
+            to={`/category/${mainCategory.toLowerCase()}-${value.toLowerCase()}`}
         >
             {value}    
         </Link>        

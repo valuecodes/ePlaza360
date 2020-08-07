@@ -5,13 +5,20 @@ const User = require('../models/userModel')
 // @route     GET /
 // @ access   Public
 exports.products = async(req, res)=>{
-    const category = req.query.category ? {category:req.query.category}:{}
+
+    let category = req.query.category ? {category:req.query.category}:{}   
+    let subCategory={}
+    if(Object.keys(category).length!==0){
+        subCategory = category.category.split('-')[1]?{subCategory:category.category.split('-')[1]}:{}
+        if(Object.keys(subCategory).length!==0) category={}        
+    }
+
     const searchKeyword = req.query.searchKeyword?{
         name : new RegExp(req.query.searchKeyword,'i')
     } : {}
     const sortOrder = req.query.sortOrder ? (req.query.sortOrder === 'lowest'?{price: 1}:{price: -1}):
     {_id:-1}
-    const products = await Product.find({...category, ...searchKeyword}).sort(sortOrder)
+    const products = await Product.find({...category,...subCategory, ...searchKeyword}).sort(sortOrder)
     res.send(products)
 }
 
@@ -37,6 +44,8 @@ exports.saveProduct = async(req, res) =>{
         image: req.body.image,
         brand: req.body.brand,
         category: req.body.category,
+        subCategory: req.body.subCategory,
+        gender: req.body.gender,   
         price: req.body.price,
         countInStock: req.body.countInStock,
         description: req.body.description,
@@ -59,6 +68,8 @@ exports.updateProduct = async (req, res) =>{
         product.price = req.body.price
         product.brand = req.body.brand
         product.category = req.body.category
+        product.subCategory = req.body.subCategory
+        product.gender = req.body.gender      
         product.countInStock = req.body.countInStock
         product.description = req.body.description     
         const updatedProduct = await product.save()

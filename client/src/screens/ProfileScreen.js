@@ -44,21 +44,20 @@ function ProfileInfo({handleLogout}){
     const userUpdate = useSelector(state => state.userUpdate)
     const {loading, success, error} = userUpdate
 
-    const [name, setName] = useState('')
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
+    const [user, setUser] = useState({
+        name: '',
+        email: '',
+        password: '',
+        currentPassword: '',
+        newPassword: '',
+        newRePassword: '',
+    })
 
-    const [currentPassword, setCurrentPassword]=useState('')
     const [formErrors, setFormErrors] = useState([])
-
-    const [newPassword, setNewPassword] = useState('')
-    const [newRePassword, setNewRePassword] = useState('')
-
+    
     useEffect(() => {
         if(userInfo){
-            setName(userInfo.name)
-            setEmail(userInfo.email)
-            setPassword(userInfo.password)
+            setUser({...user,name:userInfo.name, email:userInfo.email})
         }
         dispatch(listMyOrders())
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -66,20 +65,20 @@ function ProfileInfo({handleLogout}){
 
     const submitHandler = (e) =>{
         e.preventDefault()
-        let errors=checkFormErrors(newPassword, newRePassword)
+        let errors=checkFormErrors(user.newPassword, user.newRePassword)
         if(errors.length===0){    
             dispatch(update({
                 userId: userInfo._id, 
-                email, 
-                name, 
-                currentPassword,
-                newPassword
+                email: user.email, 
+                name: user.name, 
+                currentPassword: user.currentPassword,
+                newPassword: user.newPassword
             }))
         }else{
             setFormErrors(errors)
         }
     }
-
+    console.log(user)
     return(
         <div className='profileInfo contentCenter'>
             <form className='form' onSubmit={submitHandler}>
@@ -93,24 +92,25 @@ function ProfileInfo({handleLogout}){
                     />
                     <FormField 
                         name={'name'} 
-                        value={name} 
+                        value={user.name} 
                         type={'text'} 
-                        setState={setName}
+                        state={user}
+                        setState={setUser}
                     />
                     <FormField 
                         name={'email'} 
-                        value={email} 
+                        value={user.email} 
                         type={'email'} 
-                      setState={setEmail}
+                        state={user}
+                        setState={setUser}
                     />
                     <FormFieldChangePassword
-                        password={password}
-                        currentPassword={currentPassword}
-                        setCurrentPassword={setCurrentPassword}
-                        newPassword={newPassword}
-                        setNewPassword={setNewPassword}
-                        newRePassword={newRePassword}
-                        setNewRePassword={setNewRePassword}
+                        password={user.password}
+                        currentPassword={user.currentPassword}
+                        newPassword={user.newPassword}
+                        newRePassword={user.newRePassword}
+                        state={user}
+                        setState={setUser}
                     />
                     <FormFieldButton text={'Update'}/>
                     <li>

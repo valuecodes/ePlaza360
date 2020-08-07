@@ -9,7 +9,6 @@ export default function HomeScreen(props) {
     const category = props.match.params.id?props.match.params.id:''
     const productList = useSelector(state => state.productList)
     const { products, loading, error } = productList
-    console.log(props.match.params)
     const dispatch = useDispatch()
 
     useEffect(() => {

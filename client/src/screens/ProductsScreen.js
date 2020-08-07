@@ -8,7 +8,9 @@ import {
 import { 
     FormField, 
     FormFieldText, 
-    FormFieldHeader 
+    FormFieldHeader,
+    FormFieldRadioButton,
+    FormFieldOptions
 } from '../components/FormComponents'
 import {
     TableHeader,
@@ -19,16 +21,21 @@ import {
 export default function ProductsScreen(props) {
 
     const [modalVisible, setmodalVisible] = useState(false)
-    const [id, setId] = useState('')
-    const [name, setName] = useState('')
-    const [price, setPrice] = useState('')
-    const [image, setImage] = useState('')
-    const [brand, setBrand] = useState('')
-    const [category, setCategory] = useState('')
-    const [description, setDescription] = useState('')
-    const [countInStock, setCountInStock] = useState('')
-    const [rating, setRating] = useState('')
-    const [numReviews, setNumReviews] = useState('')
+
+    const [product, setProduct] = useState({
+        id: '',
+        name: '',
+        price: '',
+        image: '',
+        brand: '',
+        category: '',
+        subCategory: '',
+        description: '',
+        countInStock: '',
+        rating: '',
+        numReviews: '',
+        gender: ''
+    })
 
     const productList = useSelector(state => state.productList)
     const {loading, products, error } = productList
@@ -41,19 +48,10 @@ export default function ProductsScreen(props) {
 
     const dispatch = useDispatch()
 
-    const openModal = (product) => {
+    const openModal = (currentProduct) => {
         setmodalVisible(true)
-        if(product){
-            setId(product._id)
-            setName(product.name)
-            setPrice(product.price)
-            setImage(product.image)
-            setBrand(product.brand)
-            setCategory(product.category)
-            setCountInStock(product.countInStock)
-            setDescription(product.description)
-            setRating(product.rating)
-            setNumReviews(product.numReviews)            
+        if(currentProduct){
+            setProduct(currentProduct)         
         }
     }
     
@@ -68,17 +66,20 @@ export default function ProductsScreen(props) {
     const submitHandler=(e)=>{
         e.preventDefault()
         const newProduct={
-            id,
-            name, 
-            price, 
-            image, 
-            brand, 
-            category, 
-            description, 
-            countInStock, 
-            rating, 
-            numReviews              
+            id: product._id,
+            name: product.name, 
+            price: product.price, 
+            image: product.image, 
+            brand: product.brand, 
+            category: product.category, 
+            subCategory: product.subCategory,
+            description: product.description, 
+            countInStock: product.countInStock, 
+            rating: product.rating, 
+            numReviews: product.numReviews,        
+            gender: product.gender      
         }
+        console.log(newProduct)
         dispatch(saveProduct(newProduct))
     }
 
@@ -96,21 +97,8 @@ export default function ProductsScreen(props) {
                 </div>
                 {modalVisible?
                     <CreateProduct 
-                        id={id}
-                        setName={setName}
-                        name={name}
-                        setPrice={setPrice}
-                        price={price}
-                        setImage={setImage}
-                        image={image}
-                        setBrand={setBrand}
-                        brand={brand}
-                        setCategory={setCategory}
-                        category={category}
-                        setCountInStock={setCountInStock}
-                        countInStock={countInStock}
-                        setDescription={setDescription}
-                        description={description}
+                        product={product}
+                        setProduct={setProduct}
                         setmodalVisible={setmodalVisible}
                         openModal={openModal}
                         submitHandler={submitHandler}
@@ -129,25 +117,12 @@ export default function ProductsScreen(props) {
 function CreateProduct(props){
 
     const {
-        id,
+        product,
+        setProduct,
         setmodalVisible,
-        setName,
-        name,
-        setPrice,
-        price,
-        setImage,
-        image,
-        setBrand,
-        brand,
-        setCategory,
-        category,
-        setCountInStock,
-        countInStock,
-        setDescription,
-        description,
         submitHandler
     } = props
-
+    console.log(product)
     return(
         <div className='contentCenter'>
             <form className='form' onSubmit={submitHandler}>
@@ -157,48 +132,71 @@ function CreateProduct(props){
                     />
                     <FormField 
                         name={'name'} 
-                        value={name} 
+                        value={product.name} 
                         type={'text'} 
-                        setState={setName}
+                        state={product}
+                        setState={setProduct}
                     />
                     <FormField 
-                        name={'Price'} 
-                        value={price} 
+                        name={'price'} 
+                        value={product.price} 
                         type={'number'} 
-                        setState={setPrice}
+                        state={product}                        
+                        setState={setProduct}
                     />
                     <FormField 
                         name={'image'} 
-                        value={image} 
+                        value={product.image} 
                         type={'text'} 
-                        setState={setImage}
+                        state={product}                        
+                        setState={setProduct}
                     />
                     <FormField 
                         name={'brand'} 
-                        value={brand} 
+                        value={product.brand} 
                         type={'text'} 
-                        setState={setBrand}
+                        state={product}                        
+                        setState={setProduct}
                     />
                     <FormField 
                         name={'category'} 
-                        value={category} 
+                        value={product.category} 
                         type={'text'} 
-                        setState={setCategory}
+                        state={product}                        
+                        setState={setProduct}
+                    />
+                    <FormField 
+                        name={'subCategory'} 
+                        value={product.subCategory} 
+                        type={'text'} 
+                        state={product}                        
+                        setState={setProduct}
                     />
                     <FormField 
                         name={'countInStock'} 
-                        value={countInStock} 
+                        value={product.countInStock} 
                         type={'number'} 
-                        setState={setCountInStock}
+                        state={product}                        
+                        setState={setProduct}
+                    />                    
+                    <FormFieldOptions
+                        name={'gender'} 
+                        value={product.gender}
+                        options={['Male','Female','Both']} 
+                        type={'text'} 
+                        state={product}                        
+                        setState={setProduct}
                     />
                     <FormFieldText 
                         name={'description'} 
-                        value={description} 
+                        value={product.description} 
                         type={'text'} 
-                        setState={setDescription}
+                        state={product}                        
+                        setState={setProduct}
                     />
+
                     <li>
-                        <button type='submit' className='button primary fullWidth'>{id?"Update":"Create"}</button>
+                        <button type='submit' className='button primary fullWidth'>{product._id?"Update":"Create"}</button>
                     </li>
                     <li>
                         <button type='button' onClick={e => setmodalVisible(false)} className='button secondary fullWidth'>Back</button>

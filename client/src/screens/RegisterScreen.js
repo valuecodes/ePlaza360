@@ -14,11 +14,14 @@ import {
 
 export default function RegisterScreen(props) {
 
-    const [name, setName] = useState('')
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
+    const [user, setUser] = useState({
+        name: '',
+        email: '',
+        password: '',
+        rePassword: ''
+    })
+
     const [passwordFocus, setPasswordFocus] = useState(false)
-    const [rePassword, setRePassword] = useState('')
     const [showPassword, setShowPassword] = useState(false)
     const [formErrors, setFormErrors] = useState([])
 
@@ -39,11 +42,15 @@ export default function RegisterScreen(props) {
         e.preventDefault()
 
         let errors=[];
-        if(password.length<6) errors.push('Password must be atleast 6 characters long')
-        if(password!==rePassword) errors.push('Re-password is wrong')
+        if(user.password.length<6) errors.push('Password must be atleast 6 characters long')
+        if(user.password!==user.rePassword) errors.push('Re-password is wrong')
         
         if(errors.length===0){
-            dispatch(register(name, email, password, rePassword))
+            dispatch(register(
+                user.name, 
+                user.email, 
+                user.password, 
+                user.rePassword))
         }else{
             setFormErrors(errors)
         }
@@ -61,37 +68,41 @@ export default function RegisterScreen(props) {
                     />
                     <FormField 
                         name={'name'} 
-                        value={name} 
+                        value={user.name} 
                         type={'text'} 
-                        setState={setName}
+                        state={user}
+                        setState={setUser}
                     />
                     <FormField 
                         name={'email'} 
-                        value={email} 
+                        value={user.email} 
                         type={'email'} 
-                        setState={setEmail}
+                        state={user}                        
+                        setState={setUser}
                     />
                     <FormFieldPassword 
                         label={'Password'}
                         setShowPassword={setShowPassword}
                         showPassword={showPassword}
-                        setState={setPassword}
-                        value={password}
+                        state={user}                        
+                        setState={setUser}
+                        value={user.password}
                         setPasswordFocus={setPasswordFocus}
                     />
                     <PasswordStrengthMeter 
-                        password={password} 
+                        password={user.password} 
                         passwordFocus={passwordFocus}
                     />
                     <FormFieldRePassword
                         label={'Re-Enter Password'}
-                        equals={password===rePassword}
+                        equals={user.password===user.rePassword}
                         showPassword={showPassword}
-                        setState={setRePassword}
-                        value={rePassword}
+                        setState={setUser}
+                        state={user}                        
+                        value={user.rePassword}
+                        name={'rePassword'}
                     />
                     <FormFieldButton text={'Register'}/>
-
                     <li className='toRegister'>
                         Already have an account?
                     </li>

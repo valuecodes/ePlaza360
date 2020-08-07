@@ -12,8 +12,11 @@ import {
 
 export default function SigninScreen(props) {
 
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
+    const [user, setUser] = useState({
+        email: '',
+        password: '',
+    })
+
     const [showPassword, setShowPassword] = useState(false)
     const [passwordFocus ,setPasswordFocus] = useState(false)
 
@@ -30,7 +33,7 @@ export default function SigninScreen(props) {
     
     const submitHandler=(e)=>{
         e.preventDefault()
-        dispatch(signin(email, password))
+        dispatch(signin(user.email, user.password))
     }
 
     return (
@@ -46,16 +49,18 @@ export default function SigninScreen(props) {
                     />
                     <FormField 
                         name={'email'} 
-                        value={email} 
+                        value={user.email} 
                         type={'email'} 
-                        setState={setEmail}
+                        state={user}
+                        setState={setUser}
                     />
                     <FormFieldPassword 
                         label={'Password'}
                         setShowPassword={setShowPassword}
                         showPassword={showPassword}
-                        setState={setPassword}
-                        value={password}
+                        state={user}
+                        setState={setUser}
+                        value={user.password}
                         setPasswordFocus={setPasswordFocus}
                     />
                     <FormFieldButton text={'Signin'}/>

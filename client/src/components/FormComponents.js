@@ -9,7 +9,7 @@ export function FormFieldHeader({text}){
     )
 }
 
-export function FormField({name,type, value,setState}) {
+export function FormField({name,type, value, state, setState}) {
     return (
         <li className='formField'>
             <input 
@@ -20,7 +20,7 @@ export function FormField({name,type, value,setState}) {
                 type={type} 
                 name={name} 
                 value={value}
-                onChange={e => setState(e.target.value)}
+                onChange={e => setState({...state, [name]:e.target.value})}
             />
             <label className='label' htmlFor={name}>{name}</label>
         </li>
@@ -47,15 +47,54 @@ export function FormFieldRadioButton(props){
     )
 }
 
+export function FormFieldOptions(props){
+
+    const{
+        name,
+        label,
+        value,
+        state,
+        setState,
+        options
+    } = props
+
+    return(
+        <li className='formFieldOptions'>       
+            <label  htmlFor={name}>
+                {name}
+            </label>     
+            {options.map(option =>
+                <button
+                    type='button'
+                    className='button'
+                    style={{
+                        backgroundColor:value===option?'gray':'lightgray'
+                    }}
+                    onClick={e => setState({...state, [name]:option})}
+                >
+                {option}</button>
+            )}  
+            
+            {/* <input className='radioButton' type='radio' name={name} id={value} value={value} onClick={e => setState(e.target.value)}>
+            </input>             
+            <label htmlFor={name}>
+                {label}
+            </label>                                      */}
+        </li>   
+    )
+}
+
 export function FormFieldPassword(props) {
 
     const {
         setShowPassword,
         showPassword,
+        state,
         setState,
         value,
         setPasswordFocus,
-        label='Password'
+        label='Password',
+        name='password'
     } = props
 
     return (
@@ -68,7 +107,7 @@ export function FormFieldPassword(props) {
                 </button>
             </div>
             <input value={value} required spellCheck="false" className='input' placeholder=' ' type={showPassword?'text':'password'} name='password'
-                onChange={e => setState(e.target.value)}
+                onChange={e => setState({...state, [name]:e.target.value})}
                 onFocus={e => setPasswordFocus(true)}
                 onBlur={e => setPasswordFocus(false)}
             />
@@ -84,13 +123,15 @@ export function FormFieldRePassword(props) {
         showPassword,
         setState,
         value,
-        label='Re-Enter Password'
+        label='Re-Enter Password',
+        name,
+        state,
     } = props
 
     return (
         <li className='formField'>
             <input value={value} required spellCheck="false" className='input' placeholder=' ' type={showPassword?'text':'password'} name='rePassword' 
-            onChange={e => setState(e.target.value)}
+            onChange={e => setState({...state, [name]:e.target.value})}
             style={{color: equals?'black':'#e45669'}}
             /> 
             <label className='label' htmlFor='rePassword'>{label}</label>
@@ -104,12 +145,10 @@ export function FormFieldChangePassword(props) {
     const [passwordFocus, setPasswordFocus] = useState(false)
 
     const {
-        password,
-        setCurrentPassword,
-        setNewPassword,
         newPassword,
-        setNewRePassword,
-        newRePassword
+        newRePassword,
+        setState,
+        state
     } = props
 
     return (
@@ -120,7 +159,7 @@ export function FormFieldChangePassword(props) {
                         Change Password
                     </button>
                 </div>
-                <input readOnly value={password} required spellCheck="false" className='input' placeholder=' ' type={'password'} name='password' />
+                <input readOnly value={'*********'} required spellCheck="false" className='input' placeholder=' ' type={'password'} name='password' />
                 <label className='label' htmlFor='password'>Password</label>  
             </li>
             {changePassword&&
@@ -129,14 +168,18 @@ export function FormFieldChangePassword(props) {
                         label={'Enter Current Password'}
                         equals={true}
                         showPassword={false}
-                        setState={setCurrentPassword}
+                        name={'currentPassword'}
+                        state={state}
+                        setState={setState}
                     />               
                     <FormFieldPassword 
                         label={'New Password'}
                         setShowPassword={setShowPassword}
                         showPassword={showPassword}
-                        setState={setNewPassword}
                         setPasswordFocus={setPasswordFocus}
+                        name={'newPassword'}
+                        state={state}
+                        setState={setState}
                     />
                     <PasswordStrengthMeter 
                         password={newPassword} 
@@ -146,7 +189,9 @@ export function FormFieldChangePassword(props) {
                         label={'Re-Enter New Password'}
                         equals={newPassword===newRePassword}
                         showPassword={showPassword}
-                        setState={setNewRePassword}
+                        name={'newRePassword'}
+                        state={state}
+                        setState={setState}
                     />
                 </div>
             }
@@ -159,6 +204,7 @@ export function FormFieldText(props) {
     const {
         name,
         value,
+        state,
         setState,
     } = props
 
@@ -167,7 +213,7 @@ export function FormFieldText(props) {
             <label  htmlFor={name}>
                 Description
             </label>
-            <textarea className='textArea' placeholder=' ' name={name} value={value} onChange={e => setState(e.target.value)}>            
+            <textarea className='textArea' placeholder=' ' name={name} value={value} onChange={e => setState({...state, [name]:e.target.value})}>            
             </textarea>            
 
         </li>
