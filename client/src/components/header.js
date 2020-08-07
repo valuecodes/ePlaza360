@@ -7,6 +7,7 @@ export default function Header() {
     const { userInfo } = userSignin
     return (
         <header className='header'>
+            <div></div>
             <div className='brand'>
                 <Link to='/'>ePlaza360</Link>
             </div>

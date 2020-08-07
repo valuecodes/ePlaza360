@@ -9,18 +9,18 @@ export default function HomeScreen(props) {
     const category = props.match.params.id?props.match.params.id:''
     const productList = useSelector(state => state.productList)
     const { products, loading, error } = productList
-    
+    console.log(props.match.params)
     const dispatch = useDispatch()
 
     useEffect(() => {
-        dispatch(listProducts())
+        dispatch(listProducts(category))
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, [category])
 
     return loading? <div>Loading...</div>:error?<div>
     
     {error.message}</div>:
-        <div>
+        <div className='homeScreen'>
             {category && <h2>{category}</h2>}
             <Filter category={category}/>
             <Products products={products}/>

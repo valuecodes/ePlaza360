@@ -14,15 +14,15 @@ import PlaceOrderScreen from './screens/PlaceOrderScreen';
 import OrderScreen from './screens/OrderScreen'
 import ProfileScreen from './screens/ProfileScreen'
 import OrdersScreen from './screens/OrdersScreen'
+import SideBar from './components/SideBar'
 
 export default function App() {
   return (        
     <BrowserRouter>
       <div className="gridContainer">
           <Header/>
+          <SideBar/>
           <main className='main'>
-
-            <div className='content'>
               <Route path='/orders' component={OrdersScreen}/>
               <Route path='/profile' component={ProfileScreen}/>
               <Route path='/order/:id' component={OrderScreen}/>
@@ -34,9 +34,8 @@ export default function App() {
               <Route path='/signin' component={SigninScreen}/>
               <Route path='/product/:id' component={ProductScreen}/>
               <Route path='/cart/:id?' component={CartScreen}/>
+              <Route path="/category/:id" component={HomeScreen} />
               <Route path='/' exact={true} component={HomeScreen}/>
-            </div>
-            
           </main>          
           <Footer/>
       </div>    
