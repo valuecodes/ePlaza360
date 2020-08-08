@@ -20,9 +20,8 @@ export default function HomeScreen(props) {
     
     {error.message}</div>:
         <div className='homeScreen'>
-            {category && <h2>{category}</h2>}
             <Filter category={category}/>
-            <Products products={products}/>
+            <Products products={products} category={category}/>
         </div>
 }
 
@@ -73,11 +72,11 @@ function Filter({category}){
     )
 }
 
-function Products({products}){
+function Products({products, category}){
   return (
     <div className="products">
+        <h2 className='category'>{category.replace('_','-')}</h2>
         {products.map(product => 
-
             <li key={product._id}>
                 <div className='product'>
                     <Link className='imageLink' to={`/product/${product._id}`}>

@@ -1,6 +1,7 @@
-import React,{ useState } from 'react'
+import React,{ useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+import categories from './productCategories'
 
 export default function SideBar(props) {
 
@@ -10,11 +11,7 @@ export default function SideBar(props) {
         Category: '',
         SubCategory: ''
     })
-    const categories=[
-        {name:'Shirts',values:['T-Shirts','Long-Sleeves','Polos','Dress-Shirts']},
-        {name:'Pants',values:['Jeans','Chinos','Casual','Shorts']},
-        {name:'Shoes',values:['Sneakers','Boots','Casual','Slippers']},
-    ]
+
     const {userSignin:{userInfo}} = useSelector(state => state)
 
     return (
@@ -90,12 +87,13 @@ function SideBarOption({ setOptions, options, option, value }){
     return(
         <Link
             className='sideBarOption'
-            onClick={e => setOptions({...options, [option]:value})}
+            onClick={e => 
+                setOptions({...options, [option]:value, SubCategory:''})}
             style={{
                 backgroundColor:options[option]===value?'dimgray':'',
                 color:options[option]===value?'white':'black'
             }}        
-            to={`/category/${value.toLowerCase()}`}
+            to={`/category/${value}`}
         >
             {value}    
         </Link>        
@@ -111,9 +109,9 @@ function SideBarSubOption({ setOptions, options, option, mainCategory, value }){
                 backgroundColor:options[option]===value?'dimgray':'',
                 color:options[option]===value?'white':'black'
             }}        
-            to={`/category/${mainCategory.toLowerCase()}-${value.toLowerCase()}`}
+            to={`/category/${mainCategory}-${value}`}
         >
-            {value}    
+            {value.replace('_','-')}    
         </Link>        
     )
 }

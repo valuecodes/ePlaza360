@@ -1,5 +1,6 @@
 import React,{ useEffect, useState} from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import axios from 'axios'
 import { 
     saveProduct, 
     listProducts, 
@@ -17,6 +18,7 @@ import {
     TableItem,
     TableItemPrice
 } from '../components/TableComponents'
+import categories from '../components/productCategories'
 
 export default function ProductsScreen(props) {
 
@@ -34,7 +36,8 @@ export default function ProductsScreen(props) {
         countInStock: '',
         rating: '',
         numReviews: '',
-        gender: ''
+        gender: '',
+        uploading:false
     })
 
     const productList = useSelector(state => state.productList)
@@ -77,14 +80,30 @@ export default function ProductsScreen(props) {
             countInStock: product.countInStock, 
             rating: product.rating, 
             numReviews: product.numReviews,        
-            gender: product.gender      
+            gender: product.gender,      
         }
-        console.log(newProduct)
         dispatch(saveProduct(newProduct))
     }
 
     const deleteHandler=(product)=>{
         dispatch(deleteProduct(product._id))
+    }
+
+    const uploadFileHandler=(e)=>{
+        const file = e.target.files[0]
+        const bodyFormData = new FormData()
+        bodyFormData.append('image',file)
+        setProduct({...product,uploading:true})        
+        axios.post('/api/uploads', bodyFormData, {
+            headers:{
+                'Content-Type': 'multipart/form-data'
+            }
+        }).then(response =>
+            setProduct({...product,image:response.data,uploading:false})
+        ).catch(err => {
+            console.log(error)
+            setProduct({...product,uploading:false})        
+        })
     }
 
     return (
@@ -102,6 +121,7 @@ export default function ProductsScreen(props) {
                         setmodalVisible={setmodalVisible}
                         openModal={openModal}
                         submitHandler={submitHandler}
+                        uploadFileHandler={uploadFileHandler}
                     />
                     :
                     <ProductList 
@@ -120,9 +140,14 @@ function CreateProduct(props){
         product,
         setProduct,
         setmodalVisible,
-        submitHandler
+        submitHandler,
+        uploadFileHandler
     } = props
-    console.log(product)
+
+    const subCategories=product.category?
+        categories.filter(category => category.name === product.category)[0].values
+    :[]
+
     return(
         <div className='contentCenter'>
             <form className='form' onSubmit={submitHandler}>
@@ -151,6 +176,9 @@ function CreateProduct(props){
                         state={product}                        
                         setState={setProduct}
                     />
+
+                    <input type='file' onChange={uploadFileHandler}/>
+                    {product.uploading && <div>Uploading...</div>}
                     <FormField 
                         name={'brand'} 
                         value={product.brand} 
@@ -158,20 +186,36 @@ function CreateProduct(props){
                         state={product}                        
                         setState={setProduct}
                     />
-                    <FormField 
+                    {/* <FormField 
                         name={'category'} 
                         value={product.category} 
                         type={'text'} 
                         state={product}                        
                         setState={setProduct}
+                    /> */}
+                    <FormFieldOptions
+                        name={'category'} 
+                        value={product.category}
+                        options={categories.map(category => category.name)} 
+                        type={'text'} 
+                        state={product}                        
+                        setState={setProduct}
                     />
-                    <FormField 
+                    <FormFieldOptions
+                        name={'subCategory'} 
+                        value={product.subCategory}
+                        options={subCategories} 
+                        type={'text'} 
+                        state={product}                        
+                        setState={setProduct}
+                    />
+                    {/* <FormField 
                         name={'subCategory'} 
                         value={product.subCategory} 
                         type={'text'} 
                         state={product}                        
                         setState={setProduct}
-                    />
+                    /> */}
                     <FormField 
                         name={'countInStock'} 
                         value={product.countInStock} 
