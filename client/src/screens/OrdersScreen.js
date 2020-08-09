@@ -24,7 +24,6 @@ export default function OrdersScreen(props) {
     const orderStatus = useSelector(state => state.orderStatus)
     const {loading:loadingStatus, success: successStatus} = orderStatus
 
-
     const orderDelete = useSelector(state => state.orderDelete)
     const {loading: loadingDelete, success: successDelete, error: errorDelete } = orderDelete
 

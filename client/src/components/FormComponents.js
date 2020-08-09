@@ -59,8 +59,10 @@ export function FormFieldOptions(props){
     } = props
 
     return(
-        <li className='formFieldOptions'>       
-            <label  htmlFor={name}>
+        <li className='formFieldOptions formField'>       
+            <label  
+                htmlFor={name}
+            >
                 {name}
             </label>     
             {options.map(option =>
@@ -72,14 +74,9 @@ export function FormFieldOptions(props){
                     }}
                     onClick={e => setState({...state, [name]:option})}
                 >
-                {option}</button>
+                    {option}
+                </button>
             )}  
-            
-            {/* <input className='radioButton' type='radio' name={name} id={value} value={value} onClick={e => setState(e.target.value)}>
-            </input>             
-            <label htmlFor={name}>
-                {label}
-            </label>                                      */}
         </li>   
     )
 }

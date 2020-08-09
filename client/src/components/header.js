@@ -7,28 +7,31 @@ export default function Header() {
     const { userInfo } = userSignin
     return (
         <header className='header'>
-            <div></div>
+            <div></div>                
             <div className='brand'>
-                <Link to='/'>ePlaza360</Link>
-            </div>
-            <div className='navbar'>
-                {
-                    userInfo?<Link to='/profile'>{userInfo.name}</Link>:
-                    <Link to='/signin'>Signin</Link>
-                }
-                <a href='/cart'>Cart</a>
-                
-                    {userInfo&&
-                    userInfo.isAdmin&&
-                        <div className='dropdown'>
-                            <div>Admin</div>
-                            <ul className='dropdownContent'>
-                                <li><Link to='/orders'>Orders</Link>
-                                <Link to='/products'>Products</Link></li>
-                            </ul>
-                        </div>
+                    <Link to='/'>ePlaza360</Link>
+                </div>
+            <div className='headerContainer'>
+
+                <div className='navbar'>
+                    {
+                        userInfo?<Link to='/profile'>{userInfo.name.split(' ')[0]}</Link>:
+                        <Link to='/signin'>Signin</Link>
                     }
-                
+                    <a href='/cart'>Cart</a>
+                    
+                        {userInfo&&
+                        userInfo.isAdmin&&
+                            <div className='dropdown'>
+                                <div>Admin</div>
+                                <ul className='dropdownContent'>
+                                    <li><Link to='/orders'>Orders</Link>
+                                    <Link to='/products'>Products</Link></li>
+                                </ul>
+                            </div>
+                        }
+                    
+                </div>
             </div>
         </header>
     )

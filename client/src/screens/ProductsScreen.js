@@ -10,7 +10,6 @@ import {
     FormField, 
     FormFieldText, 
     FormFieldHeader,
-    FormFieldRadioButton,
     FormFieldOptions
 } from '../components/FormComponents'
 import {
@@ -62,7 +61,7 @@ export default function ProductsScreen(props) {
         if(successSave){
             setmodalVisible(false)
         }
-        dispatch(listProducts())
+        dispatch(listProducts({}))
         // eslint-disable-next-line react-hooks/exhaustive-deps
     },[successSave, successDelete])
     
@@ -176,7 +175,6 @@ function CreateProduct(props){
                         state={product}                        
                         setState={setProduct}
                     />
-
                     <input type='file' onChange={uploadFileHandler}/>
                     {product.uploading && <div>Uploading...</div>}
                     <FormField 
@@ -186,13 +184,6 @@ function CreateProduct(props){
                         state={product}                        
                         setState={setProduct}
                     />
-                    {/* <FormField 
-                        name={'category'} 
-                        value={product.category} 
-                        type={'text'} 
-                        state={product}                        
-                        setState={setProduct}
-                    /> */}
                     <FormFieldOptions
                         name={'category'} 
                         value={product.category}
@@ -209,13 +200,6 @@ function CreateProduct(props){
                         state={product}                        
                         setState={setProduct}
                     />
-                    {/* <FormField 
-                        name={'subCategory'} 
-                        value={product.subCategory} 
-                        type={'text'} 
-                        state={product}                        
-                        setState={setProduct}
-                    /> */}
                     <FormField 
                         name={'countInStock'} 
                         value={product.countInStock} 
@@ -226,7 +210,7 @@ function CreateProduct(props){
                     <FormFieldOptions
                         name={'gender'} 
                         value={product.gender}
-                        options={['Male','Female','Both']} 
+                        options={['Men','Women','Both']} 
                         type={'text'} 
                         state={product}                        
                         setState={setProduct}

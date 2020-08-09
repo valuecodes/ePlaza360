@@ -34,7 +34,8 @@ export default function App() {
               <Route path='/signin' component={SigninScreen}/>
               <Route path='/product/:id' component={ProductScreen}/>
               <Route path='/cart/:id?' component={CartScreen}/>
-              <Route path="/category/:id" component={HomeScreen} />
+              <Route path="/category//:query?" component={HomeScreen} />
+              <Route path="/category/:id/:query?" component={HomeScreen} />
               <Route path='/' exact={true} component={HomeScreen}/>
           </main>          
           <Footer/>

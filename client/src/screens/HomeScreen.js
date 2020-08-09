@@ -5,27 +5,42 @@ import { ProductInfo } from '../components/ProductComponents'
 import { Link } from 'react-router-dom'
 
 export default function HomeScreen(props) {
+    
+    let brand=''
+    let priceFrom=''
+    let priceTo=''
+
+    if(props.match.params.query){
+        brand = props.match.params.query.split('&brand=')[1]? props.match.params.query.split('&brand=')[1].split('&')[0]:''
+        priceFrom = props.match.params.query.split('&price_from=')[1]? props.match.params.query.split('&price_from=')[1].split('&')[0]:'' 
+        priceTo = props.match.params.query.split('&price_to=')[1]? props.match.params.query.split('&price_to=')[1].split('&')[0]:'' 
+    }
 
     const category = props.match.params.id?props.match.params.id:''
+    
     const productList = useSelector(state => state.productList)
     const { products, loading, error } = productList
     const dispatch = useDispatch()
 
     useEffect(() => {
-        dispatch(listProducts(category))
+        dispatch(listProducts({category,brand,priceFrom,priceTo}))
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [category])
+    }, [category,brand,priceFrom,priceTo])
 
-    return loading? <div>Loading...</div>:error?<div>
-    
-    {error.message}</div>:
-        <div className='homeScreen'>
-            <Filter category={category}/>
-            <Products products={products} category={category}/>
+    return (
+        <div className='homeScreen container'>
+            <Filter category={category} brand={brand} priceFrom={priceFrom} priceTo={priceTo}/>
+            <h2 className='category'>{category.replace('_','-')}</h2>
+            {loading? 
+                <div className='loading'>Loading...</div>:
+                error?<div>{error.message}</div>:
+                <Products products={products} category={category}/>
+            }
         </div>
+    )
 }
 
-function Filter({category}){
+function Filter({category, brand, priceFrom ,priceTo}){
 
     const [searchKeyword, setSearchKeyWord] = useState('')
     const [sortOrder, setSortOrder] = useState('')
@@ -34,18 +49,18 @@ function Filter({category}){
 
     const submitHandler = (e) =>{
         e.preventDefault()
-        dispatch(listProducts(category, searchKeyword, sortOrder))
+        dispatch(listProducts({category, brand, priceFrom ,priceTo, searchKeyword, sortOrder}))
     }
 
     const sortHandler = (order) =>{
         setSortOrder(order)
-        dispatch(listProducts(category, searchKeyword, order))
+        dispatch(listProducts({category, brand, priceFrom ,priceTo, searchKeyword,sortOrder: order}))
     }
 
     const resetFilter = () =>{
         setSearchKeyWord('')
         setSortOrder('')
-        dispatch(listProducts())
+        dispatch(listProducts({}))
     }
 
     return(
@@ -75,7 +90,6 @@ function Filter({category}){
 function Products({products, category}){
   return (
     <div className="products">
-        <h2 className='category'>{category.replace('_','-')}</h2>
         {products.map(product => 
             <li key={product._id}>
                 <div className='product'>

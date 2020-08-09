@@ -8,17 +8,25 @@ exports.products = async(req, res)=>{
 
     let category = req.query.category ? {category:req.query.category}:{}   
     let subCategory={}
+    console.log(req.query)
     if(Object.keys(category).length!==0){
         subCategory = category.category.split('-')[1]?{subCategory:category.category.split('-')[1]}:{}
         if(Object.keys(subCategory).length!==0) category={}        
     }
+
+    const brand = req.query.brand ? {brand:req.query.brand.replace('_',' ')}:{}
 
     const searchKeyword = req.query.searchKeyword?{
         name : new RegExp(req.query.searchKeyword,'i')
     } : {}
     const sortOrder = req.query.sortOrder ? (req.query.sortOrder === 'lowest'?{price: 1}:{price: -1}):
     {_id:-1}
-    const products = await Product.find({...category,...subCategory, ...searchKeyword}).sort(sortOrder)
+    const products = await Product.find({
+        ...category,
+        ...subCategory,
+        ...searchKeyword,
+        ...brand
+    }).sort(sortOrder)
     res.send(products)
 }
 
